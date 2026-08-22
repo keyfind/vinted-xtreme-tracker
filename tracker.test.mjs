@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { blankStore, makeProfile, metrics, reconcileSnapshot } from "./src/tracker.mjs";
 import { assertSecureBind, isAuthorizedMutation, requireAllowedFeedUrl } from "./src/security.mjs";
-import { parseCard, parseResultCount, relativeUploadDate } from "./src/vinted-browser.mjs";
+import { deriveListingStatus, parseCard, parseResultCount, relativeUploadDate } from "./src/vinted-browser.mjs";
 
 function setup(threshold = 2) {
   const store = blankStore();
@@ -63,6 +63,12 @@ test("liest öffentliche Vinted-Ergebniskarten", () => {
 test("liest Trefferzahl und relatives Upload-Datum", () => {
   assert.equal(parseResultCount("193 Ergebnisse."), 193);
   assert.equal(relativeUploadDate("2 Tagen", new Date("2026-08-22T10:00:00Z")), "2026-08-20T10:00:00.000Z");
+});
+
+test("wertet Entfernungs-Overlay auf kaufbaren Artikeln nicht als Status aus", () => {
+  assert.equal(deriveListingStatus({ purchasable: true, removed: true }), "active");
+  assert.equal(deriveListingStatus({ sold: true }), "sold");
+  assert.equal(deriveListingStatus({ removed: true }), "removed");
 });
 
 test("archiviert tägliche Snapshots sowie Zustands- und Beschreibungsänderungen", () => {

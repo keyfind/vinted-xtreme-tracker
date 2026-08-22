@@ -165,13 +165,14 @@ async function extractDetail(page) {
     const bodyText = document.body.innerText || "";
     const main = document.querySelector("main")?.innerText || bodyText;
     const title = document.querySelector("h1")?.textContent?.trim() || "";
-    const sellerLink = [...document.querySelectorAll('a[href^="/member/"]')].find((link) => link.textContent?.trim());
+    const sellerLink = [...document.querySelectorAll('a[href^="/member/"]')].find((link) => /^\/member\/\d+/.test(link.getAttribute("href") || "") && link.textContent?.trim());
     const imageUrl = document.querySelector('main figure img')?.getAttribute("src") || "";
     const conditionValues = ["Neu, mit Etikett", "Neu", "Sehr gut", "Gut", "Zufriedenstellend"];
     const condition = conditionValues.find((value) => [...document.querySelectorAll("main *")].some((node) => node.children.length === 0 && node.textContent?.trim() === value)) || "Unbekannt";
     const priceMatch = main.match(/(\d{1,5}(?:[.,]\d{2})?)\s*€/);
     const uploadedMatch = main.match(/Hochgeladen\s*\n?\s*(?:vor\s*)?([^\n]+)/i);
     const descriptionMatch = main.match(/Hochgeladen\s*\n?\s*(?:vor\s*)?[^\n]+\n([\s\S]*?)\nVersand(?:\n|$)/i);
+    const purchasable = /(?:^|\n)Kaufen(?:\n|$)/i.test(main);
     const removed = /(?:^|\n)Entfernt!(?:\n|$)/i.test(main);
     const sold = /(?:^|\n)Verkauft!?(?:\n|$)/i.test(main);
     return {
@@ -181,16 +182,24 @@ async function extractDetail(page) {
       condition,
       description: descriptionMatch?.[1]?.trim() || "",
       priceText: priceMatch?.[1] || "",
-      status: sold ? "sold" : removed ? "removed" : "active",
+      statusFlags: { purchasable, sold, removed },
       uploadedText: uploadedMatch?.[1]?.trim() || ""
     };
   }).then((data) => {
-    const output = { ...data, price: parseEuroNumber(data.priceText), sourceCreatedAt: relativeUploadDate(data.uploadedText) };
+    const output = { ...data, status: deriveListingStatus(data.statusFlags), price: parseEuroNumber(data.priceText), sourceCreatedAt: relativeUploadDate(data.uploadedText) };
     delete output.uploadedText;
     delete output.priceText;
+    delete output.statusFlags;
     if (!Number.isFinite(output.price)) delete output.price;
     return output;
   });
+}
+
+export function deriveListingStatus({ purchasable = false, sold = false, removed = false } = {}) {
+  if (purchasable) return "active";
+  if (sold) return "sold";
+  if (removed) return "removed";
+  return "active";
 }
 
 async function assertNotBlocked(page) {
