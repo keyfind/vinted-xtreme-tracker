@@ -1,0 +1,73 @@
+name: Vinted täglich tracken
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 5 * * *"
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: vinted-tracker
+  cancel-in-progress: false
+
+jobs:
+  track-and-publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Repository laden
+        uses: actions/checkout@v4
+
+      - name: Node.js einrichten
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Abhängigkeiten installieren
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+        run: npm ci
+
+      - name: Chromium installieren
+        run: npx playwright install --with-deps chromium
+
+      - name: Angebote erfassen
+        id: collector
+        continue-on-error: true
+        run: npm run collect:once
+
+      - name: Statisches Dashboard bauen
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: npm run build:static
+
+      - name: Verlauf archivieren
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/store.json data/last-run.json
+          git diff --cached --quiet || git commit -m "chore(data): täglicher Vinted-Snapshot"
+          git push
+
+      - name: GitHub Pages einrichten
+        uses: actions/configure-pages@v5
+
+      - name: Dashboard hochladen
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+      - name: Dashboard veröffentlichen
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Collector-Fehler melden
+        if: steps.collector.outcome == 'failure'
+        run: exit 1

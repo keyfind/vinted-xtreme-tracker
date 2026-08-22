@@ -1,0 +1,19 @@
+services:
+  tracker:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "4173:4173"
+    environment:
+      HOST: 0.0.0.0
+      TRACKER_ADMIN_TOKEN: ${TRACKER_ADMIN_TOKEN:?TRACKER_ADMIN_TOKEN in .env setzen}
+      ENABLE_SCHEDULED_SCRAPING: "true"
+      SCRAPER_HEADLESS: "true"
+      TRACKER_DATA_FILE: /app/data/store.json
+      TRACKER_FEED_ALLOWLIST: ${TRACKER_FEED_ALLOWLIST:-}
+      TRACKER_FEED_TOKEN: ${TRACKER_FEED_TOKEN:-}
+    volumes:
+      - tracker_data:/app/data
+
+volumes:
+  tracker_data:

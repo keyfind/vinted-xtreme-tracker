@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "profiles": [
+    {
+      "id": "jbl-xtreme-4",
+      "name": "JBL Xtreme 4",
+      "query": "JBL Xtreme 4",
+      "includeTerms": [],
+      "excludeTerms": ["Hülle", "Case", "Ersatzteil"],
+      "minPrice": 40,
+      "maxPrice": 350,
+      "conditions": ["Neu", "Sehr gut", "Gut", "Zufriedenstellend"],
+      "missingThreshold": 3,
+      "refreshMinutes": 1440,
+      "feedUrl": "",
+      "collectorEnabled": true,
+      "scrapeDetails": true,
+      "maxResults": 300,
+      "detailDelayMs": 3000,
+      "active": true,
+      "createdAt": "2026-08-22T00:00:00.000Z",
+      "updatedAt": "2026-08-22T00:00:00.000Z",
+      "lastSyncAt": null,
+      "lastSyncStatus": "Wartet auf den ersten GitHub-Lauf"
+    }
+  ],
+  "listings": [],
+  "events": [],
+  "updatedAt": "2026-08-22T00:00:00.000Z"
+}

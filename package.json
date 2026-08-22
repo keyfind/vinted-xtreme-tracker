@@ -1,0 +1,19 @@
+{
+  "name": "xtreme-tracker",
+  "version": "1.4.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test",
+    "collect:once": "node scripts/collect-once.mjs",
+    "build:static": "node scripts/build-static.mjs",
+    "install-browser": "npx playwright install chromium"
+  },
+  "dependencies": {
+    "playwright-chromium": "1.62.1"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

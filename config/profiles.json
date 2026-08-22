@@ -1,0 +1,19 @@
+[
+  {
+    "id": "jbl-xtreme-4",
+    "name": "JBL Xtreme 4",
+    "query": "JBL Xtreme 4",
+    "includeTerms": [],
+    "excludeTerms": ["Hülle", "Case", "Ersatzteil"],
+    "minPrice": 40,
+    "maxPrice": 350,
+    "conditions": ["Neu", "Sehr gut", "Gut", "Zufriedenstellend"],
+    "missingThreshold": 3,
+    "refreshMinutes": 1440,
+    "collectorEnabled": true,
+    "scrapeDetails": true,
+    "maxResults": 300,
+    "detailDelayMs": 3000,
+    "active": true
+  }
+]
