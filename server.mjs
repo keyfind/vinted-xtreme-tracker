@@ -2,7 +2,7 @@ import http from "node:http";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
-import { blankStore, makeProfile, metrics, reconcileSnapshot, updateProfile } from "./src/tracker.mjs";
+import { blankStore, makeProfile, metrics, migrateStore, reconcileSnapshot, updateProfile } from "./src/tracker.mjs";
 import { assertSecureBind, isAuthorizedMutation, requireAllowedFeedUrl } from "./src/security.mjs";
 import { collectVinted } from "./src/vinted-browser.mjs";
 
@@ -144,7 +144,7 @@ async function body(request) {
 }
 
 async function loadStore() {
-  try { return JSON.parse(await readFile(dataFile, "utf8")); }
+  try { return migrateStore(JSON.parse(await readFile(dataFile, "utf8"))); }
   catch { const initial = blankStore(); initial.profiles.push(makeProfile({ id: "jbl-xtreme-4", name: "JBL Xtreme 4", query: "JBL Xtreme 4", excludeTerms: ["Hülle", "Case", "Ersatzteil"], minPrice: 40, maxPrice: 350, missingThreshold: 3, refreshMinutes: 1440, collectorEnabled: true, scrapeDetails: true, maxResults: 300, detailDelayMs: 3000 })); return initial; }
 }
 async function saveStore() { store.updatedAt = new Date().toISOString(); await mkdir(new URL("./data/", import.meta.url), { recursive: true }); await writeFile(dataFile, JSON.stringify(store, null, 2)); }

@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 export const CONDITIONS = ["Neu", "Sehr gut", "Gut", "Zufriedenstellend", "Unbekannt"];
 
 export function blankStore() {
-  return { version: 1, profiles: [], listings: [], events: [], updatedAt: new Date().toISOString() };
+  return { version: 2, profiles: [], listings: [], events: [], updatedAt: new Date().toISOString() };
 }
 
 export function makeProfile(input = {}) {
@@ -50,18 +50,55 @@ export function normalizeItem(raw, profileId, now) {
     externalId: id,
     profileId,
     title: clean(raw.title) || "Ohne Titel",
-    description: clean(raw.description),
+    description: normalizeDescription(raw.description),
     url: safeUrl(raw.url),
     imageUrl: safeUrl(raw.imageUrl || raw.photo),
     price,
     currency: clean(raw.currency || raw.price?.currency) || "EUR",
     condition: normalizeCondition(raw.condition),
     seller: clean(raw.seller || raw.user?.login) || "Unbekannt",
-    location: clean(raw.location) || "Deutschland",
     status,
     sourceCreatedAt: validDate(raw.createdAt || raw.publishedAt || raw.sourceCreatedAt),
     observedAt: validDate(raw.observedAt) || now
   };
+}
+
+export function migrateStore(store) {
+  if (!store || typeof store !== "object") return blankStore();
+  store.profiles ||= [];
+  store.listings ||= [];
+  store.events ||= [];
+
+  if (Number(store.version || 1) < 2) {
+    for (const listing of store.listings) {
+      delete listing.location;
+      listing.description = normalizeDescription(listing.description);
+      if (listing.status === "removed" && !listing.soldAt) {
+        listing.status = "missing";
+        listing.disappearedAt ||= listing.lastSeenAt || store.updatedAt || new Date().toISOString();
+        listing.missingChecks = Math.max(Number(listing.missingChecks) || 0, 3);
+      }
+      listing.priceHistory = [];
+      listing.conditionHistory = [];
+      listing.descriptionHistory = [];
+      listing.statusHistory = [];
+      listing.snapshots = [snapshotOf(listing, listing.lastSeenAt || store.updatedAt || new Date().toISOString())];
+    }
+    store.events = [];
+    store.version = 2;
+  } else {
+    for (const listing of store.listings) {
+      delete listing.location;
+      listing.description = normalizeDescription(listing.description);
+      listing.priceHistory ||= [];
+      listing.conditionHistory ||= [];
+      listing.descriptionHistory = uniqueDescriptionHistory(listing.descriptionHistory || []);
+      listing.statusHistory ||= [];
+      listing.snapshots ||= [snapshotOf(listing, listing.lastSeenAt || store.updatedAt || new Date().toISOString())];
+    }
+    store.events = store.events.filter((event) => event.type !== "new");
+  }
+  return store;
 }
 
 export function reconcileSnapshot(store, profileId, rawItems, now = new Date().toISOString()) {
@@ -88,13 +125,12 @@ export function reconcileSnapshot(store, profileId, rawItems, now = new Date().t
         soldAt: item.status === "sold" ? now : null,
         missingChecks: 0,
         observations: 1,
-        priceHistory: [{ price: item.price, at: now }],
-        conditionHistory: [{ condition: item.condition, at: now }],
-        descriptionHistory: [{ description: item.description, at: now }],
-        statusHistory: [{ status: item.status, at: now }],
+        priceHistory: [],
+        conditionHistory: [],
+        descriptionHistory: [],
+        statusHistory: [],
         snapshots: [snapshotOf(item, now)]
       });
-      store.events.unshift({ id: randomUUID(), profileId, listingExternalId: item.externalId, type: "new", at: now, text: `${item.title} neu für ${formatPrice(item.price, item.currency)}` });
       added++;
       continue;
     }
@@ -103,11 +139,16 @@ export function reconcileSnapshot(store, profileId, rawItems, now = new Date().t
     const oldStatus = existing.status;
     const oldCondition = existing.condition;
     const oldDescription = existing.description || "";
+    const knownDescriptions = new Set([
+      oldDescription,
+      ...(existing.descriptionHistory || []).map((point) => point.description),
+      ...(existing.snapshots || []).map((snapshot) => snapshot.description)
+    ].map(normalizeDescription));
     Object.assign(existing, item, { lastSeenAt: now, missingChecks: 0, observations: (existing.observations || 0) + 1 });
-    existing.priceHistory ||= [{ price: oldPrice, at: existing.firstSeenAt }];
-    existing.conditionHistory ||= [{ condition: oldCondition, at: existing.firstSeenAt }];
-    existing.descriptionHistory ||= [{ description: oldDescription, at: existing.firstSeenAt }];
-    existing.statusHistory ||= [{ status: oldStatus, at: existing.firstSeenAt }];
+    existing.priceHistory ||= [];
+    existing.conditionHistory ||= [];
+    existing.descriptionHistory ||= [];
+    existing.statusHistory ||= [];
     existing.snapshots ||= [];
     if (item.status === "active") {
       existing.disappearedAt = null;
@@ -117,27 +158,27 @@ export function reconcileSnapshot(store, profileId, rawItems, now = new Date().t
       if (item.status === "sold") existing.soldAt ||= now;
     }
     if (oldPrice !== item.price) {
-      existing.priceHistory.push({ price: item.price, at: now });
+      existing.priceHistory.push({ from: oldPrice, to: item.price, price: item.price, at: now });
       store.events.unshift({ id: randomUUID(), profileId, listingExternalId: item.externalId, type: "price", at: now, text: `${item.title}: ${formatPrice(oldPrice, item.currency)} → ${formatPrice(item.price, item.currency)}` });
       changed++;
     }
     if (oldCondition !== item.condition) {
-      existing.conditionHistory.push({ condition: item.condition, at: now });
+      existing.conditionHistory.push({ from: oldCondition, to: item.condition, condition: item.condition, at: now });
       store.events.unshift({ id: randomUUID(), profileId, listingExternalId: item.externalId, type: "condition", at: now, text: `${item.title}: Zustand ${oldCondition} → ${item.condition}` });
       changed++;
     }
     if (oldDescription !== item.description) {
-      existing.descriptionHistory.push({ description: item.description, at: now });
+      if (!knownDescriptions.has(item.description)) existing.descriptionHistory.push({ description: item.description, at: now });
       store.events.unshift({ id: randomUUID(), profileId, listingExternalId: item.externalId, type: "description", at: now, text: `${item.title}: Beschreibung geändert` });
       changed++;
     }
-    if (oldStatus !== existing.status) {
-      existing.statusHistory.push({ status: existing.status, at: now });
-      store.events.unshift({ id: randomUUID(), profileId, listingExternalId: item.externalId, type: "status", at: now, text: `${item.title}: Status auf ${statusLabel(existing.status)}` });
+    if (isConfirmedStatusTransition(oldStatus, existing.status)) {
+      const from = oldStatus === "checking" ? lastConfirmedStatus(existing) : oldStatus;
+      existing.statusHistory.push({ from, to: existing.status, status: existing.status, at: now });
+      store.events.unshift({ id: randomUUID(), profileId, listingExternalId: item.externalId, type: "status", at: now, text: `${item.title}: ${statusLabel(from)} → ${statusLabel(existing.status)}` });
       changed++;
     }
-    existing.snapshots.push(snapshotOf(existing, now));
-    existing.snapshots = existing.snapshots.slice(-2000);
+    pushSnapshotIfChanged(existing, now);
   }
 
   for (const item of store.listings.filter((entry) => entry.profileId === profileId && !seen.has(entry.externalId) && ["active", "checking"].includes(entry.status))) {
@@ -146,16 +187,15 @@ export function reconcileSnapshot(store, profileId, rawItems, now = new Date().t
     if (item.missingChecks >= profile.missingThreshold) {
       item.status = "missing";
       item.disappearedAt ||= now;
+      item.statusHistory ||= [];
+      const from = lastConfirmedStatus(item);
+      item.statusHistory.push({ from, to: "missing", status: "missing", at: now });
       store.events.unshift({ id: randomUUID(), profileId, listingExternalId: item.externalId, type: "missing", at: now, text: `${item.title} ist nicht mehr online` });
+      pushSnapshotIfChanged(item, now);
       gone++;
     } else {
       item.status = "checking";
     }
-    item.statusHistory ||= [{ status: oldStatus, at: item.firstSeenAt }];
-    if (oldStatus !== item.status) item.statusHistory.push({ status: item.status, at: now });
-    item.snapshots ||= [];
-    item.snapshots.push(snapshotOf(item, now));
-    item.snapshots = item.snapshots.slice(-2000);
   }
 
   profile.lastSyncAt = now;
@@ -168,13 +208,14 @@ export function reconcileSnapshot(store, profileId, rawItems, now = new Date().t
 
 export function metrics(store, profileId) {
   const rows = store.listings.filter((entry) => entry.profileId === profileId);
-  const active = rows.filter((entry) => ["active", "checking"].includes(entry.status));
+  const active = rows.filter((entry) => entry.status === "active");
   const prices = active.map((entry) => entry.price);
   const completed = rows.filter((entry) => entry.soldAt || entry.disappearedAt);
   const durations = completed.map((entry) => durationDays(entry.firstSeenAt, entry.soldAt || entry.disappearedAt)).filter(Number.isFinite);
   return {
     total: rows.length,
     active: active.length,
+    checking: rows.filter((entry) => entry.status === "checking").length,
     sold: rows.filter((entry) => entry.status === "sold").length,
     missing: rows.filter((entry) => entry.status === "missing").length,
     medianPrice: median(prices),
@@ -202,6 +243,20 @@ export function durationDays(from, to = new Date().toISOString()) {
 }
 
 function clean(value) { return typeof value === "string" ? value.trim() : ""; }
+export function normalizeDescription(value) {
+  let text = clean(value).replaceAll("\u00a0", " ").replace(/\r\n?/g, "\n");
+  const upload = text.match(/(?:^|\n)Hochgeladen\s*\n[^\n]*\n/i);
+  if (upload && /Inklusive\s+Vinted-Käuferschutz/i.test(text.slice(0, upload.index + upload[0].length))) {
+    text = text.slice(upload.index + upload[0].length);
+  }
+  return text
+    .replace(/(?:\n|^)\s*(?:\.\.\.|…)?\s*mehr\s*$/i, "")
+    .split("\n")
+    .map((line) => line.trim().replace(/[ \t]+/g, " "))
+    .join("\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
 function list(value) { return Array.isArray(value) ? value.map(clean).filter(Boolean) : clean(value).split(",").map((v) => v.trim()).filter(Boolean); }
 function clamp(value, min, max) { return Math.min(max, Math.max(min, value)); }
 function numberOrNull(value) { if (value === "" || value === null || value === undefined) return null; const number = Number(value); return Number.isFinite(number) ? number : null; }
@@ -212,3 +267,24 @@ function median(values) { if (!values.length) return null; const sorted = [...va
 function formatPrice(value, currency) { return new Intl.NumberFormat("de-DE", { style: "currency", currency }).format(value); }
 function statusLabel(status) { return ({ active: "Online", checking: "Wird geprüft", sold: "Verkauft", removed: "Entfernt", missing: "Nicht mehr online" })[status] || status; }
 function snapshotOf(item, at) { return { at, price: item.price, condition: item.condition, description: item.description || "", status: item.status }; }
+function sameSnapshot(left, right) { return left && left.price === right.price && left.condition === right.condition && normalizeDescription(left.description) === normalizeDescription(right.description) && left.status === right.status; }
+function pushSnapshotIfChanged(item, at) {
+  item.snapshots ||= [];
+  const next = snapshotOf(item, at);
+  if (!sameSnapshot(item.snapshots.at(-1), next)) item.snapshots.push(next);
+  item.snapshots = item.snapshots.slice(-2000);
+}
+function isConfirmedStatusTransition(from, to) { return from !== to && to !== "checking" && !(from === "checking" && to === "active"); }
+function lastConfirmedStatus(item) {
+  const point = item.statusHistory?.at(-1);
+  return point?.to || point?.status || "active";
+}
+function uniqueDescriptionHistory(points) {
+  const seen = new Set();
+  return points.filter((point) => {
+    point.description = normalizeDescription(point.description);
+    if (seen.has(point.description)) return false;
+    seen.add(point.description);
+    return true;
+  });
+}

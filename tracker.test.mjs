@@ -1,8 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { blankStore, makeProfile, metrics, reconcileSnapshot } from "./src/tracker.mjs";
+import { blankStore, makeProfile, metrics, migrateStore, normalizeDescription, reconcileSnapshot } from "./src/tracker.mjs";
 import { assertSecureBind, isAuthorizedMutation, requireAllowedFeedUrl } from "./src/security.mjs";
 import { deriveListingStatus, parseCard, parseResultCount, relativeUploadDate } from "./src/vinted-browser.mjs";
+import { applyListingView } from "./public/listing-view.js";
 
 function setup(threshold = 2) {
   const store = blankStore();
@@ -20,6 +21,11 @@ test("legt neue passende Angebote an und filtert Zubehör", () => {
   assert.equal(result.matched, 1);
   assert.equal(store.listings.length, 1);
   assert.equal(store.listings[0].status, "active");
+  assert.deepEqual(store.listings[0].priceHistory, []);
+  assert.deepEqual(store.listings[0].conditionHistory, []);
+  assert.deepEqual(store.listings[0].descriptionHistory, []);
+  assert.deepEqual(store.listings[0].statusHistory, []);
+  assert.deepEqual(store.events, []);
 });
 
 test("protokolliert Preisänderungen", () => {
@@ -27,7 +33,7 @@ test("protokolliert Preisänderungen", () => {
   reconcileSnapshot(store, "speaker", [{ id: "1", title: "JBL Xtreme 4", price: 220, condition: "Gut" }], "2026-08-20T10:00:00.000Z");
   const result = reconcileSnapshot(store, "speaker", [{ id: "1", title: "JBL Xtreme 4", price: 199, condition: "Gut" }], "2026-08-21T10:00:00.000Z");
   assert.equal(result.changed, 1);
-  assert.deepEqual(store.listings[0].priceHistory.map((point) => point.price), [220, 199]);
+  assert.deepEqual(store.listings[0].priceHistory.map(({ from, to }) => ({ from, to })), [{ from: 220, to: 199 }]);
 });
 
 test("markiert fehlende Angebote erst nach dem Schwellenwert", () => {
@@ -35,16 +41,21 @@ test("markiert fehlende Angebote erst nach dem Schwellenwert", () => {
   reconcileSnapshot(store, "speaker", [{ id: "1", title: "JBL Xtreme 4", price: 199, condition: "Gut" }], "2026-08-20T10:00:00.000Z");
   reconcileSnapshot(store, "speaker", [], "2026-08-21T10:00:00.000Z");
   assert.equal(store.listings[0].status, "checking");
+  assert.deepEqual(store.listings[0].statusHistory, []);
+  assert.equal(store.events.length, 0);
   reconcileSnapshot(store, "speaker", [], "2026-08-22T10:00:00.000Z");
   assert.equal(store.listings[0].status, "missing");
+  assert.deepEqual(store.listings[0].statusHistory.map(({ from, to }) => ({ from, to })), [{ from: "active", to: "missing" }]);
   assert.equal(metrics(store, "speaker").missing, 1);
 });
 
 test("übernimmt einen expliziten Verkaufsstatus", () => {
   const store = setup();
+  reconcileSnapshot(store, "speaker", [{ id: "1", title: "JBL Xtreme 4", price: 199, condition: "Gut" }], "2026-08-21T10:00:00.000Z");
   reconcileSnapshot(store, "speaker", [{ id: "1", title: "JBL Xtreme 4", price: 199, condition: "Gut", status: "sold" }], "2026-08-22T10:00:00.000Z");
   assert.equal(store.listings[0].status, "sold");
   assert.equal(store.listings[0].soldAt, "2026-08-22T10:00:00.000Z");
+  assert.deepEqual(store.listings[0].statusHistory.map(({ from, to }) => ({ from, to })), [{ from: "active", to: "sold" }]);
 });
 
 test("liest öffentliche Vinted-Ergebniskarten", () => {
@@ -71,15 +82,55 @@ test("wertet Entfernungs-Overlay auf kaufbaren Artikeln nicht als Status aus", (
   assert.equal(deriveListingStatus({ removed: true }), "removed");
 });
 
-test("archiviert tägliche Snapshots sowie Zustands- und Beschreibungsänderungen", () => {
+test("archiviert nur echte Änderungen und keine identischen Beschreibungen", () => {
   const store = setup();
   reconcileSnapshot(store, "speaker", [{ id: "1", title: "JBL Xtreme 4", price: 220, condition: "Sehr gut", description: "Kaum benutzt" }], "2026-08-20T10:00:00.000Z");
+  reconcileSnapshot(store, "speaker", [{ id: "1", title: "JBL Xtreme 4", price: 220, condition: "Sehr gut", description: "Kaum benutzt\n... mehr" }], "2026-08-21T09:00:00.000Z");
   reconcileSnapshot(store, "speaker", [{ id: "1", title: "JBL Xtreme 4", price: 199, condition: "Gut", description: "Kleine Gebrauchsspuren" }], "2026-08-21T10:00:00.000Z");
+  reconcileSnapshot(store, "speaker", [{ id: "1", title: "JBL Xtreme 4", price: 220, condition: "Sehr gut", description: "Kaum benutzt" }], "2026-08-22T10:00:00.000Z");
+  reconcileSnapshot(store, "speaker", [{ id: "1", title: "JBL Xtreme 4", price: 220, condition: "Sehr gut", description: "Kaum benutzt\n… mehr" }], "2026-08-23T10:00:00.000Z");
   const item = store.listings[0];
-  assert.equal(item.snapshots.length, 2);
-  assert.deepEqual(item.snapshots.map((snapshot) => snapshot.price), [220, 199]);
-  assert.deepEqual(item.conditionHistory.map((point) => point.condition), ["Sehr gut", "Gut"]);
-  assert.deepEqual(item.descriptionHistory.map((point) => point.description), ["Kaum benutzt", "Kleine Gebrauchsspuren"]);
+  assert.equal(item.snapshots.length, 3);
+  assert.deepEqual(item.snapshots.map((snapshot) => snapshot.price), [220, 199, 220]);
+  assert.deepEqual(item.conditionHistory.map((point) => point.condition), ["Gut", "Sehr gut"]);
+  assert.deepEqual(item.descriptionHistory.map((point) => point.description), ["Kleine Gebrauchsspuren"]);
+  assert.equal(store.events.filter((event) => event.type === "description").length, 2);
+});
+
+test("bereinigt alte Erstbeobachtungen, Scheinstatus und Standortdaten einmalig", () => {
+  const store = {
+    version: 1,
+    updatedAt: "2026-08-21T20:16:00.000Z",
+    profiles: [],
+    events: [{ type: "new" }, { type: "status" }],
+    listings: [{
+      id: "internal", externalId: "1", profileId: "speaker", title: "JBL Xtreme 4", price: 199, condition: "Gut", description: "Text\n... mehr", seller: "a", location: "Deutschland", status: "removed", firstSeenAt: "2026-08-21T20:00:00.000Z", lastSeenAt: "2026-08-21T20:16:00.000Z",
+      priceHistory: [{ price: 199 }], conditionHistory: [{ condition: "Gut" }], descriptionHistory: [{ description: "Text" }], statusHistory: [{ status: "active" }], snapshots: []
+    }]
+  };
+  migrateStore(store);
+  assert.equal(store.version, 2);
+  assert.equal("location" in store.listings[0], false);
+  assert.equal(store.listings[0].status, "missing");
+  assert.equal(store.listings[0].description, "Text");
+  assert.deepEqual(store.listings[0].priceHistory, []);
+  assert.deepEqual(store.listings[0].statusHistory, []);
+  assert.deepEqual(store.events, []);
+});
+
+test("normalisiert Vinted-Metadaten und eingeklappte Mehr-Markierungen", () => {
+  const raw = "Inklusive Vinted-Käuferschutz\nHochgeladen\nvor 2 Stunden\n  JBL Box   kaum genutzt  \n... mehr";
+  assert.equal(normalizeDescription(raw), "JBL Box kaum genutzt");
+});
+
+test("filtert und sortiert die Marktübersicht kombinierbar", () => {
+  const rows = [
+    { id: "a", title: "JBL schwarz", seller: "anna", description: "OVP", price: 220, condition: "Sehr gut", status: "active", firstSeenAt: "2026-08-20T00:00:00Z" },
+    { id: "b", title: "JBL blau", seller: "bert", description: "gebraucht", price: 160, condition: "Gut", status: "missing", firstSeenAt: "2026-08-10T00:00:00Z", disappearedAt: "2026-08-21T00:00:00Z" },
+    { id: "c", title: "JBL rot", seller: "carla", description: "OVP", price: 180, condition: "Sehr gut", status: "active", firstSeenAt: "2026-08-22T00:00:00Z" }
+  ];
+  assert.deepEqual(applyListingView(rows, { query: "ovp", condition: "Sehr gut", minPrice: 170, maxPrice: 200, sort: "priceAsc" }).map((row) => row.id), ["c"]);
+  assert.deepEqual(applyListingView(rows, { sort: "durationDesc" }, new Date("2026-08-23T00:00:00Z")).map((row) => row.id), ["b", "a", "c"]);
 });
 
 test("verweigert öffentliche Serverbindung ohne Admin-Token", () => {

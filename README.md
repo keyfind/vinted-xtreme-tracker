@@ -24,14 +24,14 @@ In `config/profiles.json` können vorhandene Profile geändert oder weitere Prof
 ## Was das Tool erfasst
 
 - Preis und Preisverlauf
-- Zustand, Beschreibung, Verkäufer und Standort
-- tägliche unveränderliche Snapshots aller noch beobachteten Angebote
+- Zustand, Beschreibung und Verkäufer
+- kompakte Snapshots nur bei tatsächlichen Änderungen
 - getrennte Preis-, Zustands-, Status- und Beschreibungshistorien
 - Zeitpunkt der ersten und letzten Sichtung
 - aktuelle Online-Dauer
 - bestätigten Verkauf, wenn die Datenquelle `status: "sold"` liefert
 - separat markierte Angebote, die in mehreren Snapshots fehlen
-- CSV-Export, Filter, Volltextsuche und mehrere Produktprofile
+- CSV-Export, kombinierbare Status-/Zustands-/Preisfilter, Volltextsuche, Sortierung und mehrere Produktprofile
 
 ## Start
 
@@ -69,7 +69,7 @@ Der Collector:
 - öffnet jedes Ergebnis nacheinander,
 - prüft bereits getrackte, aus der Suche verschwundene Angebote nochmals direkt,
 - liest Preis, Zustand, Verkäufer, Upload-Alter und Entfernt-/Verkauft-Status,
-- archiviert bei jedem Lauf Preis, Zustand, Beschreibung und Status,
+- archiviert tatsächliche Preis-, Zustands-, Beschreibungs- und Statusänderungen,
 - wartet standardmäßig drei Sekunden zwischen Detailseiten,
 - stoppt bei CAPTCHA, menschlicher Verifizierung oder erkennbarem Zugriffsschutz.
 
@@ -81,7 +81,7 @@ ENABLE_SCHEDULED_SCRAPING=true npm start
 
 Mit `SCRAPER_HEADLESS=false` wird der Collector-Browser sichtbar geöffnet. Die Anzahl der Ergebnisse, Pausen und Detailabfragen sind je Produktprofil einstellbar.
 
-Jeder erfolgreiche Lauf erzeugt für jedes gefundene Angebot einen Snapshot, auch wenn sich nichts geändert hat. Preis-, Zustand- und Beschreibungshistorien erhalten nur bei tatsächlichen Änderungen eine neue Version. Dadurch bleibt sowohl der tägliche Beleg als auch ein kompakter Änderungsverlauf erhalten.
+Der erste erfolgreiche Abruf legt nur den Ausgangsstand an. Erst tatsächliche Änderungen erzeugen Einträge im Änderungsverlauf und neue Snapshots. Inhaltlich identische Beschreibungen werden normalisiert und nicht erneut archiviert.
 
 ## Docker und Hosting
 
@@ -114,7 +114,6 @@ Im Dashboard **Snapshot importieren** wählen und ein JSON-Array einfügen:
     "currency": "EUR",
     "condition": "Sehr gut",
     "seller": "beispiel",
-    "location": "Berlin",
     "url": "https://www.vinted.de/items/…",
     "observedAt": "2026-08-22T10:00:00Z",
     "status": "active"

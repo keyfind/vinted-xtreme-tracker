@@ -2,12 +2,12 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { collectVinted } from "../src/vinted-browser.mjs";
-import { makeProfile, reconcileSnapshot, updateProfile } from "../src/tracker.mjs";
+import { makeProfile, migrateStore, reconcileSnapshot, updateProfile } from "../src/tracker.mjs";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const dataFile = process.env.TRACKER_DATA_FILE || join(root, "data", "store.json");
 const runFile = join(dirname(dataFile), "last-run.json");
-const store = JSON.parse(await readFile(dataFile, "utf8"));
+const store = migrateStore(JSON.parse(await readFile(dataFile, "utf8")));
 const configuredProfiles = JSON.parse(await readFile(join(root, "config", "profiles.json"), "utf8"));
 store.profiles = configuredProfiles.map((configuration) => {
   const existing = store.profiles.find((profile) => profile.id === configuration.id);

@@ -1,8 +1,11 @@
+import { applyListingView } from "./listing-view.js";
+
 const $ = (selector) => document.querySelector(selector);
 const staticMode = document.documentElement.dataset.mode === "static";
 const els = {
   profiles: $("#profile-list"), title: $("#page-title"), metrics: $("#metrics"), table: $("#listing-table"), empty: $("#empty-state"),
-  count: $("#listing-count"), search: $("#search"), status: $("#status-filter"), chart: $("#price-chart"), priceCount: $("#price-count"),
+  count: $("#listing-count"), viewCount: $("#view-count"), search: $("#search"), status: $("#status-filter"), condition: $("#condition-filter"),
+  minPrice: $("#min-price"), maxPrice: $("#max-price"), sort: $("#sort-order"), resetFilters: $("#reset-filters"), chart: $("#price-chart"), priceCount: $("#price-count"),
   activity: $("#activity-list"), syncLabel: $("#sync-label"), syncTime: $("#sync-time"), sideSync: $("#side-sync"), source: $("#source-badge"),
   profileDialog: $("#profile-dialog"), profileForm: $("#profile-form"), profileTitle: $("#profile-dialog-title"), deleteProfile: $("#delete-profile"),
   importDialog: $("#import-dialog"), importForm: $("#import-form"), drawer: $("#detail-drawer"), drawerContent: $("#drawer-content"), toast: $("#toast"), export: $("#export")
@@ -62,7 +65,7 @@ function renderMetrics() {
 }
 
 function renderChart() {
-  const rows = listings().filter((row) => ["active", "checking"].includes(row.status));
+  const rows = listings().filter((row) => row.status === "active");
   els.priceCount.textContent = `${rows.length} aktive Angebote`;
   if (!rows.length) { els.chart.innerHTML = `<div class="chart-empty">Noch keine aktiven Preisdaten</div>`; return; }
   const min = Math.floor(Math.min(...rows.map((r) => r.price)) / 25) * 25;
@@ -74,22 +77,30 @@ function renderChart() {
 }
 
 function renderActivity() {
-  const events = state.events.filter((event) => event.profileId === selectedProfileId).slice(0, 4);
-  els.activity.innerHTML = events.length ? events.map((event) => `<div class="activity-item"><span class="event-icon ${event.type}">${event.type === "price" ? "↓" : event.type === "new" ? "+" : "·"}</span><div><strong>${esc(event.text)}</strong><small>${relative(event.at)}</small></div></div>`).join("") : `<div class="activity-empty">Änderungen erscheinen nach dem ersten Abgleich.</div>`;
+  const events = state.events.filter((event) => event.profileId === selectedProfileId && event.type !== "new").slice(0, 6);
+  const icons = { price: "€", condition: "◇", description: "≡", status: "↔", missing: "×" };
+  els.activity.innerHTML = events.length ? events.map((event) => `<div class="activity-item"><span class="event-icon ${esc(event.type)}">${icons[event.type] || "·"}</span><div><strong>${esc(event.text)}</strong><small>${relative(event.at)} · ${date(event.at, true)}</small></div></div>`).join("") : `<div class="activity-empty"><strong>Noch keine Änderungen</strong><span>Der erste Abruf legt nur den Ausgangsstand an.</span></div>`;
 }
 
 function renderTable() {
-  const query = els.search.value.trim().toLowerCase();
-  const status = els.status.value;
   const all = listings();
-  const rows = all.filter((row) => (!query || `${row.title} ${row.seller}`.toLowerCase().includes(query)) && (status === "all" || row.status === status));
+  const rows = applyListingView(all, {
+    query: els.search.value,
+    status: els.status.value,
+    condition: els.condition.value,
+    minPrice: els.minPrice.value,
+    maxPrice: els.maxPrice.value,
+    sort: els.sort.value
+  });
   els.count.textContent = `${all.length}`;
+  els.viewCount.textContent = `${rows.length} von ${all.length} Angeboten`;
   els.table.innerHTML = rows.map((row) => {
-    const previous = row.priceHistory?.at(-2)?.price;
-    const delta = previous && previous !== row.price ? `<small class="price-delta">vorher ${money(previous)}</small>` : "";
-    return `<tr data-listing="${esc(row.id)}"><td><div class="listing-cell"><span class="speaker-thumb" aria-hidden="true"><i></i></span><div><strong>${esc(row.title)}</strong><small>${esc(row.seller)} · ${esc(row.location)}</small></div></div></td><td><strong class="price">${money(row.price)}</strong>${delta}</td><td><span class="condition">${esc(row.condition)}</span></td><td><span class="status ${row.status}"><i></i>${statusLabel(row.status)}</span></td><td>${date(row.firstSeenAt)}</td><td><strong>${duration(row)}</strong><small class="duration-sub">${row.status === "active" ? "laufend" : row.status === "sold" ? "bis Verkauf" : "bis Wegfall"}</small></td><td><button class="row-action" aria-label="Details öffnen">›</button></td></tr>`;
+    const lastPriceChange = row.priceHistory?.at(-1);
+    const delta = lastPriceChange?.from != null ? `<small class="price-delta">vorher ${money(lastPriceChange.from)}</small>` : "";
+    return `<tr data-listing="${esc(row.id)}"><td data-label="Angebot"><div class="listing-cell">${listingThumb(row)}<div><strong>${esc(row.title)}</strong><small>${esc(row.seller)}</small></div></div></td><td data-label="Preis"><strong class="price">${money(row.price)}</strong>${delta}</td><td data-label="Zustand"><span class="condition">${esc(row.condition)}</span></td><td data-label="Status"><span class="status ${row.status}"><i></i>${statusLabel(row.status)}</span></td><td data-label="Online seit">${date(row.firstSeenAt)}</td><td data-label="Dauer"><strong>${duration(row)}</strong><small class="duration-sub">${row.status === "active" ? "laufend" : row.status === "checking" ? "Prüfung läuft" : row.status === "sold" ? "bis Verkauf" : "bis Wegfall"}</small></td><td><button class="row-action" aria-label="Details öffnen">›</button></td></tr>`;
   }).join("");
   els.empty.hidden = rows.length > 0;
+  els.resetFilters.disabled = !hasActiveFilters();
 }
 
 function renderNoProfiles() {
@@ -170,12 +181,13 @@ async function pollCollector() {
 function openDetails(id) {
   const row = state.listings.find((item) => item.id === id); if (!row) return;
   const changes = [
-    ...(row.priceHistory || []).map((point) => ({ at: point.at, type: "Preis", value: money(point.price) })),
-    ...(row.conditionHistory || []).map((point) => ({ at: point.at, type: "Zustand", value: point.condition })),
-    ...(row.statusHistory || []).map((point) => ({ at: point.at, type: "Status", value: statusLabel(point.status) }))
+    ...(row.priceHistory || []).map((point) => ({ at: point.at, type: "Preis", value: `${money(point.from)} → ${money(point.to ?? point.price)}` })),
+    ...(row.conditionHistory || []).map((point) => ({ at: point.at, type: "Zustand", value: `${point.from || "–"} → ${point.to ?? point.condition}` })),
+    ...(row.descriptionHistory || []).map((point) => ({ at: point.at, type: "Beschreibung", value: "Neue Version archiviert" })),
+    ...(row.statusHistory || []).map((point) => ({ at: point.at, type: "Status", value: `${statusLabel(point.from)} → ${statusLabel(point.to ?? point.status)}` }))
   ].sort((a, b) => new Date(b.at) - new Date(a.at)).slice(0, 30);
-  const descriptions = [...(row.descriptionHistory || [])].reverse();
-  els.drawerContent.innerHTML = `<div class="drawer-head"><span>ANGEBOTSDETAILS</span><button class="icon-button" id="close-drawer" aria-label="Details schließen">×</button></div><div class="drawer-product"><span class="speaker-large" aria-hidden="true"><i></i></span><div><span class="status ${row.status}"><i></i>${statusLabel(row.status)}</span><h2>${esc(row.title)}</h2><p>${esc(row.seller)} · ${esc(row.location)}</p></div></div><div class="drawer-price"><span>Aktueller Preis</span><strong>${money(row.price)}</strong></div><div class="description-card"><span>AKTUELLE BESCHREIBUNG</span><p>${esc(row.description || "Keine Beschreibung erfasst.")}</p></div><dl><div><dt>Zustand</dt><dd>${esc(row.condition)}</dd></div><div><dt>Erstmals gesehen</dt><dd>${date(row.firstSeenAt, true)}</dd></div><div><dt>Zuletzt gesehen</dt><dd>${date(row.lastSeenAt, true)}</dd></div><div><dt>Online-Dauer</dt><dd>${duration(row)}</dd></div><div><dt>Tages-Snapshots</dt><dd>${row.snapshots?.length || row.observations || 1}</dd></div></dl><div class="history"><span>ÄNDERUNGSVERLAUF</span>${changes.map((point) => `<div><i class="history-dot"></i><span>${date(point.at, true)}</span><strong>${esc(point.type)}</strong><small>${esc(point.value)}</small></div>`).join("") || "<p class=archive-empty>Noch keine Änderungen.</p>"}</div><div class="description-archive"><span>BESCHREIBUNGSARCHIV</span>${descriptions.map((point) => `<details><summary><span>${date(point.at, true)}</span><strong>${point.description ? "Version archiviert" : "Leere Beschreibung"}</strong></summary><p>${esc(point.description || "Keine Beschreibung")}</p></details>`).join("") || "<p class=archive-empty>Wird beim nächsten Tageslauf angelegt.</p>"}</div>${row.url ? `<a class="button primary full" href="${esc(row.url)}" target="_blank" rel="noopener noreferrer">Auf Vinted öffnen ↗</a>` : `<button class="button secondary full" disabled>Demo ohne Listing-Link</button>`}`;
+  const descriptions = uniqueDescriptions(row.descriptionHistory || []).reverse();
+  els.drawerContent.innerHTML = `<div class="drawer-head"><span>ANGEBOTSDETAILS</span><button class="icon-button" id="close-drawer" aria-label="Details schließen">×</button></div><div class="drawer-product">${listingThumb(row, true)}<div><span class="status ${row.status}"><i></i>${statusLabel(row.status)}</span><h2>${esc(row.title)}</h2><p>${esc(row.seller)}</p></div></div><div class="drawer-price"><span>Aktueller Preis</span><strong>${money(row.price)}</strong></div><div class="description-card"><span>AKTUELLE BESCHREIBUNG</span><p>${esc(row.description || "Keine Beschreibung erfasst.")}</p></div><dl><div><dt>Zustand</dt><dd>${esc(row.condition)}</dd></div><div><dt>Erstmals gesehen</dt><dd>${date(row.firstSeenAt, true)}</dd></div><div><dt>Zuletzt gesehen</dt><dd>${date(row.lastSeenAt, true)}</dd></div><div><dt>Online-Dauer</dt><dd>${duration(row)}</dd></div><div><dt>Gespeicherte Zustände</dt><dd>${row.snapshots?.length || 1}</dd></div></dl><div class="history"><span>ÄNDERUNGSVERLAUF</span>${changes.map((point) => `<div><i class="history-dot"></i><span>${date(point.at, true)}</span><strong>${esc(point.type)}</strong><small>${esc(point.value)}</small></div>`).join("") || "<p class=archive-empty>Noch keine Änderungen seit der ersten Erfassung.</p>"}</div><div class="description-archive"><span>BESCHREIBUNGSARCHIV</span>${descriptions.map((point) => `<details><summary><span>${date(point.at, true)}</span><strong>${point.description ? "Geänderte Version" : "Leere Beschreibung"}</strong></summary><p>${esc(point.description || "Keine Beschreibung")}</p></details>`).join("") || "<p class=archive-empty>Noch keine Beschreibung geändert.</p>"}</div>${row.url ? `<a class="button primary full" href="${esc(row.url)}" target="_blank" rel="noopener noreferrer">Auf Vinted öffnen ↗</a>` : `<button class="button secondary full" disabled>Demo ohne Listing-Link</button>`}`;
   els.drawer.setAttribute("aria-hidden", "false");
 }
 
@@ -208,7 +220,11 @@ function openRepositoryFile(path) {
   window.open(`${url}/edit/main/${path}`, "_blank", "noopener,noreferrer");
 }
 function selectedProfile() { return state?.profiles.find((p) => p.id === selectedProfileId); }
-function listings() { return (state?.listings || []).filter((row) => row.profileId === selectedProfileId).sort((a, b) => new Date(b.firstSeenAt) - new Date(a.firstSeenAt)); }
+function listings() { return (state?.listings || []).filter((row) => row.profileId === selectedProfileId); }
+function listingThumb(row, large = false) { const className = large ? "listing-image large" : "listing-image"; return row.imageUrl ? `<span class="${className}"><img src="${esc(row.imageUrl)}" alt="" loading="lazy" /></span>` : `<span class="${className} fallback" aria-hidden="true"><i></i></span>`; }
+function uniqueDescriptions(points) { const seen = new Set(); return points.filter((point) => { const value = String(point.description || "").replace(/\s+/g, " ").trim(); if (seen.has(value)) return false; seen.add(value); return true; }); }
+function hasActiveFilters() { return Boolean(els.search.value || els.status.value !== "all" || els.condition.value !== "all" || els.minPrice.value || els.maxPrice.value || els.sort.value !== "newest"); }
+function resetFilters() { els.search.value = ""; els.status.value = "all"; els.condition.value = "all"; els.minPrice.value = ""; els.maxPrice.value = ""; els.sort.value = "newest"; renderTable(); }
 function money(value, digits = 2) { return new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", minimumFractionDigits: digits, maximumFractionDigits: digits }).format(value); }
 function date(value, withTime = false) { if (!value) return "–"; return new Intl.DateTimeFormat("de-DE", withTime ? { dateStyle: "medium", timeStyle: "short" } : { day: "2-digit", month: "short", year: "numeric" }).format(new Date(value)); }
 function relative(value) { if (!value) return ""; const minutes = Math.max(0, Math.round((Date.now() - new Date(value)) / 60000)); if (minutes < 1) return "gerade eben"; if (minutes < 60) return `vor ${minutes} Min.`; const hours = Math.round(minutes / 60); if (hours < 24) return `vor ${hours} Std.`; return `vor ${Math.round(hours / 24)} T.`; }
@@ -225,7 +241,9 @@ $("#add-profile").addEventListener("click", () => openProfile());
 els.title.addEventListener("click", () => openProfile(selectedProfile()));
 $("#import-snapshot").addEventListener("click", () => staticMode ? openRepositoryFile("config/profiles.json") : els.importDialog.showModal());
 $("#sync-now").addEventListener("click", syncNow);
-els.search.addEventListener("input", renderTable); els.status.addEventListener("change", renderTable);
+[els.search, els.minPrice, els.maxPrice].forEach((input) => input.addEventListener("input", renderTable));
+[els.status, els.condition, els.sort].forEach((select) => select.addEventListener("change", renderTable));
+els.resetFilters.addEventListener("click", resetFilters);
 els.profileForm.addEventListener("submit", saveProfile); els.importForm.addEventListener("submit", importSnapshot);
 els.deleteProfile.addEventListener("click", async () => { const id = els.profileForm.elements.id.value; if (!id || !confirm("Tracker inklusive Verlauf wirklich löschen?")) return; await apiFetch(`/api/profiles/${id}`, { method: "DELETE" }); els.profileDialog.close(); await refresh(); });
 els.table.addEventListener("click", (event) => { const row = event.target.closest("[data-listing]"); if (row) openDetails(row.dataset.listing); });

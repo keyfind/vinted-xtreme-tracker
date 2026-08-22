@@ -1,11 +1,11 @@
 import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { metrics } from "../src/tracker.mjs";
+import { metrics, migrateStore } from "../src/tracker.mjs";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const output = join(root, "dist");
-const store = JSON.parse(await readFile(join(root, "data", "store.json"), "utf8"));
+const store = migrateStore(JSON.parse(await readFile(join(root, "data", "store.json"), "utf8")));
 const repository = process.env.GITHUB_REPOSITORY || "";
 const repositoryUrl = repository ? `https://github.com/${repository}` : "";
 

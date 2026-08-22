@@ -103,7 +103,6 @@ export async function collectVinted(profile, onProgress = () => {}, trackedListi
           currency: listing.currency || "EUR",
           condition: listing.condition,
           seller: listing.seller,
-          location: listing.location,
           ...data,
           observedAt: new Date().toISOString()
         });
@@ -228,7 +227,7 @@ export function parseCard(raw) {
 }
 
 function cardToItem(card) {
-  return { ...card, externalId: undefined, observedAt: new Date().toISOString(), seller: "Unbekannt", location: "Deutschland" };
+  return { ...card, externalId: undefined, observedAt: new Date().toISOString(), seller: "Unbekannt" };
 }
 
 export function parseResultCount(text) {

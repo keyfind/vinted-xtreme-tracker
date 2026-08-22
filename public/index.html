@@ -56,15 +56,19 @@
 
         <section class="panel table-panel">
           <div class="table-toolbar">
-            <div><span class="section-kicker">ANGEBOTE</span><h2>Beobachtete Listings <small id="listing-count"></small></h2></div>
-            <div class="table-actions">
-              <label class="search-field"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Titel oder Verkäufer" aria-label="Angebote durchsuchen" /></label>
-              <select id="status-filter" aria-label="Status filtern">
-                <option value="all">Alle Status</option><option value="active">Online</option><option value="checking">Wird geprüft</option><option value="sold">Verkauft</option><option value="missing">Nicht mehr online</option>
-              </select>
-              <a class="icon-button export" id="export" href="/api/export.csv" aria-label="CSV exportieren" title="CSV exportieren">↓</a>
-            </div>
+            <div><span class="section-kicker">ANGEBOTE</span><h2>Marktübersicht <small id="listing-count"></small></h2></div>
+            <a class="button secondary export" id="export" href="/api/export.csv" aria-label="CSV exportieren"><span aria-hidden="true">↓</span> CSV</a>
           </div>
+          <div class="filter-bar" aria-label="Angebote filtern und sortieren">
+            <label class="search-field"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Titel, Verkäufer oder Beschreibung" aria-label="Angebote durchsuchen" /></label>
+            <label><span>Status</span><select id="status-filter"><option value="all">Alle</option><option value="active">Online</option><option value="checking">Wird geprüft</option><option value="sold">Verkauft</option><option value="missing">Nicht mehr online</option><option value="removed">Entfernt</option></select></label>
+            <label><span>Zustand</span><select id="condition-filter"><option value="all">Alle</option><option value="Neu">Neu</option><option value="Sehr gut">Sehr gut</option><option value="Gut">Gut</option><option value="Zufriedenstellend">Zufriedenstellend</option><option value="Unbekannt">Unbekannt</option></select></label>
+            <label class="price-filter"><span>Preis von</span><input id="min-price" type="number" min="0" step="1" inputmode="numeric" placeholder="0 €" /></label>
+            <label class="price-filter"><span>Preis bis</span><input id="max-price" type="number" min="0" step="1" inputmode="numeric" placeholder="350 €" /></label>
+            <label><span>Sortierung</span><select id="sort-order"><option value="newest">Neueste zuerst</option><option value="oldest">Älteste zuerst</option><option value="priceAsc">Preis aufsteigend</option><option value="priceDesc">Preis absteigend</option><option value="changed">Zuletzt geändert</option><option value="durationDesc">Längste Laufzeit</option></select></label>
+            <button class="button ghost" id="reset-filters" type="button">Zurücksetzen</button>
+          </div>
+          <div class="filter-summary"><strong id="view-count">0 Angebote</strong><span>Zeile anklicken, um Beschreibung und Verlauf zu öffnen.</span></div>
           <div class="table-wrap">
             <table>
               <thead><tr><th>Angebot</th><th>Preis</th><th>Zustand</th><th>Status</th><th>Online seit</th><th>Dauer</th><th></th></tr></thead>
