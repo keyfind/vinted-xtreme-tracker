@@ -28,12 +28,1678 @@
       "detailDelayMs": 3000,
       "active": true,
       "createdAt": "2026-08-22T00:00:00.000Z",
-      "updatedAt": "2026-08-22T17:46:43.691Z",
-      "lastSyncAt": "2026-08-22T17:46:43.691Z",
-      "lastSyncStatus": "0 von 194 Treffern erfasst"
+      "updatedAt": "2026-08-22T18:01:54.255Z",
+      "lastSyncAt": "2026-08-22T18:01:54.255Z",
+      "lastSyncStatus": "26 von 199 Treffern erfasst"
     }
   ],
-  "listings": [],
-  "events": [],
-  "updatedAt": "2026-08-22T17:46:43.691Z"
+  "listings": [
+    {
+      "externalId": "9733462485",
+      "profileId": "jbl-xtreme-4",
+      "title": "JBL Xtreme 4 Tomorrowland Edition Neu.",
+      "description": "229,00 €\n\n241,15 €\nInklusive Vinted-Käuferschutz\nMarkeJBL\nZustand\nNeu\nFarbe\nSchwarz, Gold\nHochgeladen\n1 Tag\nJBL Xtreme 4 Tomorrowland Edition Neu mit Verpackung und Zubehör komplett.",
+      "url": "https://www.vinted.de/items/9733462485-jbl-xtreme-4-tomorrowland-edition-neu",
+      "imageUrl": "https://images1.vinted.net/t/05_004dd_uAhmXhs1QecrKhMzJgYd7Xwv/f800/1787336055.webp?s=45cd2e0e11227f6dc24abbc5ae5a4f4df9d18af4",
+      "price": 229,
+      "currency": "EUR",
+      "condition": "Neu",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": "2026-08-21T17:50:26.316Z",
+      "observedAt": "2026-08-22T17:50:26.316Z",
+      "id": "dda2e5c1-dc50-4ada-9c31-40f9971d466d",
+      "firstSeenAt": "2026-08-21T17:50:26.316Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 229,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Neu",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "229,00 €\n\n241,15 €\nInklusive Vinted-Käuferschutz\nMarkeJBL\nZustand\nNeu\nFarbe\nSchwarz, Gold\nHochgeladen\n1 Tag\nJBL Xtreme 4 Tomorrowland Edition Neu mit Verpackung und Zubehör komplett.",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 229,
+          "condition": "Neu",
+          "description": "229,00 €\n\n241,15 €\nInklusive Vinted-Käuferschutz\nMarkeJBL\nZustand\nNeu\nFarbe\nSchwarz, Gold\nHochgeladen\n1 Tag\nJBL Xtreme 4 Tomorrowland Edition Neu mit Verpackung und Zubehör komplett.",
+          "status": "removed"
+        }
+      ]
+    },
+    {
+      "externalId": "9720121856",
+      "profileId": "jbl-xtreme-4",
+      "title": "JBL Xtreme 4",
+      "description": "Originale JBL Extreme4 Neuwertiger Zustand Box selten benutzt.\nLeider ohne Zubehör und Box.",
+      "url": "https://www.vinted.de/items/9720121856-jbl-xtreme-4",
+      "imageUrl": "https://images1.vinted.net/t/02_013a2_fTqLGU2fTs8W4eQy6QfQpz9S/f800/1787233377.webp?s=c165de67b9b057386a94935d42adb11cc35f2387",
+      "price": 170,
+      "currency": "EUR",
+      "condition": "Sehr gut",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": "2026-08-20T17:50:36.430Z",
+      "observedAt": "2026-08-22T17:50:36.430Z",
+      "id": "3ce5019f-5412-4a6a-a841-8cd1407d2924",
+      "firstSeenAt": "2026-08-20T17:50:36.430Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 170,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Sehr gut",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "Originale JBL Extreme4 Neuwertiger Zustand Box selten benutzt.\nLeider ohne Zubehör und Box.",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 170,
+          "condition": "Sehr gut",
+          "description": "Originale JBL Extreme4 Neuwertiger Zustand Box selten benutzt.\nLeider ohne Zubehör und Box.",
+          "status": "removed"
+        }
+      ]
+    },
+    {
+      "externalId": "9709638467",
+      "profileId": "jbl-xtreme-4",
+      "title": "JBL Xtreme 4 Portable Bluetooth Speaker Black – Waterproof IP67, JBL Pro Sound, Deep Bass",
+      "description": "Selling my JBL Xtreme 4 Bluetooth Speaker in very good overall condition.\n\nPowerful JBL Pro Sound with deep bass, perfect for music at home, outdoors, parties, beach, pool, travel and everyday use.\n\n🔊 JBL Pro Sound + Deep Bass\n📱 Bluetooth 5.3 Wireless Speaker\n💦 IP67 Waterproof & Dustproof\n🔋 Up to 24 Hours Battery Life\n⚡ Built-in Powerbank\n🔗 Auracast + Multi-Point Connection\n🎒 Portable Speaker with JBL shoulder strap\n\nThe speaker works properly and delivers powerful, immersive sound with strong bass.\n\nCondition: Very good overall condition. There are some small cosmetic marks on the rubber protective parts, visible in the photos. The main speaker grille and body are clean, and these marks do not affect the sound or functionality.\n\nBrand: JBL\nModel: Xtreme 4\nColour: Black\nType: Portable Bluetooth Speaker / Wireless Speaker\nBluetooth: 5.3\nWaterproof: IP67\nBattery: Up to 24 hours\nPowerbank: Yes\nAuracast: Yes\n\n📸 Please check all photos carefully for the exact cosmetic condition.\n\nGreat choice if you’re looking for a JBL Xtreme 4, JBL Bluetooth speaker, portable speaker, waterproof speaker, wireless speaker, outdoor speaker, party speaker or powerful bass speaker.",
+      "url": "https://www.vinted.de/items/9709638467-jbl-xtreme-4-portable-bluetooth-speaker-black-waterproof-ip67-jbl-pro-sound-deep-bass",
+      "imageUrl": "https://images1.vinted.net/t/02_00cf5_ZQA1abYbVRqv4EMK4JiXNt1x/f800/1787146684.webp?s=045a4ed2855eccd5e1c562f7dc09cc918e4fce0b",
+      "price": 249.99,
+      "currency": "EUR",
+      "condition": "Neu",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": "2026-08-19T17:50:46.592Z",
+      "observedAt": "2026-08-22T17:50:46.592Z",
+      "id": "66ef1daf-90c6-4d34-8d7f-56aeebb0ca55",
+      "firstSeenAt": "2026-08-19T17:50:46.592Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 249.99,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Neu",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "Selling my JBL Xtreme 4 Bluetooth Speaker in very good overall condition.\n\nPowerful JBL Pro Sound with deep bass, perfect for music at home, outdoors, parties, beach, pool, travel and everyday use.\n\n🔊 JBL Pro Sound + Deep Bass\n📱 Bluetooth 5.3 Wireless Speaker\n💦 IP67 Waterproof & Dustproof\n🔋 Up to 24 Hours Battery Life\n⚡ Built-in Powerbank\n🔗 Auracast + Multi-Point Connection\n🎒 Portable Speaker with JBL shoulder strap\n\nThe speaker works properly and delivers powerful, immersive sound with strong bass.\n\nCondition: Very good overall condition. There are some small cosmetic marks on the rubber protective parts, visible in the photos. The main speaker grille and body are clean, and these marks do not affect the sound or functionality.\n\nBrand: JBL\nModel: Xtreme 4\nColour: Black\nType: Portable Bluetooth Speaker / Wireless Speaker\nBluetooth: 5.3\nWaterproof: IP67\nBattery: Up to 24 hours\nPowerbank: Yes\nAuracast: Yes\n\n📸 Please check all photos carefully for the exact cosmetic condition.\n\nGreat choice if you’re looking for a JBL Xtreme 4, JBL Bluetooth speaker, portable speaker, waterproof speaker, wireless speaker, outdoor speaker, party speaker or powerful bass speaker.",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 249.99,
+          "condition": "Neu",
+          "description": "Selling my JBL Xtreme 4 Bluetooth Speaker in very good overall condition.\n\nPowerful JBL Pro Sound with deep bass, perfect for music at home, outdoors, parties, beach, pool, travel and everyday use.\n\n🔊 JBL Pro Sound + Deep Bass\n📱 Bluetooth 5.3 Wireless Speaker\n💦 IP67 Waterproof & Dustproof\n🔋 Up to 24 Hours Battery Life\n⚡ Built-in Powerbank\n🔗 Auracast + Multi-Point Connection\n🎒 Portable Speaker with JBL shoulder strap\n\nThe speaker works properly and delivers powerful, immersive sound with strong bass.\n\nCondition: Very good overall condition. There are some small cosmetic marks on the rubber protective parts, visible in the photos. The main speaker grille and body are clean, and these marks do not affect the sound or functionality.\n\nBrand: JBL\nModel: Xtreme 4\nColour: Black\nType: Portable Bluetooth Speaker / Wireless Speaker\nBluetooth: 5.3\nWaterproof: IP67\nBattery: Up to 24 hours\nPowerbank: Yes\nAuracast: Yes\n\n📸 Please check all photos carefully for the exact cosmetic condition.\n\nGreat choice if you’re looking for a JBL Xtreme 4, JBL Bluetooth speaker, portable speaker, waterproof speaker, wireless speaker, outdoor speaker, party speaker or powerful bass speaker.",
+          "status": "removed"
+        }
+      ]
+    },
+    {
+      "externalId": "9743121781",
+      "profileId": "jbl-xtreme-4",
+      "title": "JBL Xtreme 4",
+      "description": "180,00 €\n\n189,70 €\nInklusive Vinted-Käuferschutz\nMarkeJBL\nZustand\nSehr gut\nFarbe\nSchwarz\nHochgeladen\n1 h\nEnceinte Bluetooth JBL Xtreme4\nExcellent état.\nJamais servie en extérieur.\nVendue avec sangle et câble d’alimentation.",
+      "url": "https://www.vinted.de/items/9743121781-jbl-xtreme-4",
+      "imageUrl": "https://images1.vinted.net/t/02_00d8b_fa8fmyLdrabfzHZ3S3fxTpHM/f800/1787417953.webp?s=1c1bb82c819498f2ce550adb4ea4fa07213b2d6e",
+      "price": 180,
+      "currency": "EUR",
+      "condition": "Sehr gut",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": null,
+      "observedAt": "2026-08-22T17:51:01.619Z",
+      "id": "18593f5e-0f28-4db5-b308-9ab667e4600f",
+      "firstSeenAt": "2026-08-22T17:51:01.619Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 180,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Sehr gut",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "180,00 €\n\n189,70 €\nInklusive Vinted-Käuferschutz\nMarkeJBL\nZustand\nSehr gut\nFarbe\nSchwarz\nHochgeladen\n1 h\nEnceinte Bluetooth JBL Xtreme4\nExcellent état.\nJamais servie en extérieur.\nVendue avec sangle et câble d’alimentation.",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 180,
+          "condition": "Sehr gut",
+          "description": "180,00 €\n\n189,70 €\nInklusive Vinted-Käuferschutz\nMarkeJBL\nZustand\nSehr gut\nFarbe\nSchwarz\nHochgeladen\n1 h\nEnceinte Bluetooth JBL Xtreme4\nExcellent état.\nJamais servie en extérieur.\nVendue avec sangle et câble d’alimentation.",
+          "status": "removed"
+        }
+      ]
+    },
+    {
+      "externalId": "9637854439",
+      "profileId": "jbl-xtreme-4",
+      "title": "Enceinte JBL Xtreme 4",
+      "description": "Je vends cette enceinte portable JBL Xtreme 4 noire, parfaite pour écouter votre musique partout avec un son puissant et immersif.\n- Type de produit : Enceinte portable\n- Marque : JBL\n- Modèle : Xtreme 4\n- Couleur : Noir\n- Connectivité : Bluetooth\n- Accessoires inclus : Sangle de transport et boite Xtreme 5\n- Très bon état.\n- N'hésitez pas à me contacter pour plus d'informations.\n\nSon JBL Pro massif de niveau supérieur\n24 heures d’autonomie plus 6 heures avec Playtime Boost\nBandoulière pratique\n\nBoost de son IA\nConnexion de plusieurs enceintes par Auracast™\nBatterie remplaçable\nApplication JBL portable\nRésiste à l’eau et à la poussière\nRechargez vos appareils grâce au chargeur portable intégré\nCharge rapide\nFabriquée en partie avec des matériaux recyclés\n\nDONNÉES TECHNIQUES\nCaractéristiques Générales\n\nPuissance (W)\n2 x 30W RMS woofer + 2 x 20W RMS tweeter (AC power mode), 2 x 20W RMS woofer + 2 x 15W RMS tweeter (Battery mode)\nCaractéristiques Audio\n\nRéponse en fréquence dynamique (Hz)\n44 Hz - 20k Hz\nDimensions\n\nDimensions (Largeur x Hauteur x Profondeur) (cm)\n29.7 x 14.9 x 14.1\nDimensions (Largeur x Hauteur x Profondeur) (in)\n11.69 x 5.87 x 5.55\nPoids (kg)\n2.1\nPoids (lbs)\n4.63\nCaractéristiques de Connexion et Commandes\n\nVersion Bluetooth\n5.3\nBatterie\n\nTemps de Charge (hrs)\n3.5\nAutonomie (hrs)\n24\nFonctionnalités\n\nBluetooth\nOui\nCharging cable\nNon\nPowerbank\nOui\nRésiste aux éclaboussures\nOui\nSupports Auracast\nOui\nÉtanche\nOui\nWireless\nOui\nDustproof\nOui\nConnexion multi-points\nOui\nBatterie Rechargeable\nOui\nRecharge rapide (5 min = 1 h de lecture)\nOui\nClassement IPX\nIP67\n... mehr",
+      "url": "https://www.vinted.de/items/9637854439-enceinte-jbl-xtreme-4",
+      "imageUrl": "https://images1.vinted.net/t/06_02363_y4k8mrfywRHLNTL8BAhbP2Df/f800/1786471890.webp?s=142a7b1e847866a2719ad9415a14a1afa8c41a1c",
+      "price": 190,
+      "currency": "EUR",
+      "condition": "Sehr gut",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": "2026-08-15T17:52:44.481Z",
+      "observedAt": "2026-08-22T17:52:44.481Z",
+      "id": "9a9faafc-15e8-427a-8260-8de855030dc5",
+      "firstSeenAt": "2026-08-15T17:52:44.481Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 190,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Sehr gut",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "Je vends cette enceinte portable JBL Xtreme 4 noire, parfaite pour écouter votre musique partout avec un son puissant et immersif.\n- Type de produit : Enceinte portable\n- Marque : JBL\n- Modèle : Xtreme 4\n- Couleur : Noir\n- Connectivité : Bluetooth\n- Accessoires inclus : Sangle de transport et boite Xtreme 5\n- Très bon état.\n- N'hésitez pas à me contacter pour plus d'informations.\n\nSon JBL Pro massif de niveau supérieur\n24 heures d’autonomie plus 6 heures avec Playtime Boost\nBandoulière pratique\n\nBoost de son IA\nConnexion de plusieurs enceintes par Auracast™\nBatterie remplaçable\nApplication JBL portable\nRésiste à l’eau et à la poussière\nRechargez vos appareils grâce au chargeur portable intégré\nCharge rapide\nFabriquée en partie avec des matériaux recyclés\n\nDONNÉES TECHNIQUES\nCaractéristiques Générales\n\nPuissance (W)\n2 x 30W RMS woofer + 2 x 20W RMS tweeter (AC power mode), 2 x 20W RMS woofer + 2 x 15W RMS tweeter (Battery mode)\nCaractéristiques Audio\n\nRéponse en fréquence dynamique (Hz)\n44 Hz - 20k Hz\nDimensions\n\nDimensions (Largeur x Hauteur x Profondeur) (cm)\n29.7 x 14.9 x 14.1\nDimensions (Largeur x Hauteur x Profondeur) (in)\n11.69 x 5.87 x 5.55\nPoids (kg)\n2.1\nPoids (lbs)\n4.63\nCaractéristiques de Connexion et Commandes\n\nVersion Bluetooth\n5.3\nBatterie\n\nTemps de Charge (hrs)\n3.5\nAutonomie (hrs)\n24\nFonctionnalités\n\nBluetooth\nOui\nCharging cable\nNon\nPowerbank\nOui\nRésiste aux éclaboussures\nOui\nSupports Auracast\nOui\nÉtanche\nOui\nWireless\nOui\nDustproof\nOui\nConnexion multi-points\nOui\nBatterie Rechargeable\nOui\nRecharge rapide (5 min = 1 h de lecture)\nOui\nClassement IPX\nIP67\n... mehr",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 190,
+          "condition": "Sehr gut",
+          "description": "Je vends cette enceinte portable JBL Xtreme 4 noire, parfaite pour écouter votre musique partout avec un son puissant et immersif.\n- Type de produit : Enceinte portable\n- Marque : JBL\n- Modèle : Xtreme 4\n- Couleur : Noir\n- Connectivité : Bluetooth\n- Accessoires inclus : Sangle de transport et boite Xtreme 5\n- Très bon état.\n- N'hésitez pas à me contacter pour plus d'informations.\n\nSon JBL Pro massif de niveau supérieur\n24 heures d’autonomie plus 6 heures avec Playtime Boost\nBandoulière pratique\n\nBoost de son IA\nConnexion de plusieurs enceintes par Auracast™\nBatterie remplaçable\nApplication JBL portable\nRésiste à l’eau et à la poussière\nRechargez vos appareils grâce au chargeur portable intégré\nCharge rapide\nFabriquée en partie avec des matériaux recyclés\n\nDONNÉES TECHNIQUES\nCaractéristiques Générales\n\nPuissance (W)\n2 x 30W RMS woofer + 2 x 20W RMS tweeter (AC power mode), 2 x 20W RMS woofer + 2 x 15W RMS tweeter (Battery mode)\nCaractéristiques Audio\n\nRéponse en fréquence dynamique (Hz)\n44 Hz - 20k Hz\nDimensions\n\nDimensions (Largeur x Hauteur x Profondeur) (cm)\n29.7 x 14.9 x 14.1\nDimensions (Largeur x Hauteur x Profondeur) (in)\n11.69 x 5.87 x 5.55\nPoids (kg)\n2.1\nPoids (lbs)\n4.63\nCaractéristiques de Connexion et Commandes\n\nVersion Bluetooth\n5.3\nBatterie\n\nTemps de Charge (hrs)\n3.5\nAutonomie (hrs)\n24\nFonctionnalités\n\nBluetooth\nOui\nCharging cable\nNon\nPowerbank\nOui\nRésiste aux éclaboussures\nOui\nSupports Auracast\nOui\nÉtanche\nOui\nWireless\nOui\nDustproof\nOui\nConnexion multi-points\nOui\nBatterie Rechargeable\nOui\nRecharge rapide (5 min = 1 h de lecture)\nOui\nClassement IPX\nIP67\n... mehr",
+          "status": "removed"
+        }
+      ]
+    },
+    {
+      "externalId": "9718707055",
+      "profileId": "jbl-xtreme-4",
+      "title": "JBL Xtreme 4 | Top Zustand",
+      "description": "200,00 €\n\n210,70 €\nInklusive Vinted-Käuferschutz\nMarkeJBL\nZustand\nSehr gut\nFarbe\nSchwarz\nHochgeladen\n10 h\nVerkaufe meine JBL Xtreme 4 in neuwertigem Zustand. Der Lautsprecher wurde kaum benutzt und immer sorgfältig behandelt. Im Lieferumfang enthalten sind JBL Xtreme 4 und Tragegurt ohne Ladekabel und Originalverpackung.\n\n✅ Kaum benutzt\n✅ Funktioniert einwandfrei\n✅ Top optischer Zustand\n✅ Starker und klarer JBL-Sound\n✅ Akku und Bluetooth funktionieren problemlos\n\nBei Fragen oder Interesse gerne melden 😊",
+      "url": "https://www.vinted.de/items/9718707055-jbl-xtreme-4-top-zustand",
+      "imageUrl": "https://images1.vinted.net/t/03_0122a_9Wx9QhJzbCNfBNxKYvic94sF/f800/1787384947.webp?s=12148334ad56e55b9d65264ae7245e55b9485ae7",
+      "price": 200,
+      "currency": "EUR",
+      "condition": "Sehr gut",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": null,
+      "observedAt": "2026-08-22T17:52:49.156Z",
+      "id": "55a212f1-8f5e-4524-b8e3-370d2d8548cc",
+      "firstSeenAt": "2026-08-22T17:52:49.156Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 200,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Sehr gut",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "200,00 €\n\n210,70 €\nInklusive Vinted-Käuferschutz\nMarkeJBL\nZustand\nSehr gut\nFarbe\nSchwarz\nHochgeladen\n10 h\nVerkaufe meine JBL Xtreme 4 in neuwertigem Zustand. Der Lautsprecher wurde kaum benutzt und immer sorgfältig behandelt. Im Lieferumfang enthalten sind JBL Xtreme 4 und Tragegurt ohne Ladekabel und Originalverpackung.\n\n✅ Kaum benutzt\n✅ Funktioniert einwandfrei\n✅ Top optischer Zustand\n✅ Starker und klarer JBL-Sound\n✅ Akku und Bluetooth funktionieren problemlos\n\nBei Fragen oder Interesse gerne melden 😊",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 200,
+          "condition": "Sehr gut",
+          "description": "200,00 €\n\n210,70 €\nInklusive Vinted-Käuferschutz\nMarkeJBL\nZustand\nSehr gut\nFarbe\nSchwarz\nHochgeladen\n10 h\nVerkaufe meine JBL Xtreme 4 in neuwertigem Zustand. Der Lautsprecher wurde kaum benutzt und immer sorgfältig behandelt. Im Lieferumfang enthalten sind JBL Xtreme 4 und Tragegurt ohne Ladekabel und Originalverpackung.\n\n✅ Kaum benutzt\n✅ Funktioniert einwandfrei\n✅ Top optischer Zustand\n✅ Starker und klarer JBL-Sound\n✅ Akku und Bluetooth funktionieren problemlos\n\nBei Fragen oder Interesse gerne melden 😊",
+          "status": "removed"
+        }
+      ]
+    },
+    {
+      "externalId": "9385909340",
+      "profileId": "jbl-xtreme-4",
+      "title": "JBL xtreme 4",
+      "description": "JBL Xtreme 4",
+      "url": "https://www.vinted.de/items/9385909340-jbl-xtreme-4",
+      "imageUrl": "https://images1.vinted.net/t/02_01f6e_7Vtu8UpQswbZeXHP955aFDo4/f800/1783894955.webp?s=42613d86daa74f18154cff06e0950b85d7d08ba5",
+      "price": 200,
+      "currency": "EUR",
+      "condition": "Sehr gut",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": "2026-07-18T17:53:00.348Z",
+      "observedAt": "2026-08-22T17:53:00.348Z",
+      "id": "3252f023-5bb4-477d-8fe8-3fa53fd4e065",
+      "firstSeenAt": "2026-07-18T17:53:00.348Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 200,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Sehr gut",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "JBL Xtreme 4",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 200,
+          "condition": "Sehr gut",
+          "description": "JBL Xtreme 4",
+          "status": "removed"
+        }
+      ]
+    },
+    {
+      "externalId": "8769689522",
+      "profileId": "jbl-xtreme-4",
+      "title": "JBL Xtreme 4 Camouflage Neu mit Garantie",
+      "description": "JBL Xtreme 4 Camouflage Neu\nWurde letzte Woche gekauft Fehlkauf mit Rechnung und Kassenbon\nBitte kein Kauf über das System dauert mir zu lange bis man das Geld bekommt\nVor einem eventuellen Kauf melden sende dann die Bankdaten\nVielen Dank\n... mehr",
+      "url": "https://www.vinted.de/items/8769689522-jbl-xtreme-4-camouflage-neu-mit-garantie",
+      "imageUrl": "https://images1.vinted.net/t/01_0172b_EWFJz3eveaLARsiv2P8UFeBL/f800/1777374456.webp?s=654b286fe6b4f6fd20c97cda36b82987a84c5bf8",
+      "price": 199,
+      "currency": "EUR",
+      "condition": "Neu",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": "2026-05-22T17:53:05.103Z",
+      "observedAt": "2026-08-22T17:53:05.103Z",
+      "id": "3099b1ef-a8b7-4fad-98ca-6c0c3927de7f",
+      "firstSeenAt": "2026-05-22T17:53:05.103Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 199,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Neu",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "JBL Xtreme 4 Camouflage Neu\nWurde letzte Woche gekauft Fehlkauf mit Rechnung und Kassenbon\nBitte kein Kauf über das System dauert mir zu lange bis man das Geld bekommt\nVor einem eventuellen Kauf melden sende dann die Bankdaten\nVielen Dank\n... mehr",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 199,
+          "condition": "Neu",
+          "description": "JBL Xtreme 4 Camouflage Neu\nWurde letzte Woche gekauft Fehlkauf mit Rechnung und Kassenbon\nBitte kein Kauf über das System dauert mir zu lange bis man das Geld bekommt\nVor einem eventuellen Kauf melden sende dann die Bankdaten\nVielen Dank\n... mehr",
+          "status": "removed"
+        }
+      ]
+    },
+    {
+      "externalId": "9643037975",
+      "profileId": "jbl-xtreme-4",
+      "title": "Jbl xtreme 4",
+      "description": "Moins de 6 mois super état, câble usbc . Reventes cause achat d’une boombox.",
+      "url": "https://www.vinted.de/items/9643037975-jbl-xtreme-4",
+      "imageUrl": "https://images1.vinted.net/t/02_01890_W1FbrwkuM3EsH7A5Ko2wEDbt/f800/1786536527.webp?s=eac970524abbe84915e67200014054cecd12e15b",
+      "price": 200,
+      "currency": "EUR",
+      "condition": "Neu",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": "2026-08-15T17:53:09.771Z",
+      "observedAt": "2026-08-22T17:53:09.771Z",
+      "id": "eafdb041-3b2d-41de-8676-20cedaa9bee1",
+      "firstSeenAt": "2026-08-15T17:53:09.771Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 200,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Neu",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "Moins de 6 mois super état, câble usbc . Reventes cause achat d’une boombox.",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 200,
+          "condition": "Neu",
+          "description": "Moins de 6 mois super état, câble usbc . Reventes cause achat d’une boombox.",
+          "status": "removed"
+        }
+      ]
+    },
+    {
+      "externalId": "9605054246",
+      "profileId": "jbl-xtreme-4",
+      "title": "JBL Xtreme 4 - Tragbarer Bluetooth-Lautsprecher",
+      "description": "Kraftvoller Sound und tiefer Bass, IP67 wasserdicht, 24 Stunden Spielzeit, Powerbank, PartyBoost für Multi-Lautsprecher-Kopplung (Camo). Inklusive Schultergurt. Original Verpackung vorhanden.\n... mehr",
+      "url": "https://www.vinted.de/items/9605054246-jbl-xtreme-4-tragbarer-bluetooth-lautsprecher",
+      "imageUrl": "https://images1.vinted.net/t/03_024fc_P7KdYjVkG2qgkGr1w8yHyPLn/f800/1786183090.webp?s=9ecd360da74ea27070e99aaa8608867680b58632",
+      "price": 200,
+      "currency": "EUR",
+      "condition": "Sehr gut",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": "2026-08-08T17:53:14.684Z",
+      "observedAt": "2026-08-22T17:53:14.684Z",
+      "id": "d30294ef-ef2a-47e3-82fa-1c776e8cfad0",
+      "firstSeenAt": "2026-08-08T17:53:14.684Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 200,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Sehr gut",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "Kraftvoller Sound und tiefer Bass, IP67 wasserdicht, 24 Stunden Spielzeit, Powerbank, PartyBoost für Multi-Lautsprecher-Kopplung (Camo). Inklusive Schultergurt. Original Verpackung vorhanden.\n... mehr",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 200,
+          "condition": "Sehr gut",
+          "description": "Kraftvoller Sound und tiefer Bass, IP67 wasserdicht, 24 Stunden Spielzeit, Powerbank, PartyBoost für Multi-Lautsprecher-Kopplung (Camo). Inklusive Schultergurt. Original Verpackung vorhanden.\n... mehr",
+          "status": "removed"
+        }
+      ]
+    },
+    {
+      "externalId": "9734667602",
+      "profileId": "jbl-xtreme-4",
+      "title": "Jbl Xtreme 4",
+      "description": "270,00 €\n\n284,20 €\nInklusive Vinted-Käuferschutz\nMarkeJBL\nZustand\nNeu\nFarbe\nSchwarz\nHochgeladen\n21 h\nEnceinte jbl Xtreme 4\nComme neuve\nVendu avec un chargeur et sa sangle\nCe connecte avec l'application jbl sur le téléphone\n#jbl #enceinte #jblenceinte #xtreme4",
+      "url": "https://www.vinted.de/items/9734667602-jbl-xtreme-4",
+      "imageUrl": "https://images1.vinted.net/t/05_0084d_XXTT5VDrvCqJ1MbE3pszPeGX/f800/1787344677.webp?s=af11dbf34c79f0210e74f904e9e2c9fce4cba130",
+      "price": 270,
+      "currency": "EUR",
+      "condition": "Neu",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": null,
+      "observedAt": "2026-08-22T17:53:29.059Z",
+      "id": "ceee1e6e-332b-45e5-b25e-e76295b3fa4c",
+      "firstSeenAt": "2026-08-22T17:53:29.059Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 270,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Neu",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "270,00 €\n\n284,20 €\nInklusive Vinted-Käuferschutz\nMarkeJBL\nZustand\nNeu\nFarbe\nSchwarz\nHochgeladen\n21 h\nEnceinte jbl Xtreme 4\nComme neuve\nVendu avec un chargeur et sa sangle\nCe connecte avec l'application jbl sur le téléphone\n#jbl #enceinte #jblenceinte #xtreme4",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 270,
+          "condition": "Neu",
+          "description": "270,00 €\n\n284,20 €\nInklusive Vinted-Käuferschutz\nMarkeJBL\nZustand\nNeu\nFarbe\nSchwarz\nHochgeladen\n21 h\nEnceinte jbl Xtreme 4\nComme neuve\nVendu avec un chargeur et sa sangle\nCe connecte avec l'application jbl sur le téléphone\n#jbl #enceinte #jblenceinte #xtreme4",
+          "status": "removed"
+        }
+      ]
+    },
+    {
+      "externalId": "9719032871",
+      "profileId": "jbl-xtreme-4",
+      "title": "Enceinte jbl xtreme 4",
+      "description": "Je vend mon enceinte jbl xtreme 4 qui fonctionne très bien très peu servis",
+      "url": "https://www.vinted.de/items/9719032871-enceinte-jbl-xtreme-4",
+      "imageUrl": "https://images1.vinted.net/t/02_0032c_ojoaVatH15VesoJvxSKNgsS4/f800/1787227900.webp?s=664088897c0b50c35831a5c77f0afa0713704861",
+      "price": 180,
+      "currency": "EUR",
+      "condition": "Sehr gut",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": "2026-08-20T17:53:33.872Z",
+      "observedAt": "2026-08-22T17:53:33.872Z",
+      "id": "c9b1ea1a-e4c0-463d-aa51-e4290f2a1616",
+      "firstSeenAt": "2026-08-20T17:53:33.872Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 180,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Sehr gut",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "Je vend mon enceinte jbl xtreme 4 qui fonctionne très bien très peu servis",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 180,
+          "condition": "Sehr gut",
+          "description": "Je vend mon enceinte jbl xtreme 4 qui fonctionne très bien très peu servis",
+          "status": "removed"
+        }
+      ]
+    },
+    {
+      "externalId": "9576089240",
+      "profileId": "jbl-xtreme-4",
+      "title": "JBL Xtreme 4 Neu",
+      "description": "Ich biete hier einen neuen und originalverpackten JBL Xtreme 4 Bluetooth-Lautsprecher an. Dieser leistungsstarke Lautsprecher sorgt für beeindruckenden Sound, egal wo du bist. Er ist perfekt für Partys, Outdoor-Abenteuer oder einfach nur zum Musikhören zu Hause.\n\n* Bluetooth V5.3 für stabile Verbindung\n* Bis zu 24 Stunden Akkulaufzeit\n* Robustes, wasserdichtes Design\n* Kraftvoller JBL Original Pro Sound\n\nDer Lautsprecher ist noch versiegelt und wurde nie benutzt, daher ist er in einwandfreiem Zustand. Eine tolle Gelegenheit, um hochwertigen Sound zu genießen.\n\nBei Fragen melde dich gerne.",
+      "url": "https://www.vinted.de/items/9576089240-jbl-xtreme-4-neu",
+      "imageUrl": "https://images1.vinted.net/t/06_01412_Ltsm5DUm8ShFu4CMmWPSMeNA/f800/1785870025.webp?s=f5dba3eea9ac8cf10dbe37ad91642e7d8abf1ca1",
+      "price": 200,
+      "currency": "EUR",
+      "condition": "Neu",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": "2026-08-08T17:53:38.624Z",
+      "observedAt": "2026-08-22T17:53:38.624Z",
+      "id": "2b9803bd-7f0e-4647-a423-49f2f19852d4",
+      "firstSeenAt": "2026-08-08T17:53:38.624Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 200,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Neu",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "Ich biete hier einen neuen und originalverpackten JBL Xtreme 4 Bluetooth-Lautsprecher an. Dieser leistungsstarke Lautsprecher sorgt für beeindruckenden Sound, egal wo du bist. Er ist perfekt für Partys, Outdoor-Abenteuer oder einfach nur zum Musikhören zu Hause.\n\n* Bluetooth V5.3 für stabile Verbindung\n* Bis zu 24 Stunden Akkulaufzeit\n* Robustes, wasserdichtes Design\n* Kraftvoller JBL Original Pro Sound\n\nDer Lautsprecher ist noch versiegelt und wurde nie benutzt, daher ist er in einwandfreiem Zustand. Eine tolle Gelegenheit, um hochwertigen Sound zu genießen.\n\nBei Fragen melde dich gerne.",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 200,
+          "condition": "Neu",
+          "description": "Ich biete hier einen neuen und originalverpackten JBL Xtreme 4 Bluetooth-Lautsprecher an. Dieser leistungsstarke Lautsprecher sorgt für beeindruckenden Sound, egal wo du bist. Er ist perfekt für Partys, Outdoor-Abenteuer oder einfach nur zum Musikhören zu Hause.\n\n* Bluetooth V5.3 für stabile Verbindung\n* Bis zu 24 Stunden Akkulaufzeit\n* Robustes, wasserdichtes Design\n* Kraftvoller JBL Original Pro Sound\n\nDer Lautsprecher ist noch versiegelt und wurde nie benutzt, daher ist er in einwandfreiem Zustand. Eine tolle Gelegenheit, um hochwertigen Sound zu genießen.\n\nBei Fragen melde dich gerne.",
+          "status": "removed"
+        }
+      ]
+    },
+    {
+      "externalId": "9267283904",
+      "profileId": "jbl-xtreme-4",
+      "title": "JBL xtreme 4",
+      "description": "Acheter y a 6mois je le vend car j ai acheter la boombox",
+      "url": "https://www.vinted.de/items/9267283904-jbl-xtreme-4",
+      "imageUrl": "https://images1.vinted.net/t/05_00a82_KBPkYHfhCw5pcz1fDP1miBKJ/f800/1782581077.webp?s=26b86fd50c788bdd07741724566ca9bd2985853b",
+      "price": 200,
+      "currency": "EUR",
+      "condition": "Sehr gut",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": "2026-06-27T17:53:43.298Z",
+      "observedAt": "2026-08-22T17:53:43.298Z",
+      "id": "001399ec-43ee-4022-8ae8-497a833d5808",
+      "firstSeenAt": "2026-06-27T17:53:43.298Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 200,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Sehr gut",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "Acheter y a 6mois je le vend car j ai acheter la boombox",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 200,
+          "condition": "Sehr gut",
+          "description": "Acheter y a 6mois je le vend car j ai acheter la boombox",
+          "status": "removed"
+        }
+      ]
+    },
+    {
+      "externalId": "9232787589",
+      "profileId": "jbl-xtreme-4",
+      "title": "Neu Akku für JBL Partybox 320 oder Xtreme4 Xtreme 4 400",
+      "description": "Neu neu neu\nAkku für\nJBL Partybox 320 JBL extrem 4\nFestpreis",
+      "url": "https://www.vinted.de/items/9232787589-neu-akku-fur-jbl-partybox-320-oder-xtreme4-xtreme-4-400",
+      "imageUrl": "https://images1.vinted.net/t/05_00287_mBbUFQsh8NKpfdTEmQLCtPdD/f800/1782139437.webp?s=ae07ade890aa2fb99e174efe5f3921261726d4da",
+      "price": 59,
+      "currency": "EUR",
+      "condition": "Gut",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": "2026-06-27T17:55:58.833Z",
+      "observedAt": "2026-08-22T17:55:58.833Z",
+      "id": "ad1eec96-2d6b-42aa-b67e-54d8389d6ffd",
+      "firstSeenAt": "2026-06-27T17:55:58.833Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 59,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Gut",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "Neu neu neu\nAkku für\nJBL Partybox 320 JBL extrem 4\nFestpreis",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 59,
+          "condition": "Gut",
+          "description": "Neu neu neu\nAkku für\nJBL Partybox 320 JBL extrem 4\nFestpreis",
+          "status": "removed"
+        }
+      ]
+    },
+    {
+      "externalId": "9559548075",
+      "profileId": "jbl-xtreme-4",
+      "title": "Enceinte Bluetooth JBL Xtreme 4 - Neuve & Scellée (Noir)",
+      "description": "⚠️PAS DE VINTED GO SVP⚠️\n\n• État du produit : Entièrement NEUF, jamais ouvert. Les scellés de sécurité d'origine sont toujours intacts.\n• État de la boîte : Le carton a été légèrement abîmé dans les coins lors du transport (voir les photos, notamment en bas à droite et à gauche). L'enceinte à l'intérieur est bien évidemment intacte et protégée par ses cales d'origine.\n• Caractéristiques : Bluetooth 5.3, étanche, son JBL Pro puissant, grande autonomie.",
+      "url": "https://www.vinted.de/items/9559548075-enceinte-bluetooth-jbl-xtreme-4-neuve-scellee-noir",
+      "imageUrl": "https://images1.vinted.net/t/06_023c8_52UgLHSPT2A2tnpoWo7fipTg/f800/1785704235.webp?s=ceb86bdc387ef4251f568fef4fc7182ab89099fe",
+      "price": 230,
+      "currency": "EUR",
+      "condition": "Neu",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": "2026-08-08T17:56:44.486Z",
+      "observedAt": "2026-08-22T17:56:44.486Z",
+      "id": "ce6cc686-961d-4b41-8914-819deeb084bd",
+      "firstSeenAt": "2026-08-08T17:56:44.486Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 230,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Neu",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "⚠️PAS DE VINTED GO SVP⚠️\n\n• État du produit : Entièrement NEUF, jamais ouvert. Les scellés de sécurité d'origine sont toujours intacts.\n• État de la boîte : Le carton a été légèrement abîmé dans les coins lors du transport (voir les photos, notamment en bas à droite et à gauche). L'enceinte à l'intérieur est bien évidemment intacte et protégée par ses cales d'origine.\n• Caractéristiques : Bluetooth 5.3, étanche, son JBL Pro puissant, grande autonomie.",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 230,
+          "condition": "Neu",
+          "description": "⚠️PAS DE VINTED GO SVP⚠️\n\n• État du produit : Entièrement NEUF, jamais ouvert. Les scellés de sécurité d'origine sont toujours intacts.\n• État de la boîte : Le carton a été légèrement abîmé dans les coins lors du transport (voir les photos, notamment en bas à droite et à gauche). L'enceinte à l'intérieur est bien évidemment intacte et protégée par ses cales d'origine.\n• Caractéristiques : Bluetooth 5.3, étanche, son JBL Pro puissant, grande autonomie.",
+          "status": "removed"
+        }
+      ]
+    },
+    {
+      "externalId": "9645024496",
+      "profileId": "jbl-xtreme-4",
+      "title": "JBL Xtreme 4",
+      "description": "JBL Xtreme 4 Altoparlante portatile stereo Nero 30 W, nuova.",
+      "url": "https://www.vinted.de/items/9645024496-jbl-xtreme-4",
+      "imageUrl": "https://images1.vinted.net/t/05_0143d_Rn3jChR5r5wUBhJuq2J1ToNd/f800/1786548176.webp?s=0194b80ba22a55aed00130933eadae57f9a5e63b",
+      "price": 250,
+      "currency": "EUR",
+      "condition": "Neu",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": "2026-08-15T17:56:49.307Z",
+      "observedAt": "2026-08-22T17:56:49.307Z",
+      "id": "d96ec52a-8435-49f2-a763-7cdd4888b45f",
+      "firstSeenAt": "2026-08-15T17:56:49.307Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 250,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Neu",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "JBL Xtreme 4 Altoparlante portatile stereo Nero 30 W, nuova.",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 250,
+          "condition": "Neu",
+          "description": "JBL Xtreme 4 Altoparlante portatile stereo Nero 30 W, nuova.",
+          "status": "removed"
+        }
+      ]
+    },
+    {
+      "externalId": "9696683453",
+      "profileId": "jbl-xtreme-4",
+      "title": "Cassa JBL Xtreme 4",
+      "description": "Vendo per inutilizzo pari al nuovo cassa blutooth JBL XTREME 4. Invio con scatola originale.\nIncludo caricatore jbl originale valore 35€ includo cover trasporto 30€ (a patto di eliminare parte di imballo originale per effettuare unica spedizione.",
+      "url": "https://www.vinted.de/items/9696683453-cassa-jbl-xtreme-4",
+      "imageUrl": "https://images1.vinted.net/t/06_010b0_2J4cuSwMsokqDRbHABaxvhwL/f800/1787046469.webp?s=0e87995b550721281d3f4eec497454752482fb0a",
+      "price": 250,
+      "currency": "EUR",
+      "condition": "Sehr gut",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": "2026-08-18T17:56:53.992Z",
+      "observedAt": "2026-08-22T17:56:53.992Z",
+      "id": "becfc009-c537-49ea-92aa-62aa9bb89223",
+      "firstSeenAt": "2026-08-18T17:56:53.992Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 250,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Sehr gut",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "Vendo per inutilizzo pari al nuovo cassa blutooth JBL XTREME 4. Invio con scatola originale.\nIncludo caricatore jbl originale valore 35€ includo cover trasporto 30€ (a patto di eliminare parte di imballo originale per effettuare unica spedizione.",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 250,
+          "condition": "Sehr gut",
+          "description": "Vendo per inutilizzo pari al nuovo cassa blutooth JBL XTREME 4. Invio con scatola originale.\nIncludo caricatore jbl originale valore 35€ includo cover trasporto 30€ (a patto di eliminare parte di imballo originale per effettuare unica spedizione.",
+          "status": "removed"
+        }
+      ]
+    },
+    {
+      "externalId": "9085953130",
+      "profileId": "jbl-xtreme-4",
+      "title": "Jbl Xtreme 4",
+      "description": "Nuova mai usata. In perfette condizioni. Con accessori",
+      "url": "https://www.vinted.de/items/9085953130-jbl-xtreme-4",
+      "imageUrl": "https://images1.vinted.net/t/05_00e92_h5CS1Rwpq9tV974dAgCQond8/f800/1780581363.webp?s=d727727ce11f4135eba64931a4782693abb6378c",
+      "price": 200,
+      "currency": "EUR",
+      "condition": "Neu",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": "2026-06-22T17:58:41.112Z",
+      "observedAt": "2026-08-22T17:58:41.112Z",
+      "id": "2524ef12-54fc-4627-b560-3e1c85270ae7",
+      "firstSeenAt": "2026-06-22T17:58:41.112Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 200,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Neu",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "Nuova mai usata. In perfette condizioni. Con accessori",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 200,
+          "condition": "Neu",
+          "description": "Nuova mai usata. In perfette condizioni. Con accessori",
+          "status": "removed"
+        }
+      ]
+    },
+    {
+      "externalId": "9208376105",
+      "profileId": "jbl-xtreme-4",
+      "title": "JBL xtreme 4",
+      "description": "Vendo cassa JBL Xtreme 4, Speaker Bluetooth portatile wireless, waterproof e resistente alla polvere. Con tracolla, ricarica rapida, powerbank integrato, fino a 24h di autonomia.\nColore nero\nAcquistata a marzo 2025, pagata 349€.\nPrezzo poco trattabile.\nIn ottime condizioni, tenuta maniacalmente.\nVendo per cambio modello.\n... mehr",
+      "url": "https://www.vinted.de/items/9208376105-jbl-xtreme-4",
+      "imageUrl": "https://images1.vinted.net/t/05_00020_z1xcfxZPFozCxZxLgHTsuyNq/f800/1781853034.webp?s=7606d645ca2938f9672a5eb2c609b77e55192fa3",
+      "price": 240,
+      "currency": "EUR",
+      "condition": "Sehr gut",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": "2026-06-22T17:59:58.138Z",
+      "observedAt": "2026-08-22T17:59:58.138Z",
+      "id": "d140bca9-c04e-480d-93c8-0ad2abd949cd",
+      "firstSeenAt": "2026-06-22T17:59:58.138Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 240,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Sehr gut",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "Vendo cassa JBL Xtreme 4, Speaker Bluetooth portatile wireless, waterproof e resistente alla polvere. Con tracolla, ricarica rapida, powerbank integrato, fino a 24h di autonomia.\nColore nero\nAcquistata a marzo 2025, pagata 349€.\nPrezzo poco trattabile.\nIn ottime condizioni, tenuta maniacalmente.\nVendo per cambio modello.\n... mehr",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 240,
+          "condition": "Sehr gut",
+          "description": "Vendo cassa JBL Xtreme 4, Speaker Bluetooth portatile wireless, waterproof e resistente alla polvere. Con tracolla, ricarica rapida, powerbank integrato, fino a 24h di autonomia.\nColore nero\nAcquistata a marzo 2025, pagata 349€.\nPrezzo poco trattabile.\nIn ottime condizioni, tenuta maniacalmente.\nVendo per cambio modello.\n... mehr",
+          "status": "removed"
+        }
+      ]
+    },
+    {
+      "externalId": "9044563473",
+      "profileId": "jbl-xtreme-4",
+      "title": "jbl Xtreme 4 Tomorrowland edition – enceinte bluetooth premium",
+      "description": "Je vends ma JBL Xtreme 4 Tomorrowland Edition en très bon état.\n\n🔊 Son JBL Pro puissant avec basses profondes\n🔋 Jusqu’à 24h d’autonomie\n💧 Résistante à l’eau et à la poussière (IP67)\n📱 Bluetooth 5.3\n🎒 Bandoulière officielle Tomorrowland incluse\n⚡ Fonction powerbank intégrée pour recharger un téléphone\n✨ Édition limitée JBL x Tomorrowland\nL’enceinte fonctionne parfaitement et présente seulement quelques légères traces d’utilisation normales.\nIdéale pour les soirées, vacances, extérieur, piscine ou festivals.",
+      "url": "https://www.vinted.de/items/9044563473-jbl-xtreme-4-tomorrowland-edition-enceinte-bluetooth-premium",
+      "imageUrl": "https://images1.vinted.net/t/04_00e74_Pxcq57Mt6HxwqVtykBHZ27c5/f800/1780166504.webp?s=732610e7659c51edecb11bbe9c4eed4cae138ecc",
+      "price": 350,
+      "currency": "EUR",
+      "condition": "Sehr gut",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": "2026-06-22T18:00:02.955Z",
+      "observedAt": "2026-08-22T18:00:02.955Z",
+      "id": "bd2ff015-08e4-41d9-8a91-63a340aa1786",
+      "firstSeenAt": "2026-06-22T18:00:02.955Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 350,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Sehr gut",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "Je vends ma JBL Xtreme 4 Tomorrowland Edition en très bon état.\n\n🔊 Son JBL Pro puissant avec basses profondes\n🔋 Jusqu’à 24h d’autonomie\n💧 Résistante à l’eau et à la poussière (IP67)\n📱 Bluetooth 5.3\n🎒 Bandoulière officielle Tomorrowland incluse\n⚡ Fonction powerbank intégrée pour recharger un téléphone\n✨ Édition limitée JBL x Tomorrowland\nL’enceinte fonctionne parfaitement et présente seulement quelques légères traces d’utilisation normales.\nIdéale pour les soirées, vacances, extérieur, piscine ou festivals.",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 350,
+          "condition": "Sehr gut",
+          "description": "Je vends ma JBL Xtreme 4 Tomorrowland Edition en très bon état.\n\n🔊 Son JBL Pro puissant avec basses profondes\n🔋 Jusqu’à 24h d’autonomie\n💧 Résistante à l’eau et à la poussière (IP67)\n📱 Bluetooth 5.3\n🎒 Bandoulière officielle Tomorrowland incluse\n⚡ Fonction powerbank intégrée pour recharger un téléphone\n✨ Édition limitée JBL x Tomorrowland\nL’enceinte fonctionne parfaitement et présente seulement quelques légères traces d’utilisation normales.\nIdéale pour les soirées, vacances, extérieur, piscine ou festivals.",
+          "status": "removed"
+        }
+      ]
+    },
+    {
+      "externalId": "9215267068",
+      "profileId": "jbl-xtreme-4",
+      "title": "Enceinte JBL Xtreme 4 bluetooth portable",
+      "description": "Enceinte en excellent état.\nVous pouvez utiliser l'application ''JBL portable'' pour avoir plus de fonctionnalités.\nAvec port USB-C pour la recharger.",
+      "url": "https://www.vinted.de/items/9215267068-enceinte-jbl-xtreme-4-bluetooth-portable",
+      "imageUrl": "https://images1.vinted.net/t/05_00ff7_ggDbRtr7BQRrQ1TXoKmJuMvb/f800/1781957592.webp?s=e632960722423cdb9f4c2fe827dc2805b11eda35",
+      "price": 250,
+      "currency": "EUR",
+      "condition": "Neu",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": "2026-06-22T18:00:33.338Z",
+      "observedAt": "2026-08-22T18:00:33.338Z",
+      "id": "fdabb786-3877-42ec-9067-c2b306212a43",
+      "firstSeenAt": "2026-06-22T18:00:33.338Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 250,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Neu",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "Enceinte en excellent état.\nVous pouvez utiliser l'application ''JBL portable'' pour avoir plus de fonctionnalités.\nAvec port USB-C pour la recharger.",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 250,
+          "condition": "Neu",
+          "description": "Enceinte en excellent état.\nVous pouvez utiliser l'application ''JBL portable'' pour avoir plus de fonctionnalités.\nAvec port USB-C pour la recharger.",
+          "status": "removed"
+        }
+      ]
+    },
+    {
+      "externalId": "7556224785",
+      "profileId": "jbl-xtreme-4",
+      "title": "JBL Xtreme 4",
+      "description": "Used it a few times but is just collecting dust now.",
+      "url": "https://www.vinted.de/items/7556224785-jbl-xtreme-4",
+      "imageUrl": "https://images1.vinted.net/t/05_0100b_hZ4JpbBL7RRTtZ94u4uA9iFJ/f800/1763154502.webp?s=241238886abfe8bb5962f24dd73c114f01af95c0",
+      "price": 250,
+      "currency": "EUR",
+      "condition": "Sehr gut",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": "2025-11-22T18:00:53.078Z",
+      "observedAt": "2026-08-22T18:00:53.078Z",
+      "id": "62ba661c-effa-46d0-b689-af211949ff94",
+      "firstSeenAt": "2025-11-22T18:00:53.078Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 250,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Sehr gut",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "Used it a few times but is just collecting dust now.",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 250,
+          "condition": "Sehr gut",
+          "description": "Used it a few times but is just collecting dust now.",
+          "status": "removed"
+        }
+      ]
+    },
+    {
+      "externalId": "8731057102",
+      "profileId": "jbl-xtreme-4",
+      "title": "Jbl xtreme 4",
+      "description": "Bella e potente",
+      "url": "https://www.vinted.de/items/8731057102-jbl-xtreme-4",
+      "imageUrl": "https://images1.vinted.net/t/05_01a59_x7mHk5E2FjQ4VoGLmty1Ek8H/f800/1776963474.webp?s=b899199b742633dae5d2d72eaf73f6a215e8a58f",
+      "price": 200,
+      "currency": "EUR",
+      "condition": "Gut",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": "2026-05-22T18:01:03.855Z",
+      "observedAt": "2026-08-22T18:01:03.855Z",
+      "id": "fd9f93ac-7eea-47b2-9d6d-013671aec166",
+      "firstSeenAt": "2026-05-22T18:01:03.855Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 200,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Gut",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "Bella e potente",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 200,
+          "condition": "Gut",
+          "description": "Bella e potente",
+          "status": "removed"
+        }
+      ]
+    },
+    {
+      "externalId": "7963384902",
+      "profileId": "jbl-xtreme-4",
+      "title": "JBL xtreme 4 box",
+      "description": "muziekbox jbl xtreme 4\nMet oplader\nCadeau gekregen maar had er al 1\nVoor vragen stuur gerust een berichtje",
+      "url": "https://www.vinted.de/items/7963384902-jbl-xtreme-4-box",
+      "imageUrl": "https://images1.vinted.net/t/06_0000b_yHsSzCj6cmPypcbNUX8BRtsR/f800/1768657380.webp?s=9d731e7963ee7fd0780171ab4a97e3d7961d68d5",
+      "price": 260,
+      "currency": "EUR",
+      "condition": "Neu",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": "2026-01-22T18:01:29.218Z",
+      "observedAt": "2026-08-22T18:01:29.218Z",
+      "id": "c0f272bd-f687-4ea2-8d3c-87d1cb6df0c7",
+      "firstSeenAt": "2026-01-22T18:01:29.218Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 260,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Neu",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "muziekbox jbl xtreme 4\nMet oplader\nCadeau gekregen maar had er al 1\nVoor vragen stuur gerust een berichtje",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 260,
+          "condition": "Neu",
+          "description": "muziekbox jbl xtreme 4\nMet oplader\nCadeau gekregen maar had er al 1\nVoor vragen stuur gerust een berichtje",
+          "status": "removed"
+        }
+      ]
+    },
+    {
+      "externalId": "8112388504",
+      "profileId": "jbl-xtreme-4",
+      "title": "JBL Xtreme 4 Bluetooth Lautsprecher, Schwarz, Wasserfest",
+      "description": "24 Stunden Wiedergabezeit plus 6 Stunden mit Playtime Boost\n\nHörgenuss den ganzen Tag. Der JBL Xtreme 4 spielt in jedem Raum – drinnen wie draußen, ob auf deiner Gartenparty oder am Strand. Mit einer Akkulaufzeit von 24 Stunden kannst du Musik abspielen, bis die Sonne untergeht – und wieder aufgeht – bevor du eine Aufladung brauchst. Tippe einfach auf „Playtime Boost“, um die Wiedergabezeit zu verlängern und die Akkulaufzeit um bis zu 6 Stunden zu erhöhen. Damit wird die Leistung angepasst und für einen lauteren und klareren Sound optimiert.\n\nWasser- und staubgeschützt\n\nDer Schutz gegen Wasser und Staub gemäß IP67 stellt sicher, dass der tragbare Lautsprecher JBL Xtreme 4 fast jede Umgebung bewältigen kann, von einer Poolparty bis hin zu einem Picknick am Meer.\n\nSchnelles Laden\n\nDu brauchst einen schnellen Boost, um die Party fortzusetzen? Zehn Minuten Aufladen sichern dir weitere zwei Stunden Musik",
+      "url": "https://www.vinted.de/items/8112388504-jbl-xtreme-4-bluetooth-lautsprecher-schwarz-wasserfest",
+      "imageUrl": "https://images1.vinted.net/t/05_02152_FfmWrHvxgXKcWrXfKaW1e7j5/f800/1770384862.webp?s=38d26a16a629526d37c882797b57609afc508bfe",
+      "price": 280,
+      "currency": "EUR",
+      "condition": "Neu",
+      "seller": "Registrieren | Einloggen",
+      "location": "Deutschland",
+      "status": "removed",
+      "sourceCreatedAt": "2026-02-22T18:01:34.253Z",
+      "observedAt": "2026-08-22T18:01:34.253Z",
+      "id": "6b38d684-8c45-4e8a-886e-7cb71b9a8795",
+      "firstSeenAt": "2026-02-22T18:01:34.253Z",
+      "lastSeenAt": "2026-08-22T18:01:54.255Z",
+      "disappearedAt": "2026-08-22T18:01:54.255Z",
+      "soldAt": null,
+      "missingChecks": 0,
+      "observations": 1,
+      "priceHistory": [
+        {
+          "price": 280,
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "conditionHistory": [
+        {
+          "condition": "Neu",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "descriptionHistory": [
+        {
+          "description": "24 Stunden Wiedergabezeit plus 6 Stunden mit Playtime Boost\n\nHörgenuss den ganzen Tag. Der JBL Xtreme 4 spielt in jedem Raum – drinnen wie draußen, ob auf deiner Gartenparty oder am Strand. Mit einer Akkulaufzeit von 24 Stunden kannst du Musik abspielen, bis die Sonne untergeht – und wieder aufgeht – bevor du eine Aufladung brauchst. Tippe einfach auf „Playtime Boost“, um die Wiedergabezeit zu verlängern und die Akkulaufzeit um bis zu 6 Stunden zu erhöhen. Damit wird die Leistung angepasst und für einen lauteren und klareren Sound optimiert.\n\nWasser- und staubgeschützt\n\nDer Schutz gegen Wasser und Staub gemäß IP67 stellt sicher, dass der tragbare Lautsprecher JBL Xtreme 4 fast jede Umgebung bewältigen kann, von einer Poolparty bis hin zu einem Picknick am Meer.\n\nSchnelles Laden\n\nDu brauchst einen schnellen Boost, um die Party fortzusetzen? Zehn Minuten Aufladen sichern dir weitere zwei Stunden Musik",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "statusHistory": [
+        {
+          "status": "removed",
+          "at": "2026-08-22T18:01:54.255Z"
+        }
+      ],
+      "snapshots": [
+        {
+          "at": "2026-08-22T18:01:54.255Z",
+          "price": 280,
+          "condition": "Neu",
+          "description": "24 Stunden Wiedergabezeit plus 6 Stunden mit Playtime Boost\n\nHörgenuss den ganzen Tag. Der JBL Xtreme 4 spielt in jedem Raum – drinnen wie draußen, ob auf deiner Gartenparty oder am Strand. Mit einer Akkulaufzeit von 24 Stunden kannst du Musik abspielen, bis die Sonne untergeht – und wieder aufgeht – bevor du eine Aufladung brauchst. Tippe einfach auf „Playtime Boost“, um die Wiedergabezeit zu verlängern und die Akkulaufzeit um bis zu 6 Stunden zu erhöhen. Damit wird die Leistung angepasst und für einen lauteren und klareren Sound optimiert.\n\nWasser- und staubgeschützt\n\nDer Schutz gegen Wasser und Staub gemäß IP67 stellt sicher, dass der tragbare Lautsprecher JBL Xtreme 4 fast jede Umgebung bewältigen kann, von einer Poolparty bis hin zu einem Picknick am Meer.\n\nSchnelles Laden\n\nDu brauchst einen schnellen Boost, um die Party fortzusetzen? Zehn Minuten Aufladen sichern dir weitere zwei Stunden Musik",
+          "status": "removed"
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "a20d3f9a-d499-442a-abe5-b366712b53f1",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "8112388504",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "JBL Xtreme 4 Bluetooth Lautsprecher, Schwarz, Wasserfest neu für 280,00 €"
+    },
+    {
+      "id": "9ecf37fd-6bd8-437e-bfe7-45da44439a07",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "7963384902",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "JBL xtreme 4 box neu für 260,00 €"
+    },
+    {
+      "id": "ef4fd0bc-e278-4cd3-81a3-5642fa16b638",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "8731057102",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "Jbl xtreme 4 neu für 200,00 €"
+    },
+    {
+      "id": "e8eb75c0-cd5a-4019-9d29-ac258f744774",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "7556224785",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "JBL Xtreme 4 neu für 250,00 €"
+    },
+    {
+      "id": "7974e5a0-3a4d-4c48-9987-f9330c570f09",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "9215267068",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "Enceinte JBL Xtreme 4 bluetooth portable neu für 250,00 €"
+    },
+    {
+      "id": "a67409f0-46d9-4c76-9e8a-6efcb3c33ac4",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "9044563473",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "jbl Xtreme 4 Tomorrowland edition – enceinte bluetooth premium neu für 350,00 €"
+    },
+    {
+      "id": "baf39603-de8c-4193-8f66-aaa904865ca4",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "9208376105",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "JBL xtreme 4 neu für 240,00 €"
+    },
+    {
+      "id": "7d465685-06c0-482d-a6ff-0f658ea9c282",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "9085953130",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "Jbl Xtreme 4 neu für 200,00 €"
+    },
+    {
+      "id": "bf9a18b0-ed2a-4a42-b21a-4ea47c1a3ed1",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "9696683453",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "Cassa JBL Xtreme 4 neu für 250,00 €"
+    },
+    {
+      "id": "2e18651c-e387-4ded-809e-fa0d2ab8e15e",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "9645024496",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "JBL Xtreme 4 neu für 250,00 €"
+    },
+    {
+      "id": "b64f71cc-aa63-438f-bae9-3f2b92bcd2b7",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "9559548075",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "Enceinte Bluetooth JBL Xtreme 4 - Neuve & Scellée (Noir) neu für 230,00 €"
+    },
+    {
+      "id": "67e11164-a0f1-4c9c-90ac-a526b8c3da3e",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "9232787589",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "Neu Akku für JBL Partybox 320 oder Xtreme4 Xtreme 4 400 neu für 59,00 €"
+    },
+    {
+      "id": "03f291f3-874e-431b-a1df-be78aee16be3",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "9267283904",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "JBL xtreme 4 neu für 200,00 €"
+    },
+    {
+      "id": "d08a9df6-59f9-45fc-bc4e-e2647ddff63d",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "9576089240",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "JBL Xtreme 4 Neu neu für 200,00 €"
+    },
+    {
+      "id": "ab88f983-bb22-4c5d-aa8c-96c0a527ed8e",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "9719032871",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "Enceinte jbl xtreme 4 neu für 180,00 €"
+    },
+    {
+      "id": "8e9499f4-1a19-42ee-b548-e22dca859d23",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "9734667602",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "Jbl Xtreme 4 neu für 270,00 €"
+    },
+    {
+      "id": "118781b9-4f17-496f-964b-1f6157942dd8",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "9605054246",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "JBL Xtreme 4 - Tragbarer Bluetooth-Lautsprecher neu für 200,00 €"
+    },
+    {
+      "id": "3c7aa98d-b729-48ab-9f1a-7c985eed7f58",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "9643037975",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "Jbl xtreme 4 neu für 200,00 €"
+    },
+    {
+      "id": "aa1960fb-0d7b-4155-ae8a-3e2a765d1996",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "8769689522",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "JBL Xtreme 4 Camouflage Neu mit Garantie neu für 199,00 €"
+    },
+    {
+      "id": "da591c96-ce36-47fb-9513-13f9bd863b7c",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "9385909340",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "JBL xtreme 4 neu für 200,00 €"
+    },
+    {
+      "id": "2ae12425-4941-48e0-9101-b80be84bd7fd",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "9718707055",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "JBL Xtreme 4 | Top Zustand neu für 200,00 €"
+    },
+    {
+      "id": "8416dae9-81a7-434c-836a-370b171cc555",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "9637854439",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "Enceinte JBL Xtreme 4 neu für 190,00 €"
+    },
+    {
+      "id": "3374788a-8f15-4d36-846f-f63714e6dbce",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "9743121781",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "JBL Xtreme 4 neu für 180,00 €"
+    },
+    {
+      "id": "2f70c05d-7e2b-426b-8e41-23f0853680fa",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "9709638467",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "JBL Xtreme 4 Portable Bluetooth Speaker Black – Waterproof IP67, JBL Pro Sound, Deep Bass neu für 249,99 €"
+    },
+    {
+      "id": "3e1a9f85-79cb-4824-bfea-7f4ea2a77f8d",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "9720121856",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "JBL Xtreme 4 neu für 170,00 €"
+    },
+    {
+      "id": "e7415d13-af9f-4159-a44d-99210d356dff",
+      "profileId": "jbl-xtreme-4",
+      "listingExternalId": "9733462485",
+      "type": "new",
+      "at": "2026-08-22T18:01:54.255Z",
+      "text": "JBL Xtreme 4 Tomorrowland Edition Neu. neu für 229,00 €"
+    }
+  ],
+  "updatedAt": "2026-08-22T18:01:54.293Z"
 }
