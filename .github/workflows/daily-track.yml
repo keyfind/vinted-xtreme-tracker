@@ -2,6 +2,10 @@ name: Vinted täglich tracken
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "data/**"
   schedule:
     - cron: "17 5 * * *"
 

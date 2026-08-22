@@ -13,7 +13,7 @@ Das Repository enthält einen vollständigen GitHub-Actions-/Pages-Betrieb:
 - CSV-Export direkt aus der veröffentlichten Seite,
 - kein Vinted-Login und keine geheimen Tokens notwendig.
 
-Der erste Lauf wird über **Actions → Vinted täglich tracken → Run workflow** gestartet. Das Dashboard wird anschließend über die bei diesem Lauf angezeigte Pages-URL erreichbar.
+Der erste Lauf startet automatisch mit dem Einspielen des Workflows. Weitere Läufe können über **Actions → Vinted täglich tracken → Run workflow** gestartet werden. Das Dashboard wird anschließend über die beim Lauf angezeigte Pages-URL erreichbar.
 
 ### Produkt anpassen
 
@@ -83,13 +83,21 @@ Jeder erfolgreiche Lauf erzeugt für jedes gefundene Angebot einen Snapshot, auc
 
 ## Docker und Hosting
 
-Das Paket enthält ein browserfähiges Docker-Image. Lokal oder auf einem Docker-Host:
+Das Paket enthält ein browserfähiges Docker-Image. Vor dem Start muss in einer `.env`-Datei ein langes zufälliges Admin-Token gesetzt werden:
+
+```dotenv
+TRACKER_ADMIN_TOKEN=hier-ein-langes-zufaelliges-geheimnis-eintragen
+```
+
+Danach lokal oder auf einem Docker-Host:
 
 ```bash
 docker compose up -d --build
 ```
 
 Für dauerhaftes Hosting muss `/app/data` als persistentes Volume eingebunden sein. Der Container bringt Chromium mit und startet den täglichen Collector automatisch. Auf rein statischem Hosting oder serverlosen Worker-Plattformen kann der Playwright-Browser nicht laufen.
+
+Schreibende API-Aufrufe verlangen bei einer öffentlichen Serverbindung immer `Authorization: Bearer <TRACKER_ADMIN_TOKEN>`. Das Dashboard fragt das Token nur bei Bedarf ab und hält es ausschließlich für die laufende Browser-Sitzung. Ohne Admin-Token bindet der Node-Server ausschließlich an Loopback.
 
 ### 2. Snapshot-Import
 
@@ -123,10 +131,10 @@ In den Tracker-Einstellungen kann eine Feed-URL hinterlegt werden. `{query}` wir
 - `{ "results": [...] }`
 - `{ "data": { "items": [...] } }`
 
-Ein optionales Bearer-Token wird nur über die Umgebungsvariable `TRACKER_FEED_TOKEN` gesetzt:
+Feed-Abrufe sind nur über HTTPS und nur für explizit erlaubte Hosts möglich. Ein optionales Bearer-Token wird ausschließlich nach dieser Prüfung gesendet; Weiterleitungen werden nicht verfolgt:
 
 ```bash
-TRACKER_FEED_TOKEN="…" npm start
+TRACKER_FEED_ALLOWLIST="feed.example" TRACKER_FEED_TOKEN="…" npm start
 ```
 
 Das kleinste automatische Intervall ist 15 Minuten. Das Tool versucht nicht, Sperren, Logins oder technische Schutzmaßnahmen zu umgehen.
@@ -152,7 +160,10 @@ Vinted untersagt in seinen aktuellen AGB externe Software-Tools einschließlich 
 | Variable | Standard | Bedeutung |
 | --- | --- | --- |
 | `PORT` | `4173` | HTTP-Port |
+| `HOST` | `127.0.0.1` | Bind-Adresse; öffentliche Werte verlangen ein Admin-Token |
+| `TRACKER_ADMIN_TOKEN` | leer | Pflicht bei nicht-lokaler Bindung; schützt alle Schreib-APIs |
 | `TRACKER_DATA_FILE` | `./data/store.json` | Pfad zur JSON-Datenbank |
+| `TRACKER_FEED_ALLOWLIST` | leer | Kommagetrennte, exakt erlaubte HTTPS-Feed-Hosts |
 | `TRACKER_FEED_TOKEN` | leer | Bearer-Token für den autorisierten Feed |
 | `ENABLE_SCHEDULED_SCRAPING` | `false` | Browser-Collector automatisch nach Zeitplan ausführen |
 | `SCRAPER_HEADLESS` | `true` | `false` zeigt den Collector-Browser sichtbar an |
