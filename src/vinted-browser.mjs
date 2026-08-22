@@ -47,6 +47,9 @@ export async function collectVinted(profile, onProgress = () => {}, trackedListi
     const resultText = await page.locator("body").innerText();
     const advertisedTotal = parseResultCount(resultText);
     const limit = Math.min(profile.maxResults || 300, advertisedTotal || profile.maxResults || 300);
+    if (advertisedTotal !== 0) {
+      await page.locator('a[href*="/items/"]').first().waitFor({ state: "visible", timeout: 30000 });
+    }
     const cards = await collectAllCards(page, limit, onProgress);
     const items = [];
 
@@ -132,7 +135,7 @@ async function collectAllCards(page, limit, onProgress) {
   let unchanged = 0;
   let lastSize = 0;
   for (let round = 0; round < 80 && found.size < limit && unchanged < 4; round++) {
-    const cards = await page.locator('a[href^="/items/"]').evaluateAll((links) => links.map((link) => {
+    const cards = await page.locator('a[href*="/items/"]').evaluateAll((links) => links.map((link) => {
       const rawUrl = link.getAttribute("href") || "";
       const label = link.getAttribute("aria-label") || link.querySelector("img")?.getAttribute("alt") || "";
       const imageUrl = link.querySelector("img")?.getAttribute("src") || "";
