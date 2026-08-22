@@ -1113,84 +1113,6 @@
       ]
     },
     {
-      "externalId": "9232787589",
-      "profileId": "jbl-xtreme-4",
-      "title": "Neu Akku für JBL Partybox 320 oder Xtreme4 Xtreme 4 400",
-      "description": "Neu neu neu\nAkku für\nJBL Partybox 320 JBL extrem 4\nFestpreis",
-      "url": "https://www.vinted.de/items/9232787589-neu-akku-fur-jbl-partybox-320-oder-xtreme4-xtreme-4-400",
-      "imageUrl": "https://images1.vinted.net/t/05_00287_mBbUFQsh8NKpfdTEmQLCtPdD/f800/1782139437.webp?s=ae07ade890aa2fb99e174efe5f3921261726d4da",
-      "price": 59,
-      "currency": "EUR",
-      "condition": "Gut",
-      "seller": "hixima72",
-      "location": "Deutschland",
-      "status": "checking",
-      "sourceCreatedAt": "2026-06-27T18:13:43.146Z",
-      "observedAt": "2026-08-22T18:13:43.146Z",
-      "id": "ad1eec96-2d6b-42aa-b67e-54d8389d6ffd",
-      "firstSeenAt": "2026-06-27T17:55:58.833Z",
-      "lastSeenAt": "2026-08-22T18:16:20.692Z",
-      "disappearedAt": null,
-      "soldAt": null,
-      "missingChecks": 1,
-      "observations": 2,
-      "priceHistory": [
-        {
-          "price": 59,
-          "at": "2026-08-22T18:01:54.255Z"
-        }
-      ],
-      "conditionHistory": [
-        {
-          "condition": "Gut",
-          "at": "2026-08-22T18:01:54.255Z"
-        }
-      ],
-      "descriptionHistory": [
-        {
-          "description": "Neu neu neu\nAkku für\nJBL Partybox 320 JBL extrem 4\nFestpreis",
-          "at": "2026-08-22T18:01:54.255Z"
-        }
-      ],
-      "statusHistory": [
-        {
-          "status": "removed",
-          "at": "2026-08-22T18:01:54.255Z"
-        },
-        {
-          "status": "active",
-          "at": "2026-08-22T18:16:20.692Z"
-        },
-        {
-          "status": "checking",
-          "at": "2026-08-22T18:20:33.630Z"
-        }
-      ],
-      "snapshots": [
-        {
-          "at": "2026-08-22T18:01:54.255Z",
-          "price": 59,
-          "condition": "Gut",
-          "description": "Neu neu neu\nAkku für\nJBL Partybox 320 JBL extrem 4\nFestpreis",
-          "status": "removed"
-        },
-        {
-          "at": "2026-08-22T18:16:20.692Z",
-          "price": 59,
-          "condition": "Gut",
-          "description": "Neu neu neu\nAkku für\nJBL Partybox 320 JBL extrem 4\nFestpreis",
-          "status": "active"
-        },
-        {
-          "at": "2026-08-22T18:20:33.630Z",
-          "price": 59,
-          "condition": "Gut",
-          "description": "Neu neu neu\nAkku für\nJBL Partybox 320 JBL extrem 4\nFestpreis",
-          "status": "checking"
-        }
-      ]
-    },
-    {
       "externalId": "9559548075",
       "profileId": "jbl-xtreme-4",
       "title": "Enceinte Bluetooth JBL Xtreme 4 - Neuve & Scellée (Noir)",
@@ -2256,14 +2178,6 @@
       "text": "JBL xtreme 4: Status auf Online"
     },
     {
-      "id": "048a29d2-b68a-43c6-a436-9efae7ece284",
-      "profileId": "jbl-xtreme-4",
-      "listingExternalId": "9232787589",
-      "type": "status",
-      "at": "2026-08-22T18:16:20.692Z",
-      "text": "Neu Akku für JBL Partybox 320 oder Xtreme4 Xtreme 4 400: Status auf Online"
-    },
-    {
       "id": "77019bba-466f-40c1-8e14-08548feef3f8",
       "profileId": "jbl-xtreme-4",
       "listingExternalId": "9044563473",
@@ -2528,14 +2442,6 @@
       "text": "Enceinte Bluetooth JBL Xtreme 4 - Neuve & Scellée (Noir) neu für 230,00 €"
     },
     {
-      "id": "67e11164-a0f1-4c9c-90ac-a526b8c3da3e",
-      "profileId": "jbl-xtreme-4",
-      "listingExternalId": "9232787589",
-      "type": "new",
-      "at": "2026-08-22T18:01:54.255Z",
-      "text": "Neu Akku für JBL Partybox 320 oder Xtreme4 Xtreme 4 400 neu für 59,00 €"
-    },
-    {
       "id": "03f291f3-874e-431b-a1df-be78aee16be3",
       "profileId": "jbl-xtreme-4",
       "listingExternalId": "9267283904",
@@ -2648,5 +2554,5 @@
       "text": "JBL Xtreme 4 Tomorrowland Edition Neu. neu für 229,00 €"
     }
   ],
-  "updatedAt": "2026-08-22T18:20:33.631Z"
+  "updatedAt": "2026-08-22T18:21:48.457Z"
 }
