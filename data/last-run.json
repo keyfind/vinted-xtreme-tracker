@@ -1,6 +1,12 @@
 {
-  "startedAt": null,
-  "finishedAt": null,
-  "status": "not-run",
-  "results": []
+  "startedAt": "2026-08-22T17:40:45.570Z",
+  "finishedAt": "2026-08-22T17:40:48.441Z",
+  "status": "failed",
+  "results": [
+    {
+      "profileId": "jbl-xtreme-4",
+      "status": "failed",
+      "error": "locator.waitFor: Error: strict mode violation: getByPlaceholder('Suche Artikel', { exact: true }) resolved to 2 elements:\n    1) <input value=\"\" id=\"search_text\" maxlength=\"5000\" autocomplete=\"off\" name=\"search_text\" placeholder=\"Suche Artikel\" aria-labelledby=\"search-item\" class=\"web_ui__InputBar__value\" data-testid=\"search-text--input\"/> aka getByRole('textbox', { name: 'Katalog' })\n    2) <input value=\"\" id=\"search_text\" maxlength=\"5000\" autocomplete=\"off\" name=\"search_text\" placeholder=\"Suche Artikel\" aria-labelledby=\"search-item\" class=\"web_ui__InputBar__value\" data-testid=\"search-text--input\"/> aka getByTestId('search-text--input').nth(1)\n\nCall log:\n  - waiting for getByPlaceholder('Suche Artikel', { exact: true }) to be visible\n"
+    }
+  ]
 }
