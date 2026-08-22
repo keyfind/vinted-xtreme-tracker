@@ -19,7 +19,7 @@ Der erste Lauf startet automatisch mit dem Einspielen des Workflows. Weitere Lä
 
 ### Produkt anpassen
 
-In `config/profiles.json` können vorhandene Profile geändert oder weitere Profile ergänzt werden. Wesentliche Felder sind `name`, `query`, `includeTerms`, `excludeTerms`, `minPrice`, `maxPrice`, `conditions`, `maxResults`, `scrapeDetails` und `detailDelayMs`. Auf der GitHub-Pages-Seite führt **Konfiguration** direkt zu dieser Datei; **Lauf starten** öffnet den Workflow. Die Verlaufsdatei `data/store.json` wird ausschließlich automatisch gepflegt.
+In `config/profiles.json` können vorhandene Profile geändert oder weitere Profile ergänzt werden. Wesentliche Felder sind `name`, `query`, `includeTerms`, `excludeTerms`, `minPrice`, `maxPrice`, `conditions`, `maxResults`, `scrapeDetails` und `detailDelayMs`. Der JBL-Standardfilter schließt Hüllen, Cases, Ersatzteile und reine Ersatzakkus aus. Auf der GitHub-Pages-Seite führt **Konfiguration** direkt zu dieser Datei; **Lauf starten** öffnet den Workflow. Die Verlaufsdatei `data/store.json` wird ausschließlich automatisch gepflegt.
 
 ## Was das Tool erfasst
 
