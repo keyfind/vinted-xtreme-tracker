@@ -1,5 +1,7 @@
 # Xtreme Tracker
 
+[![Vinted täglich tracken](https://github.com/keyfind/vinted-xtreme-tracker/actions/workflows/daily-track.yml/badge.svg)](https://github.com/keyfind/vinted-xtreme-tracker/actions/workflows/daily-track.yml)
+
 Ein anpassbares, lokal laufendes Dashboard für Angebots-Snapshots. Vorkonfiguriert ist **JBL Xtreme 4**; weitere Produkte lassen sich direkt in der Oberfläche anlegen.
 
 ## Kostenlose GitHub-Version

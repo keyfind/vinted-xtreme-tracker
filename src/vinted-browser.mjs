@@ -33,7 +33,7 @@ export async function collectVinted(profile, onProgress = () => {}, trackedListi
     await page.goto(ORIGIN, { waitUntil: "domcontentloaded", timeout: 30000 });
     await assertNotBlocked(page);
 
-    const search = page.getByPlaceholder("Suche Artikel", { exact: true });
+    const search = page.locator('input[placeholder="Suche Artikel"]:visible').first();
     await search.waitFor({ state: "visible" });
     await search.fill(profile.query);
     await Promise.all([
