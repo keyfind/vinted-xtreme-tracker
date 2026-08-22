@@ -4,7 +4,7 @@
     "name": "JBL Xtreme 4",
     "query": "JBL Xtreme 4",
     "includeTerms": [],
-    "excludeTerms": ["Hülle", "Case", "Ersatzteil"],
+    "excludeTerms": ["Hülle", "Case", "Ersatzteil", "Akku für", "Ersatzakku"],
     "minPrice": 40,
     "maxPrice": 350,
     "conditions": ["Neu", "Sehr gut", "Gut", "Zufriedenstellend"],

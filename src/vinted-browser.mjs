@@ -1,5 +1,6 @@
 import { mkdir } from "node:fs/promises";
 import { join } from "node:path";
+import { matchesProfile } from "./tracker.mjs";
 
 const ORIGIN = "https://www.vinted.de";
 const BLOCK_PATTERNS = /verify you are human|checking your browser|ungewöhnliche aktivität|automatisierte anfragen|access denied|zugriff verweigert|captcha/i;
@@ -50,7 +51,9 @@ export async function collectVinted(profile, onProgress = () => {}, trackedListi
     if (advertisedTotal !== 0) {
       await page.locator('a[href*="/items/"]').first().waitFor({ state: "visible", timeout: 30000 });
     }
-    const cards = await collectAllCards(page, limit, onProgress);
+    const resultCards = await collectAllCards(page, limit, onProgress);
+    const cards = resultCards.filter((card) => matchesProfile(card, profile));
+    onProgress({ phase: "filter", message: `${cards.length} passende Angebote`, current: cards.length, total: resultCards.length });
     const items = [];
 
     if (!profile.scrapeDetails) {
