@@ -34,9 +34,9 @@ function render() {
   els.title.textContent = profile.name;
   els.syncLabel.textContent = profile.lastSyncStatus || "Noch nicht synchronisiert";
   els.syncTime.textContent = profile.lastSyncAt ? `Letzter Abgleich ${relative(profile.lastSyncAt)}` : "";
-  els.sideSync.textContent = profile.active ? `alle ${minutes(profile.refreshMinutes)}` : "pausiert";
+  els.sideSync.textContent = profile.active ? (staticMode ? "Suche stündlich · Details täglich" : `alle ${minutes(profile.refreshMinutes)}`) : "pausiert";
   const job = state.collectorJobs?.[profile.id];
-  els.source.textContent = profile.collectorEnabled ? "VINTED BROWSER-COLLECTOR" : profile.feedUrl ? "AUTOMATISCHER FEED" : "IMPORT / BEISPIELDATEN";
+  els.source.textContent = profile.collectorEnabled ? (staticMode ? "STÜNDLICHE SUCHE · TÄGLICHE DETAILS" : "VINTED BROWSER-COLLECTOR") : profile.feedUrl ? "AUTOMATISCHER FEED" : "IMPORT / BEISPIELDATEN";
   if (job?.status === "running") {
     els.syncLabel.textContent = job.message;
     els.syncTime.textContent = job.total ? `${job.current} / ${job.total}` : "läuft…";
@@ -112,7 +112,7 @@ function openProfile(profile = null) {
   els.profileForm.reset();
   els.profileTitle.textContent = profile ? "Produkt anpassen" : "Neuen Tracker anlegen";
   els.deleteProfile.hidden = !profile;
-  const values = profile || { conditions: ["Neu", "Sehr gut", "Gut", "Zufriedenstellend"], refreshMinutes: 1440, missingThreshold: 3, collectorEnabled: true, scrapeDetails: true, maxResults: 300, detailDelayMs: 3000 };
+  const values = profile || { conditions: ["Neu", "Sehr gut", "Gut", "Zufriedenstellend"], refreshMinutes: 60, missingThreshold: 3, collectorEnabled: true, scrapeDetails: true, maxResults: 300, detailDelayMs: 3000 };
   for (const [key, value] of Object.entries(values)) {
     const field = els.profileForm.elements[key];
     if (!field) continue;
@@ -254,5 +254,5 @@ if (staticMode) {
   $("#sync-now").innerHTML = '<span aria-hidden="true">▶</span> Lauf starten';
   $("#import-snapshot").innerHTML = '<span aria-hidden="true">⚙</span> Konfiguration';
   $("#add-profile").title = "Konfiguration auf GitHub bearbeiten";
-  document.querySelector(".sidebar-footer").textContent = "GitHub Pages · täglich aktualisiert";
+  document.querySelector(".sidebar-footer").textContent = "GitHub Pages · stündlich aktualisiert";
 }

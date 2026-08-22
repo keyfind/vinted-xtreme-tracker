@@ -34,7 +34,10 @@ setInterval(async () => {
   for (const profile of store.profiles.filter((entry) => entry.active && (entry.feedUrl || (entry.collectorEnabled && process.env.ENABLE_SCHEDULED_SCRAPING === "true")))) {
     const due = !profile.lastSyncAt || Date.now() - new Date(profile.lastSyncAt).getTime() >= profile.refreshMinutes * 60000;
     if (due && !collectorJobs.has(profile.id)) {
-      if (profile.collectorEnabled && process.env.ENABLE_SCHEDULED_SCRAPING === "true") startCollector(profile);
+      if (profile.collectorEnabled && process.env.ENABLE_SCHEDULED_SCRAPING === "true") {
+        const detailsDue = profile.scrapeDetails !== false && (!profile.lastDetailSyncAt || Date.now() - new Date(profile.lastDetailSyncAt).getTime() >= 1440 * 60000);
+        startCollector(profile, detailsDue ? "details" : "search");
+      }
       else await syncProfile(profile).catch((error) => { profile.lastSyncStatus = `Fehler: ${error.message}`; });
     }
   }
@@ -92,13 +95,16 @@ async function api(request, response, url) {
   return json(response, 404, { error: "Nicht gefunden" });
 }
 
-function startCollector(profile) {
-  const job = { profileId: profile.id, status: "running", phase: "starting", message: "Collector startet", current: 0, total: 0, startedAt: new Date().toISOString(), finishedAt: null, result: null, error: null };
+function startCollector(profile, mode = "details") {
+  const detailsEnabled = mode === "details" && profile.scrapeDetails !== false;
+  const job = { profileId: profile.id, mode, status: "running", phase: "starting", message: detailsEnabled ? "Detailabgleich startet" : "Suche startet", current: 0, total: 0, startedAt: new Date().toISOString(), finishedAt: null, result: null, error: null };
   collectorJobs.set(profile.id, job);
-  collectVinted(profile, (progress) => Object.assign(job, progress), store.listings.filter((listing) => listing.profileId === profile.id))
+  collectVinted({ ...profile, scrapeDetails: detailsEnabled }, (progress) => Object.assign(job, progress), store.listings.filter((listing) => listing.profileId === profile.id))
     .then(async ({ items, advertisedTotal, visitedDetails }) => {
-      const summary = reconcileSnapshot(store, profile.id, items);
-      profile.lastSyncStatus = `${summary.matched} von ${advertisedTotal || summary.received} Treffern erfasst`;
+      const syncAt = new Date().toISOString();
+      const summary = reconcileSnapshot(store, profile.id, items, syncAt, { confirmMissing: detailsEnabled });
+      if (detailsEnabled) profile.lastDetailSyncAt = syncAt;
+      profile.lastSyncStatus = `${detailsEnabled ? "Details" : "Suche"}: ${summary.matched} von ${advertisedTotal || summary.received} Treffern erfasst`;
       job.status = "complete"; job.phase = "complete"; job.finishedAt = new Date().toISOString();
       job.result = { ...summary, advertisedTotal, visitedDetails };
       await saveStore();
@@ -145,7 +151,7 @@ async function body(request) {
 
 async function loadStore() {
   try { return migrateStore(JSON.parse(await readFile(dataFile, "utf8"))); }
-  catch { const initial = blankStore(); initial.profiles.push(makeProfile({ id: "jbl-xtreme-4", name: "JBL Xtreme 4", query: "JBL Xtreme 4", excludeTerms: ["Hülle", "Case", "Ersatzteil"], minPrice: 40, maxPrice: 350, missingThreshold: 3, refreshMinutes: 1440, collectorEnabled: true, scrapeDetails: true, maxResults: 300, detailDelayMs: 3000 })); return initial; }
+  catch { const initial = blankStore(); initial.profiles.push(makeProfile({ id: "jbl-xtreme-4", name: "JBL Xtreme 4", query: "JBL Xtreme 4", excludeTerms: ["Hülle", "Case", "Ersatzteil"], minPrice: 40, maxPrice: 350, missingThreshold: 3, refreshMinutes: 60, collectorEnabled: true, scrapeDetails: true, maxResults: 300, detailDelayMs: 3000 })); return initial; }
 }
 async function saveStore() { store.updatedAt = new Date().toISOString(); await mkdir(new URL("./data/", import.meta.url), { recursive: true }); await writeFile(dataFile, JSON.stringify(store, null, 2)); }
 

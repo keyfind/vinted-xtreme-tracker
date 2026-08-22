@@ -1,12 +1,22 @@
-name: Vinted täglich tracken
+name: Vinted stündlich tracken
 
 on:
   workflow_dispatch:
+    inputs:
+      mode:
+        description: Laufmodus
+        required: true
+        default: details
+        type: choice
+        options:
+          - details
+          - search
   push:
     branches: [main]
     paths-ignore:
       - "data/**"
   schedule:
+    - cron: "17 0-4,6-23 * * *"
     - cron: "17 5 * * *"
 
 permissions:
@@ -42,9 +52,25 @@ jobs:
       - name: Chromium installieren
         run: npx playwright install --with-deps chromium
 
+      - name: Laufmodus bestimmen
+        id: mode
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            mode="${{ inputs.mode }}"
+          elif [[ "${{ github.event.schedule }}" == "17 5 * * *" ]]; then
+            mode="details"
+          else
+            mode="search"
+          fi
+          echo "mode=$mode" >> "$GITHUB_OUTPUT"
+          echo "Laufmodus: $mode"
+
       - name: Angebote erfassen
         id: collector
         continue-on-error: true
+        env:
+          TRACKER_RUN_MODE: ${{ steps.mode.outputs.mode }}
         run: npm run collect:once
 
       - name: Statisches Dashboard bauen
@@ -53,11 +79,18 @@ jobs:
         run: npm run build:static
 
       - name: Verlauf archivieren
+        env:
+          TRACKER_RUN_MODE: ${{ steps.mode.outputs.mode }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/store.json data/last-run.json
-          git diff --cached --quiet || git commit -m "chore(data): täglicher Vinted-Snapshot"
+          if [[ "$TRACKER_RUN_MODE" == "details" ]]; then
+            message="chore(data): täglicher Detailabgleich"
+          else
+            message="chore(data): stündliche Vinted-Suche"
+          fi
+          git diff --cached --quiet || git commit -m "$message"
           git push
 
       - name: GitHub Pages einrichten

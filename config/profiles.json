@@ -9,7 +9,7 @@
     "maxPrice": 350,
     "conditions": ["Neu", "Sehr gut", "Gut", "Zufriedenstellend"],
     "missingThreshold": 3,
-    "refreshMinutes": 1440,
+    "refreshMinutes": 60,
     "collectorEnabled": true,
     "scrapeDetails": true,
     "maxResults": 300,

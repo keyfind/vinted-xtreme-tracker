@@ -2,8 +2,9 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { blankStore, makeProfile, metrics, migrateStore, normalizeDescription, reconcileSnapshot } from "./src/tracker.mjs";
 import { assertSecureBind, isAuthorizedMutation, requireAllowedFeedUrl } from "./src/security.mjs";
-import { deriveListingStatus, parseCard, parseResultCount, relativeUploadDate } from "./src/vinted-browser.mjs";
+import { deriveListingStatus, eligibleFollowUps, parseCard, parseResultCount, relativeUploadDate } from "./src/vinted-browser.mjs";
 import { applyListingView } from "./public/listing-view.js";
+import { resolveRunMode } from "./src/run-mode.mjs";
 
 function setup(threshold = 2) {
   const store = blankStore();
@@ -131,6 +132,49 @@ test("filtert und sortiert die Marktübersicht kombinierbar", () => {
   ];
   assert.deepEqual(applyListingView(rows, { query: "ovp", condition: "Sehr gut", minPrice: 170, maxPrice: 200, sort: "priceAsc" }).map((row) => row.id), ["c"]);
   assert.deepEqual(applyListingView(rows, { sort: "durationDesc" }, new Date("2026-08-23T00:00:00Z")).map((row) => row.id), ["b", "a", "c"]);
+});
+
+test("vervollständigt neue Suchtreffer beim ersten Detailabruf ohne Scheinänderung", () => {
+  const store = setup();
+  reconcileSnapshot(store, "speaker", [{ id: "1", title: "JBL Xtreme 4", price: 190, condition: "Gut", detailsComplete: false }], "2026-08-20T10:00:00.000Z", { confirmMissing: false });
+  const item = store.listings[0];
+  assert.equal(item.detailsFetchedAt, null);
+  reconcileSnapshot(store, "speaker", [{ id: "1", title: "JBL Xtreme 4", price: 190, condition: "Gut", seller: "anna", description: "Kaum benutzt", detailsComplete: true }], "2026-08-21T05:17:00.000Z");
+  assert.equal(item.seller, "anna");
+  assert.equal(item.description, "Kaum benutzt");
+  assert.equal(item.snapshots.length, 1);
+  assert.deepEqual(item.descriptionHistory, []);
+  assert.deepEqual(store.events, []);
+  reconcileSnapshot(store, "speaker", [{ id: "1", title: "JBL Xtreme 4", price: 190, condition: "Gut", seller: "anna", description: "Jetzt mit OVP", detailsComplete: true }], "2026-08-22T05:17:00.000Z");
+  assert.deepEqual(item.descriptionHistory.map((point) => point.description), ["Jetzt mit OVP"]);
+});
+
+test("stündliche Suchläufe bestätigen ein Verschwinden noch nicht", () => {
+  const store = setup(2);
+  reconcileSnapshot(store, "speaker", [{ id: "1", title: "JBL Xtreme 4", price: 190, condition: "Gut" }], "2026-08-20T10:00:00.000Z");
+  for (let hour = 11; hour <= 15; hour++) reconcileSnapshot(store, "speaker", [], `2026-08-20T${hour}:00:00.000Z`, { confirmMissing: false });
+  assert.equal(store.listings[0].status, "checking");
+  assert.deepEqual(store.listings[0].statusHistory, []);
+  reconcileSnapshot(store, "speaker", [], "2026-08-21T05:17:00.000Z", { confirmMissing: true });
+  assert.equal(store.listings[0].status, "missing");
+  assert.deepEqual(store.listings[0].statusHistory.map(({ from, to }) => ({ from, to })), [{ from: "active", to: "missing" }]);
+});
+
+test("öffnet im Detailabgleich keine bereits abgeschlossenen Angebote erneut", () => {
+  const tracked = [
+    { externalId: "a", status: "active", url: "https://www.vinted.de/items/a" },
+    { externalId: "b", status: "checking", url: "https://www.vinted.de/items/b" },
+    { externalId: "c", status: "missing", url: "https://www.vinted.de/items/c" },
+    { externalId: "d", status: "removed", url: "https://www.vinted.de/items/d" },
+    { externalId: "e", status: "sold", url: "https://www.vinted.de/items/e" }
+  ];
+  assert.deepEqual(eligibleFollowUps(tracked, new Set(["a"])).map((item) => item.externalId), ["b"]);
+});
+
+test("löst Such- und Detailmodus explizit auf", () => {
+  assert.equal(resolveRunMode(["--mode", "search"], {}), "search");
+  assert.equal(resolveRunMode([], { TRACKER_RUN_MODE: "details" }), "details");
+  assert.throws(() => resolveRunMode(["--mode", "alles"], {}), /Ungültiger Laufmodus/);
 });
 
 test("verweigert öffentliche Serverbindung ohne Admin-Token", () => {

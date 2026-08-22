@@ -72,7 +72,7 @@ export async function collectVinted(profile, onProgress = () => {}, trackedListi
         await detail.waitForTimeout(700);
         await assertNotBlocked(detail);
         const data = await extractDetail(detail);
-        items.push({ ...cardToItem(card), ...data, id: card.id, url: card.url, observedAt: new Date().toISOString() });
+        items.push({ ...cardToItem(card), ...data, id: card.id, url: card.url, detailsComplete: true, observedAt: new Date().toISOString() });
       } catch (error) {
         if (error.code === "VINTED_BLOCKED") throw error;
         items.push({ ...cardToItem(card), observedAt: new Date().toISOString() });
@@ -82,9 +82,7 @@ export async function collectVinted(profile, onProgress = () => {}, trackedListi
     }
 
     const currentIds = new Set(cards.map((card) => card.id));
-    const followUps = trackedListings.filter((listing) =>
-      ["active", "checking"].includes(listing.status) && listing.url && !currentIds.has(listing.externalId)
-    );
+    const followUps = eligibleFollowUps(trackedListings, currentIds);
     for (let index = 0; index < followUps.length; index++) {
       const listing = followUps[index];
       onProgress({ phase: "follow-up", message: `Verschwundenes Angebot ${index + 1} von ${followUps.length} prüfen`, current: index + 1, total: followUps.length });
@@ -104,6 +102,7 @@ export async function collectVinted(profile, onProgress = () => {}, trackedListi
           condition: listing.condition,
           seller: listing.seller,
           ...data,
+          detailsComplete: true,
           observedAt: new Date().toISOString()
         });
       } catch (error) {
@@ -227,7 +226,13 @@ export function parseCard(raw) {
 }
 
 function cardToItem(card) {
-  return { ...card, externalId: undefined, observedAt: new Date().toISOString(), seller: "Unbekannt" };
+  return { ...card, externalId: undefined, detailsComplete: false, observedAt: new Date().toISOString(), seller: "Unbekannt" };
+}
+
+export function eligibleFollowUps(trackedListings, currentIds = new Set()) {
+  return trackedListings.filter((listing) =>
+    ["active", "checking"].includes(listing.status) && listing.url && !currentIds.has(listing.externalId)
+  );
 }
 
 export function parseResultCount(text) {

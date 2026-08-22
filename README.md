@@ -1,6 +1,6 @@
 # Xtreme Tracker
 
-[![Vinted täglich tracken](https://github.com/keyfind/vinted-xtreme-tracker/actions/workflows/daily-track.yml/badge.svg)](https://github.com/keyfind/vinted-xtreme-tracker/actions/workflows/daily-track.yml)
+[![Vinted stündlich tracken](https://github.com/keyfind/vinted-xtreme-tracker/actions/workflows/daily-track.yml/badge.svg)](https://github.com/keyfind/vinted-xtreme-tracker/actions/workflows/daily-track.yml)
 
 Ein anpassbares, lokal laufendes Dashboard für Angebots-Snapshots. Vorkonfiguriert ist **JBL Xtreme 4**; weitere Produkte lassen sich direkt in der Oberfläche anlegen.
 
@@ -8,14 +8,14 @@ Ein anpassbares, lokal laufendes Dashboard für Angebots-Snapshots. Vorkonfiguri
 
 Das Repository enthält einen vollständigen GitHub-Actions-/Pages-Betrieb:
 
-- täglicher Browser-Lauf um 05:17 UTC sowie manueller Start im Actions-Tab,
+- stündliche Vinted-Suche und täglicher Detailabgleich um 05:17 UTC sowie manueller Start im Actions-Tab,
 - einfache Produktkonfiguration in `config/profiles.json`,
 - versionierte Speicherung aller Beobachtungen in `data/store.json`,
 - statisches Dashboard auf GitHub Pages,
 - CSV-Export direkt aus der veröffentlichten Seite,
 - kein Vinted-Login und keine geheimen Tokens notwendig.
 
-Der erste Lauf startet automatisch mit dem Einspielen des Workflows. Weitere Läufe können über **Actions → Vinted täglich tracken → Run workflow** gestartet werden. Das Dashboard wird anschließend über die beim Lauf angezeigte Pages-URL erreichbar.
+Der erste Lauf startet automatisch mit dem Einspielen des Workflows. Weitere Läufe können über **Actions → Vinted stündlich tracken → Run workflow** als reine Suche oder vollständiger Detailabgleich gestartet werden. Das Dashboard wird anschließend über die beim Lauf angezeigte Pages-URL erreichbar.
 
 ### Produkt anpassen
 
@@ -73,7 +73,9 @@ Der Collector:
 - wartet standardmäßig drei Sekunden zwischen Detailseiten,
 - stoppt bei CAPTCHA, menschlicher Verifizierung oder erkennbarem Zugriffsschutz.
 
-Der Standardzeitplan ist einmal täglich. Automatische Läufe sind absichtlich zusätzlich geschützt. Erst mit dieser Umgebungsvariable werden fällige Tracker serverseitig gestartet:
+Auf GitHub läuft die Suche stündlich. Um 05:17 UTC ersetzt ein vollständiger Detailabgleich den normalen Suchlauf. Dabei werden alle aktuell gefundenen sowie alle noch als online oder „wird geprüft“ geführten Angebote einzeln geöffnet. Bereits verkaufte, entfernte oder endgültig nicht mehr online geführte Angebote werden nicht erneut aufgerufen.
+
+Automatische Läufe des optionalen lokalen Servers sind zusätzlich geschützt. Erst mit dieser Umgebungsvariable werden fällige Tracker serverseitig gestartet:
 
 ```bash
 ENABLE_SCHEDULED_SCRAPING=true npm start
@@ -81,7 +83,7 @@ ENABLE_SCHEDULED_SCRAPING=true npm start
 
 Mit `SCRAPER_HEADLESS=false` wird der Collector-Browser sichtbar geöffnet. Die Anzahl der Ergebnisse, Pausen und Detailabfragen sind je Produktprofil einstellbar.
 
-Der erste erfolgreiche Abruf legt nur den Ausgangsstand an. Erst tatsächliche Änderungen erzeugen Einträge im Änderungsverlauf und neue Snapshots. Inhaltlich identische Beschreibungen werden normalisiert und nicht erneut archiviert.
+Der erste erfolgreiche Abruf legt nur den Ausgangsstand an. Neue Angebote aus der Stundensuche erhalten ihre Beschreibung und Verkäuferdaten beim nächsten Detailabgleich, ohne dass diese erstmalige Vervollständigung als Änderung zählt. Erst spätere tatsächliche Änderungen erzeugen Einträge im Änderungsverlauf und neue Snapshots. Inhaltlich identische Beschreibungen werden normalisiert und nicht erneut archiviert.
 
 ## Docker und Hosting
 
@@ -97,7 +99,7 @@ Danach lokal oder auf einem Docker-Host:
 docker compose up -d --build
 ```
 
-Für dauerhaftes Hosting muss `/app/data` als persistentes Volume eingebunden sein. Der Container bringt Chromium mit und startet den täglichen Collector automatisch. Auf rein statischem Hosting oder serverlosen Worker-Plattformen kann der Playwright-Browser nicht laufen.
+Für dauerhaftes Hosting muss `/app/data` als persistentes Volume eingebunden sein. Der Container bringt Chromium mit und startet stündliche Suchläufe sowie tägliche Detailabgleiche automatisch. Auf rein statischem Hosting oder serverlosen Worker-Plattformen kann der Playwright-Browser nicht laufen.
 
 Schreibende API-Aufrufe verlangen bei einer öffentlichen Serverbindung immer `Authorization: Bearer <TRACKER_ADMIN_TOKEN>`. Das Dashboard fragt das Token nur bei Bedarf ab und hält es ausschließlich für die laufende Browser-Sitzung. Ohne Admin-Token bindet der Node-Server ausschließlich an Loopback.
 

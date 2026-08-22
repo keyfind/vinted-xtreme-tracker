@@ -18,7 +18,7 @@ export function makeProfile(input = {}) {
     maxPrice: numberOrNull(input.maxPrice),
     conditions: Array.isArray(input.conditions) && input.conditions.length ? input.conditions : CONDITIONS.slice(0, 4),
     missingThreshold: clamp(Number(input.missingThreshold) || 3, 1, 12),
-    refreshMinutes: clamp(Number(input.refreshMinutes) || 1440, 15, 1440),
+    refreshMinutes: clamp(Number(input.refreshMinutes) || 60, 15, 1440),
     feedUrl: clean(input.feedUrl),
     collectorEnabled: input.collectorEnabled === true || input.collectorEnabled === "true" || input.collectorEnabled === "on",
     scrapeDetails: input.scrapeDetails !== false && input.scrapeDetails !== "false",
@@ -28,6 +28,7 @@ export function makeProfile(input = {}) {
     createdAt: input.createdAt || now,
     updatedAt: now,
     lastSyncAt: input.lastSyncAt || null,
+    lastDetailSyncAt: input.lastDetailSyncAt || null,
     lastSyncStatus: input.lastSyncStatus || "Noch nicht synchronisiert"
   };
 }
@@ -58,6 +59,7 @@ export function normalizeItem(raw, profileId, now) {
     condition: normalizeCondition(raw.condition),
     seller: clean(raw.seller || raw.user?.login) || "Unbekannt",
     status,
+    detailsComplete: raw.detailsComplete !== false,
     sourceCreatedAt: validDate(raw.createdAt || raw.publishedAt || raw.sourceCreatedAt),
     observedAt: validDate(raw.observedAt) || now
   };
@@ -83,6 +85,7 @@ export function migrateStore(store) {
       listing.descriptionHistory = [];
       listing.statusHistory = [];
       listing.snapshots = [snapshotOf(listing, listing.lastSeenAt || store.updatedAt || new Date().toISOString())];
+      listing.detailsFetchedAt ||= listing.description || listing.seller !== "Unbekannt" ? listing.lastSeenAt || null : null;
     }
     store.events = [];
     store.version = 2;
@@ -95,13 +98,14 @@ export function migrateStore(store) {
       listing.descriptionHistory = uniqueDescriptionHistory(listing.descriptionHistory || []);
       listing.statusHistory ||= [];
       listing.snapshots ||= [snapshotOf(listing, listing.lastSeenAt || store.updatedAt || new Date().toISOString())];
+      listing.detailsFetchedAt ||= listing.description || listing.seller !== "Unbekannt" ? listing.lastSeenAt || null : null;
     }
     store.events = store.events.filter((event) => event.type !== "new");
   }
   return store;
 }
 
-export function reconcileSnapshot(store, profileId, rawItems, now = new Date().toISOString()) {
+export function reconcileSnapshot(store, profileId, rawItems, now = new Date().toISOString(), options = {}) {
   const profile = store.profiles.find((entry) => entry.id === profileId);
   if (!profile) throw new Error("Tracker-Profil nicht gefunden.");
   if (!Array.isArray(rawItems)) throw new Error("Snapshot muss ein Array von Angeboten enthalten.");
@@ -116,11 +120,13 @@ export function reconcileSnapshot(store, profileId, rawItems, now = new Date().t
     const existing = store.listings.find((entry) => entry.profileId === profileId && entry.externalId === item.externalId);
     if (!existing) {
       const firstSeenAt = item.sourceCreatedAt || item.observedAt || now;
+      const { detailsComplete, ...listingItem } = item;
       store.listings.push({
-        ...item,
+        ...listingItem,
         id: randomUUID(),
         firstSeenAt,
         lastSeenAt: now,
+        detailsFetchedAt: detailsComplete ? now : null,
         disappearedAt: item.status === "active" ? null : now,
         soldAt: item.status === "sold" ? now : null,
         missingChecks: 0,
@@ -129,22 +135,32 @@ export function reconcileSnapshot(store, profileId, rawItems, now = new Date().t
         conditionHistory: [],
         descriptionHistory: [],
         statusHistory: [],
-        snapshots: [snapshotOf(item, now)]
+        snapshots: [snapshotOf(listingItem, now)]
       });
       added++;
       continue;
     }
 
+    if (!item.detailsComplete) {
+      item.description = existing.description || "";
+      item.seller = existing.seller || "Unbekannt";
+      item.sourceCreatedAt ||= existing.sourceCreatedAt || null;
+      if (item.condition === "Unbekannt") item.condition = existing.condition;
+      if (["missing", "removed", "sold"].includes(existing.status)) item.status = existing.status;
+    }
     const oldPrice = existing.price;
     const oldStatus = existing.status;
     const oldCondition = existing.condition;
     const oldDescription = existing.description || "";
+    const completesInitialDetails = item.detailsComplete && !existing.detailsFetchedAt;
+    const { detailsComplete, ...listingItem } = item;
     const knownDescriptions = new Set([
       oldDescription,
       ...(existing.descriptionHistory || []).map((point) => point.description),
       ...(existing.snapshots || []).map((snapshot) => snapshot.description)
     ].map(normalizeDescription));
-    Object.assign(existing, item, { lastSeenAt: now, missingChecks: 0, observations: (existing.observations || 0) + 1 });
+    Object.assign(existing, listingItem, { lastSeenAt: now, missingChecks: 0, observations: (existing.observations || 0) + 1 });
+    if (detailsComplete) existing.detailsFetchedAt ||= now;
     existing.priceHistory ||= [];
     existing.conditionHistory ||= [];
     existing.descriptionHistory ||= [];
@@ -162,29 +178,35 @@ export function reconcileSnapshot(store, profileId, rawItems, now = new Date().t
       store.events.unshift({ id: randomUUID(), profileId, listingExternalId: item.externalId, type: "price", at: now, text: `${item.title}: ${formatPrice(oldPrice, item.currency)} → ${formatPrice(item.price, item.currency)}` });
       changed++;
     }
-    if (oldCondition !== item.condition) {
+    let materialChange = false;
+    if (oldCondition !== item.condition && !completesInitialDetails) {
       existing.conditionHistory.push({ from: oldCondition, to: item.condition, condition: item.condition, at: now });
       store.events.unshift({ id: randomUUID(), profileId, listingExternalId: item.externalId, type: "condition", at: now, text: `${item.title}: Zustand ${oldCondition} → ${item.condition}` });
       changed++;
+      materialChange = true;
     }
-    if (oldDescription !== item.description) {
+    if (oldDescription !== item.description && !completesInitialDetails) {
       if (!knownDescriptions.has(item.description)) existing.descriptionHistory.push({ description: item.description, at: now });
       store.events.unshift({ id: randomUUID(), profileId, listingExternalId: item.externalId, type: "description", at: now, text: `${item.title}: Beschreibung geändert` });
       changed++;
+      materialChange = true;
     }
     if (isConfirmedStatusTransition(oldStatus, existing.status)) {
       const from = oldStatus === "checking" ? lastConfirmedStatus(existing) : oldStatus;
       existing.statusHistory.push({ from, to: existing.status, status: existing.status, at: now });
       store.events.unshift({ id: randomUUID(), profileId, listingExternalId: item.externalId, type: "status", at: now, text: `${item.title}: ${statusLabel(from)} → ${statusLabel(existing.status)}` });
       changed++;
+      materialChange = true;
     }
-    pushSnapshotIfChanged(existing, now);
+    if (oldPrice !== item.price) materialChange = true;
+    if (completesInitialDetails && !materialChange) enrichBaselineSnapshot(existing);
+    else pushSnapshotIfChanged(existing, now);
   }
 
   for (const item of store.listings.filter((entry) => entry.profileId === profileId && !seen.has(entry.externalId) && ["active", "checking"].includes(entry.status))) {
     const oldStatus = item.status;
     item.missingChecks = (item.missingChecks || 0) + 1;
-    if (item.missingChecks >= profile.missingThreshold) {
+    if (options.confirmMissing !== false && item.missingChecks >= profile.missingThreshold) {
       item.status = "missing";
       item.disappearedAt ||= now;
       item.statusHistory ||= [];
@@ -273,6 +295,12 @@ function pushSnapshotIfChanged(item, at) {
   const next = snapshotOf(item, at);
   if (!sameSnapshot(item.snapshots.at(-1), next)) item.snapshots.push(next);
   item.snapshots = item.snapshots.slice(-2000);
+}
+function enrichBaselineSnapshot(item) {
+  item.snapshots ||= [];
+  if (!item.snapshots.length) return item.snapshots.push(snapshotOf(item, item.firstSeenAt || item.lastSeenAt));
+  const at = item.snapshots.at(-1).at;
+  item.snapshots[item.snapshots.length - 1] = snapshotOf(item, at);
 }
 function isConfirmedStatusTransition(from, to) { return from !== to && to !== "checking" && !(from === "checking" && to === "active"); }
 function lastConfirmedStatus(item) {
