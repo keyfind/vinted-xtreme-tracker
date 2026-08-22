@@ -137,8 +137,10 @@ async function collectAllCards(page, limit, onProgress) {
   for (let round = 0; round < 80 && found.size < limit && unchanged < 4; round++) {
     const cards = await page.locator('a[href*="/items/"]').evaluateAll((links) => links.map((link) => {
       const rawUrl = link.getAttribute("href") || "";
-      const label = link.getAttribute("aria-label") || link.querySelector("img")?.getAttribute("alt") || "";
-      const imageUrl = link.querySelector("img")?.getAttribute("src") || "";
+      const container = link.closest('[class*="image-container"]') || link.parentElement;
+      const image = container?.querySelector("img") || link.querySelector("img");
+      const label = link.getAttribute("aria-label") || link.getAttribute("title") || image?.getAttribute("alt") || "";
+      const imageUrl = image?.getAttribute("src") || "";
       return { rawUrl, label, imageUrl };
     }));
     for (const raw of cards) {
