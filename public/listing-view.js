@@ -26,6 +26,27 @@ export function lastChangeAt(row) {
   return values.length ? Math.max(...values) : 0;
 }
 
+export function priceBuckets(rows, count = 5) {
+  const prices = rows.map((row) => Number(row.price)).filter(Number.isFinite);
+  if (!prices.length) return [];
+  const bucketCount = Math.max(1, Math.floor(count));
+  const start = Math.floor(Math.min(...prices) / 25) * 25;
+  const roundedMax = Math.ceil(Math.max(...prices) / 25) * 25;
+  const end = roundedMax > start ? roundedMax : start + 25;
+  const width = (end - start) / bucketCount;
+  const buckets = Array.from({ length: bucketCount }, (_, index) => ({
+    from: start + width * index,
+    to: start + width * (index + 1),
+    inclusiveEnd: index === bucketCount - 1,
+    prices: []
+  }));
+  for (const price of prices) {
+    const index = Math.min(bucketCount - 1, Math.floor(((price - start) / (end - start)) * bucketCount));
+    buckets[index].prices.push(price);
+  }
+  return buckets.map((bucket) => ({ ...bucket, count: bucket.prices.length }));
+}
+
 function comparator(sort, now) {
   const title = (a, b) => String(a.title || "").localeCompare(String(b.title || ""), "de");
   const by = (value, direction = 1) => (a, b) => (value(a) - value(b)) * direction || title(a, b);

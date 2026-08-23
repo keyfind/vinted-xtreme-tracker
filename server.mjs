@@ -151,7 +151,7 @@ async function body(request) {
 
 async function loadStore() {
   try { return migrateStore(JSON.parse(await readFile(dataFile, "utf8"))); }
-  catch { const initial = blankStore(); initial.profiles.push(makeProfile({ id: "jbl-xtreme-4", name: "JBL Xtreme 4", query: "JBL Xtreme 4", excludeTerms: ["Hülle", "Case", "Ersatzteil"], minPrice: 40, maxPrice: 350, missingThreshold: 3, refreshMinutes: 60, collectorEnabled: true, scrapeDetails: true, maxResults: 300, detailDelayMs: 3000 })); return initial; }
+  catch { const initial = blankStore(); initial.profiles.push(makeProfile({ id: "jbl-xtreme-4", name: "JBL Xtreme 4", query: "JBL Xtreme 4", excludeTerms: ["Hülle", "Case", "Ersatzteil"], minPrice: 40, maxPrice: 350, checkingThreshold: 3, missingThreshold: 2, refreshMinutes: 60, collectorEnabled: true, scrapeDetails: true, maxResults: 300, detailDelayMs: 3000 })); return initial; }
 }
 async function saveStore() { store.updatedAt = new Date().toISOString(); await mkdir(new URL("./data/", import.meta.url), { recursive: true }); await writeFile(dataFile, JSON.stringify(store, null, 2)); }
 

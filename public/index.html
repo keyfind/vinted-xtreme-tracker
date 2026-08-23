@@ -94,7 +94,8 @@
           <label><span>Preis von</span><input name="minPrice" type="number" min="0" step="1" /></label>
           <label><span>Preis bis</span><input name="maxPrice" type="number" min="0" step="1" /></label>
           <label><span>Abgleich alle</span><select name="refreshMinutes"><option value="15">15 Minuten</option><option value="30">30 Minuten</option><option value="60">60 Minuten</option><option value="360">6 Stunden</option><option value="1440">Täglich</option></select></label>
-          <label><span>Fehlend nach</span><select name="missingThreshold"><option value="1">1 Abgleich</option><option value="2">2 Abgleichen</option><option value="3">3 Abgleichen</option><option value="5">5 Abgleichen</option></select></label>
+          <label><span>Prüfen nach</span><select name="checkingThreshold"><option value="1">1 Suchlauf ohne Treffer</option><option value="2">2 Suchläufe ohne Treffer</option><option value="3">3 Suchläufe ohne Treffer</option><option value="5">5 Suchläufe ohne Treffer</option></select></label>
+          <label><span>Offline nach</span><select name="missingThreshold"><option value="1">1 erfolglosen Detailprüfung</option><option value="2">2 erfolglosen Detailprüfungen</option><option value="3">3 erfolglosen Detailprüfungen</option><option value="5">5 erfolglosen Detailprüfungen</option></select></label>
           <label><span>Max. Ergebnisse</span><input name="maxResults" type="number" min="1" max="1000" step="1" value="300" /></label>
           <label><span>Pause je Detail</span><select name="detailDelayMs"><option value="2000">2 Sekunden</option><option value="3000">3 Sekunden</option><option value="5000">5 Sekunden</option><option value="10000">10 Sekunden</option></select></label>
           <label class="wide"><span>Autorisierte JSON-Feed-URL <small>(optional)</small></span><input name="feedUrl" type="url" placeholder="https://…/feed?q={query}" /></label>
@@ -112,7 +113,7 @@
     <dialog id="import-dialog">
       <form method="dialog" id="import-form">
         <div class="dialog-head"><div><span>DATEN EINLESEN</span><h2>Snapshot importieren</h2></div><button class="icon-button close" value="cancel" aria-label="Schließen">×</button></div>
-        <p class="dialog-copy">Füge ein JSON-Array deiner autorisierten Datenquelle ein. IDs bleiben über alle Abgleiche stabil; fehlende IDs werden nach dem eingestellten Schwellenwert markiert.</p>
+        <p class="dialog-copy">Füge ein JSON-Array deiner autorisierten Datenquelle ein. IDs bleiben über alle Abgleiche stabil; Suchausfälle und fehlgeschlagene Detailprüfungen werden getrennt gezählt.</p>
         <textarea name="snapshot" spellcheck="false" aria-label="JSON Snapshot"></textarea>
         <details><summary>Beispiel anzeigen</summary><pre>[{
   "id": "vinted-123",

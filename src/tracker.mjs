@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 export const CONDITIONS = ["Neu, mit Etikett", "Neu", "Sehr gut", "Gut", "Zufriedenstellend", "Unbekannt"];
 
 export function blankStore() {
-  return { version: 4, profiles: [], listings: [], events: [], pendingWebhookNotifications: [], updatedAt: new Date().toISOString() };
+  return { version: 5, profiles: [], listings: [], events: [], pendingWebhookNotifications: [], updatedAt: new Date().toISOString() };
 }
 
 export function makeProfile(input = {}) {
@@ -17,7 +17,8 @@ export function makeProfile(input = {}) {
     minPrice: numberOrNull(input.minPrice),
     maxPrice: numberOrNull(input.maxPrice),
     conditions: Array.isArray(input.conditions) && input.conditions.length ? input.conditions : CONDITIONS.slice(0, 4),
-    missingThreshold: clamp(Number(input.missingThreshold) || 3, 1, 12),
+    checkingThreshold: clamp(Number(input.checkingThreshold) || 3, 1, 12),
+    missingThreshold: clamp(Number(input.missingThreshold) || 2, 1, 12),
     refreshMinutes: clamp(Number(input.refreshMinutes) || 60, 15, 1440),
     feedUrl: clean(input.feedUrl),
     collectorEnabled: input.collectorEnabled === true || input.collectorEnabled === "true" || input.collectorEnabled === "on",
@@ -116,8 +117,29 @@ export function migrateStore(store) {
     }
     store.events = store.events.filter((event) => !(event.type === "condition" && /Zustand Neu → Neu, mit Etikett$/.test(event.text || "")));
   }
+  for (const profile of store.profiles) {
+    if (originalVersion < 5) {
+      profile.checkingThreshold = clamp(Number(profile.checkingThreshold ?? profile.missingThreshold) || 3, 1, 12);
+      profile.missingThreshold = 2;
+    } else {
+      profile.checkingThreshold = clamp(Number(profile.checkingThreshold) || 3, 1, 12);
+      profile.missingThreshold = clamp(Number(profile.missingThreshold) || 2, 1, 12);
+    }
+  }
+  for (const listing of store.listings) {
+    if (originalVersion < 5) {
+      listing.searchMissingChecks = nonNegativeInteger(listing.missingChecks);
+      listing.detailMissingChecks = 0;
+      const profile = store.profiles.find((entry) => entry.id === listing.profileId);
+      if (listing.status === "checking" && listing.searchMissingChecks < (profile?.checkingThreshold || 3)) listing.status = lastConfirmedStatus(listing);
+    } else {
+      listing.searchMissingChecks = nonNegativeInteger(listing.searchMissingChecks);
+      listing.detailMissingChecks = nonNegativeInteger(listing.detailMissingChecks);
+    }
+    delete listing.missingChecks;
+  }
   store.events = store.events.filter((event) => event.type !== "new");
-  store.version = 4;
+  store.version = 5;
   return store;
 }
 
@@ -145,7 +167,8 @@ export function reconcileSnapshot(store, profileId, rawItems, now = new Date().t
         detailsFetchedAt: detailsComplete ? now : null,
         disappearedAt: item.status === "active" ? null : now,
         soldAt: item.status === "sold" ? now : null,
-        missingChecks: 0,
+        searchMissingChecks: 0,
+        detailMissingChecks: 0,
         observations: 1,
         priceHistory: [],
         conditionHistory: [],
@@ -171,7 +194,7 @@ export function reconcileSnapshot(store, profileId, rawItems, now = new Date().t
     const oldDescription = existing.description || "";
     const completesInitialDetails = item.detailsComplete && !existing.detailsFetchedAt;
     const { detailsComplete, ...listingItem } = item;
-    Object.assign(existing, listingItem, { lastSeenAt: now, missingChecks: 0, observations: (existing.observations || 0) + 1 });
+    Object.assign(existing, listingItem, { lastSeenAt: now, searchMissingChecks: 0, detailMissingChecks: 0, observations: (existing.observations || 0) + 1 });
     if (detailsComplete) existing.detailsFetchedAt ||= now;
     existing.priceHistory ||= [];
     existing.conditionHistory ||= [];
@@ -219,9 +242,9 @@ export function reconcileSnapshot(store, profileId, rawItems, now = new Date().t
   }
 
   for (const item of store.listings.filter((entry) => entry.profileId === profileId && !seen.has(entry.externalId) && ["active", "checking"].includes(entry.status))) {
-    const oldStatus = item.status;
-    item.missingChecks = (item.missingChecks || 0) + 1;
-    if (options.confirmMissing !== false && item.missingChecks >= profile.missingThreshold) {
+    item.searchMissingChecks = nonNegativeInteger(item.searchMissingChecks) + 1;
+    if (options.confirmMissing !== false) item.detailMissingChecks = nonNegativeInteger(item.detailMissingChecks) + 1;
+    if (options.confirmMissing !== false && item.detailMissingChecks >= profile.missingThreshold) {
       item.status = "missing";
       item.disappearedAt ||= now;
       item.statusHistory ||= [];
@@ -230,7 +253,7 @@ export function reconcileSnapshot(store, profileId, rawItems, now = new Date().t
       store.events.unshift({ id: randomUUID(), profileId, listingExternalId: item.externalId, type: "missing", at: now, text: `${item.title} ist nicht mehr online` });
       pushSnapshotIfChanged(item, now);
       gone++;
-    } else {
+    } else if (options.confirmMissing !== false || item.searchMissingChecks >= profile.checkingThreshold) {
       item.status = "checking";
     }
   }
@@ -296,6 +319,7 @@ export function normalizeDescription(value) {
 }
 function list(value) { return Array.isArray(value) ? value.map(clean).filter(Boolean) : clean(value).split(",").map((v) => v.trim()).filter(Boolean); }
 function clamp(value, min, max) { return Math.min(max, Math.max(min, value)); }
+function nonNegativeInteger(value) { const number = Number(value); return Number.isFinite(number) ? Math.max(0, Math.floor(number)) : 0; }
 function numberOrNull(value) { if (value === "" || value === null || value === undefined) return null; const number = Number(value); return Number.isFinite(number) ? number : null; }
 function validDate(value) { if (!value) return null; const date = new Date(value); return Number.isNaN(date.getTime()) ? null : date.toISOString(); }
 function safeUrl(value) { const text = clean(value); if (!text) return ""; try { const url = new URL(text); return ["http:", "https:"].includes(url.protocol) ? url.toString() : ""; } catch { return ""; } }

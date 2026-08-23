@@ -20,7 +20,7 @@ Der erste Lauf startet automatisch mit dem Einspielen des Workflows. Weitere Lä
 
 ### Produkt anpassen
 
-In `config/profiles.json` können vorhandene Profile geändert oder weitere Profile ergänzt werden. Wesentliche Felder sind `name`, `query`, `includeTerms`, `excludeTerms`, `minPrice`, `maxPrice`, `conditions`, `maxResults`, `scrapeDetails` und `detailDelayMs`. Der JBL-Standardfilter schließt Hüllen, Cases, Ersatzteile und reine Ersatzakkus aus. Auf der GitHub-Pages-Seite führt **Konfiguration** direkt zu dieser Datei; **Lauf starten** öffnet den Workflow. Die Verlaufsdatei `data/store.json` wird ausschließlich automatisch gepflegt.
+In `config/profiles.json` können vorhandene Profile geändert oder weitere Profile ergänzt werden. Wesentliche Felder sind `name`, `query`, `includeTerms`, `excludeTerms`, `minPrice`, `maxPrice`, `conditions`, `checkingThreshold`, `missingThreshold`, `maxResults`, `scrapeDetails` und `detailDelayMs`. `checkingThreshold` bestimmt, nach wie vielen aufeinanderfolgenden stündlichen Suchausfällen „Wird geprüft“ erscheint. `missingThreshold` zählt ausschließlich fehlgeschlagene tägliche Detailprüfungen. Der JBL-Standardfilter schließt Hüllen, Cases, Ersatzteile und reine Ersatzakkus aus. Auf der GitHub-Pages-Seite führt **Konfiguration** direkt zu dieser Datei; **Lauf starten** öffnet den Workflow. Die Verlaufsdatei `data/store.json` wird ausschließlich automatisch gepflegt.
 
 ## Was das Tool erfasst
 
@@ -74,7 +74,7 @@ Der Collector:
 - wartet standardmäßig drei Sekunden zwischen Detailseiten,
 - stoppt bei CAPTCHA, menschlicher Verifizierung oder erkennbarem Zugriffsschutz.
 
-Auf GitHub läuft die Suche stündlich. Um 05:17 UTC ersetzt ein vollständiger Detailabgleich den normalen Suchlauf. Dabei werden alle aktuell gefundenen sowie alle als online, „wird geprüft“ oder „nicht mehr online“ geführten Angebote einzeln geöffnet. Nur ausdrücklich entfernte oder verkaufte Angebote werden nicht erneut aufgerufen. So können fälschlich als verschwunden markierte Listings wieder automatisch auf „Online“ wechseln.
+Auf GitHub läuft die Suche stündlich. Um 05:17 UTC ersetzt ein vollständiger Detailabgleich den normalen Suchlauf. Ein Angebot wechselt standardmäßig erst nach drei aufeinanderfolgenden Suchausfällen zu „Wird geprüft“. Erst zwei aufeinanderfolgende fehlgeschlagene tägliche Direktprüfungen bestätigen „Nicht mehr online“; ausdrücklich entfernte oder verkaufte Seiten werden sofort entsprechend markiert. Dabei werden alle aktuell gefundenen sowie alle als online, „wird geprüft“ oder „nicht mehr online“ geführten Angebote einzeln geöffnet. Nur ausdrücklich entfernte oder verkaufte Angebote werden nicht erneut aufgerufen. So können fälschlich als verschwunden markierte Listings wieder automatisch auf „Online“ wechseln.
 
 GitHub kann geplante Läufe bei hoher Auslastung einige Minuten verzögert starten. Im Dashboard werden deshalb der letzte Suchlauf und der letzte abgeschlossene Detailabgleich getrennt angezeigt.
 

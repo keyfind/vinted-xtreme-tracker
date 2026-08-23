@@ -3,13 +3,13 @@ import assert from "node:assert/strict";
 import { blankStore, makeProfile, metrics, migrateStore, normalizeDescription, reconcileSnapshot } from "./src/tracker.mjs";
 import { assertSecureBind, isAuthorizedMutation, requireAllowedFeedUrl } from "./src/security.mjs";
 import { deriveListingStatus, eligibleFollowUps, parseCard, parseResultCount, relativeUploadDate } from "./src/vinted-browser.mjs";
-import { applyListingView } from "./public/listing-view.js";
+import { applyListingView, priceBuckets } from "./public/listing-view.js";
 import { resolveRunMode } from "./src/run-mode.mjs";
 import { buildDiscordPayload, notifyDiscord, validateDiscordWebhookUrl } from "./src/discord-webhook.mjs";
 
-function setup(threshold = 2) {
+function setup(threshold = 2, checkingThreshold = 3) {
   const store = blankStore();
-  store.profiles.push(makeProfile({ id: "speaker", name: "JBL Xtreme 4", query: "JBL Xtreme 4", excludeTerms: ["Hülle"], missingThreshold: threshold }));
+  store.profiles.push(makeProfile({ id: "speaker", name: "JBL Xtreme 4", query: "JBL Xtreme 4", excludeTerms: ["Hülle"], missingThreshold: threshold, checkingThreshold }));
   return store;
 }
 
@@ -115,13 +115,30 @@ test("bereinigt alte Erstbeobachtungen, Scheinstatus und Standortdaten einmalig"
     }]
   };
   migrateStore(store);
-  assert.equal(store.version, 4);
+  assert.equal(store.version, 5);
   assert.equal("location" in store.listings[0], false);
   assert.equal(store.listings[0].status, "missing");
   assert.equal(store.listings[0].description, "Text");
   assert.deepEqual(store.listings[0].priceHistory, []);
   assert.deepEqual(store.listings[0].statusHistory, []);
   assert.deepEqual(store.events, []);
+});
+
+test("migriert alte Fehlzähler ohne vorschnellen Prüfstatus", () => {
+  const store = setup(3);
+  store.version = 4;
+  store.profiles[0].missingThreshold = 3;
+  store.listings.push(
+    { id: "a", externalId: "1", profileId: "speaker", title: "JBL Xtreme 4", price: 170, condition: "Gut", description: "", seller: "a", status: "checking", missingChecks: 1, statusHistory: [], priceHistory: [], conditionHistory: [], descriptionHistory: [], descriptionVersions: [], snapshots: [] },
+    { id: "b", externalId: "2", profileId: "speaker", title: "JBL Xtreme 4", price: 180, condition: "Gut", description: "", seller: "b", status: "checking", missingChecks: 6, statusHistory: [], priceHistory: [], conditionHistory: [], descriptionHistory: [], descriptionVersions: [], snapshots: [] }
+  );
+  migrateStore(store);
+  assert.equal(store.version, 5);
+  assert.equal(store.profiles[0].checkingThreshold, 3);
+  assert.equal(store.profiles[0].missingThreshold, 2);
+  assert.deepEqual(store.listings.map((item) => item.status), ["active", "checking"]);
+  assert.deepEqual(store.listings.map((item) => [item.searchMissingChecks, item.detailMissingChecks]), [[1, 0], [6, 0]]);
+  assert.equal(store.listings.some((item) => "missingChecks" in item), false);
 });
 
 test("normalisiert Vinted-Metadaten und eingeklappte Mehr-Markierungen", () => {
@@ -137,6 +154,17 @@ test("filtert und sortiert die Marktübersicht kombinierbar", () => {
   ];
   assert.deepEqual(applyListingView(rows, { query: "ovp", condition: "Sehr gut", minPrice: 170, maxPrice: 200, sort: "priceAsc" }).map((row) => row.id), ["c"]);
   assert.deepEqual(applyListingView(rows, { sort: "durationDesc" }, new Date("2026-08-23T00:00:00Z")).map((row) => row.id), ["b", "a", "c"]);
+});
+
+test("beschriftet Preisgruppen als eindeutige Intervalle", () => {
+  const buckets = priceBuckets([{ price: 170 }, { price: 180 }, { price: 180 }, { price: 200 }, { price: 350 }]);
+  assert.deepEqual(buckets.map(({ from, to, count, inclusiveEnd }) => ({ from, to, count, inclusiveEnd })), [
+    { from: 150, to: 190, count: 3, inclusiveEnd: false },
+    { from: 190, to: 230, count: 1, inclusiveEnd: false },
+    { from: 230, to: 270, count: 0, inclusiveEnd: false },
+    { from: 270, to: 310, count: 0, inclusiveEnd: false },
+    { from: 310, to: 350, count: 1, inclusiveEnd: true }
+  ]);
 });
 
 test("vervollständigt neue Suchtreffer beim ersten Detailabruf ohne Scheinänderung", () => {
@@ -157,12 +185,32 @@ test("vervollständigt neue Suchtreffer beim ersten Detailabruf ohne Scheinände
 test("stündliche Suchläufe bestätigen ein Verschwinden noch nicht", () => {
   const store = setup(2);
   reconcileSnapshot(store, "speaker", [{ id: "1", title: "JBL Xtreme 4", price: 190, condition: "Gut" }], "2026-08-20T10:00:00.000Z");
-  for (let hour = 11; hour <= 15; hour++) reconcileSnapshot(store, "speaker", [], `2026-08-20T${hour}:00:00.000Z`, { confirmMissing: false });
+  reconcileSnapshot(store, "speaker", [], "2026-08-20T11:00:00.000Z", { confirmMissing: false });
+  reconcileSnapshot(store, "speaker", [], "2026-08-20T12:00:00.000Z", { confirmMissing: false });
+  assert.equal(store.listings[0].status, "active");
+  reconcileSnapshot(store, "speaker", [], "2026-08-20T13:00:00.000Z", { confirmMissing: false });
   assert.equal(store.listings[0].status, "checking");
+  assert.equal(store.listings[0].searchMissingChecks, 3);
+  assert.equal(store.listings[0].detailMissingChecks, 0);
   assert.deepEqual(store.listings[0].statusHistory, []);
   reconcileSnapshot(store, "speaker", [], "2026-08-21T05:17:00.000Z", { confirmMissing: true });
+  assert.equal(store.listings[0].status, "checking");
+  assert.equal(store.listings[0].detailMissingChecks, 1);
+  reconcileSnapshot(store, "speaker", [], "2026-08-22T05:17:00.000Z", { confirmMissing: true });
   assert.equal(store.listings[0].status, "missing");
   assert.deepEqual(store.listings[0].statusHistory.map(({ from, to }) => ({ from, to })), [{ from: "active", to: "missing" }]);
+});
+
+test("setzt den täglichen Fehlerzähler nach einer bestätigten Sichtung zurück", () => {
+  const store = setup(2);
+  const listing = { id: "1", title: "JBL Xtreme 4", price: 190, condition: "Gut" };
+  reconcileSnapshot(store, "speaker", [listing], "2026-08-20T10:00:00.000Z");
+  reconcileSnapshot(store, "speaker", [], "2026-08-21T05:17:00.000Z", { confirmMissing: true });
+  assert.equal(store.listings[0].detailMissingChecks, 1);
+  reconcileSnapshot(store, "speaker", [listing], "2026-08-21T06:17:00.000Z", { confirmMissing: false });
+  assert.equal(store.listings[0].detailMissingChecks, 0);
+  reconcileSnapshot(store, "speaker", [], "2026-08-22T05:17:00.000Z", { confirmMissing: true });
+  assert.equal(store.listings[0].status, "checking");
 });
 
 test("öffnet im Detailabgleich keine bereits abgeschlossenen Angebote erneut", () => {
@@ -197,7 +245,7 @@ test("behandelt die erstmalige Etikett-Differenzierung als Datenkorrektur", () =
   store.listings.push({ id: "x", externalId: "1", profileId: "speaker", title: "JBL Xtreme 4", price: 190, condition: "Neu, mit Etikett", description: "", seller: "anna", status: "active", firstSeenAt: "2026-08-20T10:00:00.000Z", lastSeenAt: "2026-08-23T10:00:00.000Z", conditionHistory: [{ from: "Neu", to: "Neu, mit Etikett", condition: "Neu, mit Etikett", at: "2026-08-23T10:00:00.000Z" }], priceHistory: [], descriptionHistory: [], descriptionVersions: [], statusHistory: [], snapshots: [{ at: "2026-08-20T10:00:00.000Z", price: 190, condition: "Neu", description: "", status: "active" }] });
   store.events.push({ type: "condition", text: "JBL Xtreme 4: Zustand Neu → Neu, mit Etikett" });
   migrateStore(store);
-  assert.equal(store.version, 4);
+  assert.equal(store.version, 5);
   assert.deepEqual(store.listings[0].conditionHistory, []);
   assert.equal(store.listings[0].snapshots[0].condition, "Neu, mit Etikett");
   assert.deepEqual(store.events, []);

@@ -1,4 +1,4 @@
-import { applyListingView } from "./listing-view.js";
+import { applyListingView, priceBuckets } from "./listing-view.js";
 
 const $ = (selector) => document.querySelector(selector);
 const staticMode = document.documentElement.dataset.mode === "static";
@@ -69,12 +69,14 @@ function renderChart() {
   const rows = listings().filter((row) => row.status === "active");
   els.priceCount.textContent = `${rows.length} aktive Angebote`;
   if (!rows.length) { els.chart.innerHTML = `<div class="chart-empty">Noch keine aktiven Preisdaten</div>`; return; }
-  const min = Math.floor(Math.min(...rows.map((r) => r.price)) / 25) * 25;
-  const max = Math.ceil(Math.max(...rows.map((r) => r.price)) / 25) * 25 || min + 25;
-  const buckets = Array.from({ length: 5 }, (_, index) => ({ from: min + ((max - min) / 5) * index, count: 0 }));
-  rows.forEach((row) => { const index = Math.min(4, Math.floor(((row.price - min) / Math.max(1, max - min)) * 5)); buckets[index].count++; });
+  const buckets = priceBuckets(rows);
   const highest = Math.max(...buckets.map((b) => b.count), 1);
-  els.chart.innerHTML = `<div class="bars">${buckets.map((bucket) => `<div class="bar-col"><span>${bucket.count || ""}</span><div class="bar" style="height:${Math.max(8, bucket.count / highest * 100)}%"></div><small>${money(bucket.from, 0)}</small></div>`).join("")}</div><div class="chart-summary"><span>Spanne <strong>${money(Math.min(...rows.map((r) => r.price)))}–${money(Math.max(...rows.map((r) => r.price)))}</strong></span><span>Ø <strong>${money(rows.reduce((sum, row) => sum + row.price, 0) / rows.length)}</strong></span></div>`;
+  els.chart.innerHTML = `<div class="bars">${buckets.map((bucket) => {
+    const range = `${number(bucket.from)}–${bucket.inclusiveEnd ? "" : "<"}${number(bucket.to)} €`;
+    const exact = bucket.prices.length ? bucket.prices.map((price) => money(price)).join(", ") : "Keine Angebote";
+    const tooltip = `${range}: ${bucket.count} ${bucket.count === 1 ? "Angebot" : "Angebote"}${bucket.count ? ` (${exact})` : ""}`;
+    return `<div class="bar-col" tabindex="0" title="${esc(tooltip)}" aria-label="${esc(tooltip)}"><span>${bucket.count || ""}</span><div class="bar" style="height:${Math.max(8, bucket.count / highest * 100)}%"></div><small>${range}</small></div>`;
+  }).join("")}</div><div class="chart-summary"><span>Spanne <strong>${money(Math.min(...rows.map((r) => r.price)))}–${money(Math.max(...rows.map((r) => r.price)))}</strong></span><span>Ø <strong>${money(rows.reduce((sum, row) => sum + row.price, 0) / rows.length)}</strong></span></div>`;
 }
 
 function renderActivity() {
@@ -113,7 +115,7 @@ function openProfile(profile = null) {
   els.profileForm.reset();
   els.profileTitle.textContent = profile ? "Produkt anpassen" : "Neuen Tracker anlegen";
   els.deleteProfile.hidden = !profile;
-  const values = profile || { conditions: ["Neu, mit Etikett", "Neu", "Sehr gut", "Gut", "Zufriedenstellend"], refreshMinutes: 60, missingThreshold: 3, collectorEnabled: true, scrapeDetails: true, maxResults: 300, detailDelayMs: 3000 };
+  const values = profile || { conditions: ["Neu, mit Etikett", "Neu", "Sehr gut", "Gut", "Zufriedenstellend"], refreshMinutes: 60, checkingThreshold: 3, missingThreshold: 2, collectorEnabled: true, scrapeDetails: true, maxResults: 300, detailDelayMs: 3000 };
   for (const [key, value] of Object.entries(values)) {
     const field = els.profileForm.elements[key];
     if (!field) continue;
@@ -231,6 +233,7 @@ function historyEntry(point) {
   return `<div><i class="history-dot"></i><span>${date(point.at, true)}</span><strong>${esc(point.type)}</strong><small>${esc(point.value)}</small></div>`;
 }
 function money(value, digits = 2) { return new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", minimumFractionDigits: digits, maximumFractionDigits: digits }).format(value); }
+function number(value) { return new Intl.NumberFormat("de-DE", { maximumFractionDigits: 0 }).format(value); }
 function date(value, withTime = false) { if (!value) return "–"; return new Intl.DateTimeFormat("de-DE", withTime ? { dateStyle: "medium", timeStyle: "short" } : { day: "2-digit", month: "short", year: "numeric" }).format(new Date(value)); }
 function relative(value) { if (!value) return ""; const minutes = Math.max(0, Math.round((Date.now() - new Date(value)) / 60000)); if (minutes < 1) return "gerade eben"; if (minutes < 60) return `vor ${minutes} Min.`; const hours = Math.round(minutes / 60); if (hours < 24) return `vor ${hours} Std.`; return `vor ${Math.round(hours / 24)} T.`; }
 function duration(row) { const end = row.soldAt || row.disappearedAt || new Date(); const days = Math.max(0, (new Date(end) - new Date(row.firstSeenAt)) / 86400000); return days < 1 ? `${Math.max(1, Math.round(days * 24))} Std.` : `${days.toFixed(days < 10 ? 1 : 0)} T.`; }
