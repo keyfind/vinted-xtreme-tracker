@@ -6,14 +6,14 @@ export function buildDiscordPayload(profile, listings) {
     content: `🔊 **${listings.length} ${listings.length === 1 ? "neues Angebot" : "neue Angebote"} für ${profile.name}**`,
     allowed_mentions: { parse: [] },
     embeds: listings.map((listing) => ({
-      title: truncate(listing.title || "Neues Vinted-Angebot", 256),
+      title: truncate(listing.title || "Neues Vinted-Angebot", 120),
       url: listing.url,
       color: 0x2458e6,
-      description: truncate(listing.description || "Beschreibung wird beim nächsten Detailabgleich ergänzt.", 700),
+      description: truncate(listing.description || "Beschreibung wird beim nächsten Detailabgleich ergänzt.", 280),
       fields: [
         { name: "Preis", value: formatPrice(listing.price, listing.currency), inline: true },
         { name: "Zustand", value: listing.condition || "Unbekannt", inline: true },
-        { name: "Verkäufer", value: truncate(listing.seller && listing.seller !== "Unbekannt" ? listing.seller : "Noch nicht geladen", 100), inline: true }
+        { name: "Verkäufer", value: truncate(listing.seller && listing.seller !== "Unbekannt" ? listing.seller : "Noch nicht geladen", 60), inline: true }
       ],
       thumbnail: listing.imageUrl ? { url: listing.imageUrl } : undefined,
       footer: { text: "Vinted · Xtreme Tracker" },

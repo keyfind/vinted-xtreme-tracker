@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 export const CONDITIONS = ["Neu, mit Etikett", "Neu", "Sehr gut", "Gut", "Zufriedenstellend", "Unbekannt"];
 
 export function blankStore() {
-  return { version: 3, profiles: [], listings: [], events: [], pendingWebhookNotifications: [], updatedAt: new Date().toISOString() };
+  return { version: 4, profiles: [], listings: [], events: [], pendingWebhookNotifications: [], updatedAt: new Date().toISOString() };
 }
 
 export function makeProfile(input = {}) {
@@ -109,8 +109,15 @@ export function migrateStore(store) {
       addDescriptionVersion(listing, listing.description, listing.lastSeenAt || store.updatedAt);
     }
   }
+  if (originalVersion < 4) {
+    for (const listing of store.listings.filter((entry) => entry.condition === "Neu, mit Etikett")) {
+      listing.conditionHistory = listing.conditionHistory.filter((point) => !(point.from === "Neu" && (point.to ?? point.condition) === "Neu, mit Etikett"));
+      for (const snapshot of listing.snapshots) if (snapshot.condition === "Neu") snapshot.condition = "Neu, mit Etikett";
+    }
+    store.events = store.events.filter((event) => !(event.type === "condition" && /Zustand Neu → Neu, mit Etikett$/.test(event.text || "")));
+  }
   store.events = store.events.filter((event) => event.type !== "new");
-  store.version = 3;
+  store.version = 4;
   return store;
 }
 

@@ -115,7 +115,7 @@ test("bereinigt alte Erstbeobachtungen, Scheinstatus und Standortdaten einmalig"
     }]
   };
   migrateStore(store);
-  assert.equal(store.version, 3);
+  assert.equal(store.version, 4);
   assert.equal("location" in store.listings[0], false);
   assert.equal(store.listings[0].status, "missing");
   assert.equal(store.listings[0].description, "Text");
@@ -189,6 +189,18 @@ test("unterscheidet Neu mit Etikett von Neu", () => {
     { id: "2", title: "JBL Xtreme 4", price: 180, condition: "Neu" }
   ], "2026-08-23T08:00:00.000Z");
   assert.deepEqual(store.listings.map((item) => item.condition), ["Neu, mit Etikett", "Neu"]);
+});
+
+test("behandelt die erstmalige Etikett-Differenzierung als Datenkorrektur", () => {
+  const store = setup();
+  store.version = 3;
+  store.listings.push({ id: "x", externalId: "1", profileId: "speaker", title: "JBL Xtreme 4", price: 190, condition: "Neu, mit Etikett", description: "", seller: "anna", status: "active", firstSeenAt: "2026-08-20T10:00:00.000Z", lastSeenAt: "2026-08-23T10:00:00.000Z", conditionHistory: [{ from: "Neu", to: "Neu, mit Etikett", condition: "Neu, mit Etikett", at: "2026-08-23T10:00:00.000Z" }], priceHistory: [], descriptionHistory: [], descriptionVersions: [], statusHistory: [], snapshots: [{ at: "2026-08-20T10:00:00.000Z", price: 190, condition: "Neu", description: "", status: "active" }] });
+  store.events.push({ type: "condition", text: "JBL Xtreme 4: Zustand Neu → Neu, mit Etikett" });
+  migrateStore(store);
+  assert.equal(store.version, 4);
+  assert.deepEqual(store.listings[0].conditionHistory, []);
+  assert.equal(store.listings[0].snapshots[0].condition, "Neu, mit Etikett");
+  assert.deepEqual(store.events, []);
 });
 
 test("reaktiviert ein wieder in der Suche sichtbares Missing-Angebot", () => {
