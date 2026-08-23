@@ -13,6 +13,7 @@ Das Repository enthält einen vollständigen GitHub-Actions-/Pages-Betrieb:
 - versionierte Speicherung aller Beobachtungen in `data/store.json`,
 - statisches Dashboard auf GitHub Pages,
 - CSV-Export direkt aus der veröffentlichten Seite,
+- optional formatierte Discord-Benachrichtigungen bei neuen Angeboten,
 - kein Vinted-Login und keine geheimen Tokens notwendig.
 
 Der erste Lauf startet automatisch mit dem Einspielen des Workflows. Weitere Läufe können über **Actions → Vinted stündlich tracken → Run workflow** als reine Suche oder vollständiger Detailabgleich gestartet werden. Das Dashboard wird anschließend über die beim Lauf angezeigte Pages-URL erreichbar.
@@ -73,7 +74,13 @@ Der Collector:
 - wartet standardmäßig drei Sekunden zwischen Detailseiten,
 - stoppt bei CAPTCHA, menschlicher Verifizierung oder erkennbarem Zugriffsschutz.
 
-Auf GitHub läuft die Suche stündlich. Um 05:17 UTC ersetzt ein vollständiger Detailabgleich den normalen Suchlauf. Dabei werden alle aktuell gefundenen sowie alle noch als online oder „wird geprüft“ geführten Angebote einzeln geöffnet. Bereits verkaufte, entfernte oder endgültig nicht mehr online geführte Angebote werden nicht erneut aufgerufen.
+Auf GitHub läuft die Suche stündlich. Um 05:17 UTC ersetzt ein vollständiger Detailabgleich den normalen Suchlauf. Dabei werden alle aktuell gefundenen sowie alle als online, „wird geprüft“ oder „nicht mehr online“ geführten Angebote einzeln geöffnet. Nur ausdrücklich entfernte oder verkaufte Angebote werden nicht erneut aufgerufen. So können fälschlich als verschwunden markierte Listings wieder automatisch auf „Online“ wechseln.
+
+GitHub kann geplante Läufe bei hoher Auslastung einige Minuten verzögert starten. Im Dashboard werden deshalb der letzte Suchlauf und der letzte abgeschlossene Detailabgleich getrennt angezeigt.
+
+### Discord-Benachrichtigungen
+
+Neue Angebote können als formatierte Discord-Embeds mit Bild, Preis, Zustand, Verkäufer und direktem Vinted-Link gemeldet werden. Hinterlege die Webhook-URL im Repository unter **Settings → Secrets and variables → Actions** als Secret `DISCORD_WEBHOOK_URL`. Die URL gehört nicht in `config/profiles.json` oder den Quellcode. Falls Discord vorübergehend nicht erreichbar ist, bleibt die Benachrichtigung in einer Warteschlange und wird beim nächsten Lauf erneut versucht.
 
 Automatische Läufe des optionalen lokalen Servers sind zusätzlich geschützt. Erst mit dieser Umgebungsvariable werden fällige Tracker serverseitig gestartet:
 

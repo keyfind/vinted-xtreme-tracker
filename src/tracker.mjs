@@ -1,9 +1,9 @@
 import { randomUUID } from "node:crypto";
 
-export const CONDITIONS = ["Neu", "Sehr gut", "Gut", "Zufriedenstellend", "Unbekannt"];
+export const CONDITIONS = ["Neu, mit Etikett", "Neu", "Sehr gut", "Gut", "Zufriedenstellend", "Unbekannt"];
 
 export function blankStore() {
-  return { version: 2, profiles: [], listings: [], events: [], updatedAt: new Date().toISOString() };
+  return { version: 3, profiles: [], listings: [], events: [], pendingWebhookNotifications: [], updatedAt: new Date().toISOString() };
 }
 
 export function makeProfile(input = {}) {
@@ -70,8 +70,10 @@ export function migrateStore(store) {
   store.profiles ||= [];
   store.listings ||= [];
   store.events ||= [];
+  store.pendingWebhookNotifications ||= [];
+  const originalVersion = Number(store.version || 1);
 
-  if (Number(store.version || 1) < 2) {
+  if (originalVersion < 2) {
     for (const listing of store.listings) {
       delete listing.location;
       listing.description = normalizeDescription(listing.description);
@@ -88,20 +90,27 @@ export function migrateStore(store) {
       listing.detailsFetchedAt ||= listing.description || listing.seller !== "Unbekannt" ? listing.lastSeenAt || null : null;
     }
     store.events = [];
-    store.version = 2;
-  } else {
-    for (const listing of store.listings) {
-      delete listing.location;
-      listing.description = normalizeDescription(listing.description);
-      listing.priceHistory ||= [];
-      listing.conditionHistory ||= [];
-      listing.descriptionHistory = uniqueDescriptionHistory(listing.descriptionHistory || []);
-      listing.statusHistory ||= [];
-      listing.snapshots ||= [snapshotOf(listing, listing.lastSeenAt || store.updatedAt || new Date().toISOString())];
-      listing.detailsFetchedAt ||= listing.description || listing.seller !== "Unbekannt" ? listing.lastSeenAt || null : null;
-    }
-    store.events = store.events.filter((event) => event.type !== "new");
   }
+
+  for (const listing of store.listings) {
+    delete listing.location;
+    listing.description = normalizeDescription(listing.description);
+    listing.priceHistory ||= [];
+    listing.conditionHistory ||= [];
+    listing.statusHistory ||= [];
+    listing.snapshots ||= [snapshotOf(listing, listing.lastSeenAt || store.updatedAt || new Date().toISOString())];
+    listing.detailsFetchedAt ||= listing.description || listing.seller !== "Unbekannt" ? listing.lastSeenAt || null : null;
+    if (originalVersion < 3) {
+      listing.descriptionHistory = descriptionChangesFromSnapshots(listing.snapshots);
+      listing.descriptionVersions = descriptionVersionsFromSnapshots(listing.snapshots, listing);
+    } else {
+      listing.descriptionHistory = uniqueDescriptionChanges(listing.descriptionHistory || []);
+      listing.descriptionVersions = uniqueDescriptionVersions(listing.descriptionVersions || []);
+      addDescriptionVersion(listing, listing.description, listing.lastSeenAt || store.updatedAt);
+    }
+  }
+  store.events = store.events.filter((event) => event.type !== "new");
+  store.version = 3;
   return store;
 }
 
@@ -134,6 +143,7 @@ export function reconcileSnapshot(store, profileId, rawItems, now = new Date().t
         priceHistory: [],
         conditionHistory: [],
         descriptionHistory: [],
+        descriptionVersions: listingItem.description ? [{ description: listingItem.description, at: now }] : [],
         statusHistory: [],
         snapshots: [snapshotOf(listingItem, now)]
       });
@@ -146,7 +156,7 @@ export function reconcileSnapshot(store, profileId, rawItems, now = new Date().t
       item.seller = existing.seller || "Unbekannt";
       item.sourceCreatedAt ||= existing.sourceCreatedAt || null;
       if (item.condition === "Unbekannt") item.condition = existing.condition;
-      if (["missing", "removed", "sold"].includes(existing.status)) item.status = existing.status;
+      if (["removed", "sold"].includes(existing.status)) item.status = existing.status;
     }
     const oldPrice = existing.price;
     const oldStatus = existing.status;
@@ -154,16 +164,12 @@ export function reconcileSnapshot(store, profileId, rawItems, now = new Date().t
     const oldDescription = existing.description || "";
     const completesInitialDetails = item.detailsComplete && !existing.detailsFetchedAt;
     const { detailsComplete, ...listingItem } = item;
-    const knownDescriptions = new Set([
-      oldDescription,
-      ...(existing.descriptionHistory || []).map((point) => point.description),
-      ...(existing.snapshots || []).map((snapshot) => snapshot.description)
-    ].map(normalizeDescription));
     Object.assign(existing, listingItem, { lastSeenAt: now, missingChecks: 0, observations: (existing.observations || 0) + 1 });
     if (detailsComplete) existing.detailsFetchedAt ||= now;
     existing.priceHistory ||= [];
     existing.conditionHistory ||= [];
     existing.descriptionHistory ||= [];
+    existing.descriptionVersions ||= [];
     existing.statusHistory ||= [];
     existing.snapshots ||= [];
     if (item.status === "active") {
@@ -186,7 +192,8 @@ export function reconcileSnapshot(store, profileId, rawItems, now = new Date().t
       materialChange = true;
     }
     if (oldDescription !== item.description && !completesInitialDetails) {
-      if (!knownDescriptions.has(item.description)) existing.descriptionHistory.push({ description: item.description, at: now });
+      existing.descriptionHistory.push({ from: oldDescription, to: item.description, description: item.description, at: now });
+      addDescriptionVersion(existing, item.description, now);
       store.events.unshift({ id: randomUUID(), profileId, listingExternalId: item.externalId, type: "description", at: now, text: `${item.title}: Beschreibung geändert` });
       changed++;
       materialChange = true;
@@ -199,6 +206,7 @@ export function reconcileSnapshot(store, profileId, rawItems, now = new Date().t
       materialChange = true;
     }
     if (oldPrice !== item.price) materialChange = true;
+    if (completesInitialDetails) addDescriptionVersion(existing, item.description, now);
     if (completesInitialDetails && !materialChange) enrichBaselineSnapshot(existing);
     else pushSnapshotIfChanged(existing, now);
   }
@@ -284,7 +292,7 @@ function clamp(value, min, max) { return Math.min(max, Math.max(min, value)); }
 function numberOrNull(value) { if (value === "" || value === null || value === undefined) return null; const number = Number(value); return Number.isFinite(number) ? number : null; }
 function validDate(value) { if (!value) return null; const date = new Date(value); return Number.isNaN(date.getTime()) ? null : date.toISOString(); }
 function safeUrl(value) { const text = clean(value); if (!text) return ""; try { const url = new URL(text); return ["http:", "https:"].includes(url.protocol) ? url.toString() : ""; } catch { return ""; } }
-function normalizeCondition(value) { const text = clean(value).toLowerCase(); if (/neu|new/.test(text)) return "Neu"; if (/sehr|very/.test(text)) return "Sehr gut"; if (/zufrieden|satisfactory/.test(text)) return "Zufriedenstellend"; if (/gut|good/.test(text)) return "Gut"; return "Unbekannt"; }
+function normalizeCondition(value) { const text = clean(value).toLowerCase(); if (/neu,? mit etikett|new with tags?/.test(text)) return "Neu, mit Etikett"; if (/neu|new/.test(text)) return "Neu"; if (/sehr|very/.test(text)) return "Sehr gut"; if (/zufrieden|satisfactory/.test(text)) return "Zufriedenstellend"; if (/gut|good/.test(text)) return "Gut"; return "Unbekannt"; }
 function median(values) { if (!values.length) return null; const sorted = [...values].sort((a, b) => a - b); const mid = Math.floor(sorted.length / 2); return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2; }
 function formatPrice(value, currency) { return new Intl.NumberFormat("de-DE", { style: "currency", currency }).format(value); }
 function statusLabel(status) { return ({ active: "Online", checking: "Wird geprüft", sold: "Verkauft", removed: "Entfernt", missing: "Nicht mehr online" })[status] || status; }
@@ -307,12 +315,43 @@ function lastConfirmedStatus(item) {
   const point = item.statusHistory?.at(-1);
   return point?.to || point?.status || "active";
 }
-function uniqueDescriptionHistory(points) {
+function descriptionChangesFromSnapshots(snapshots) {
+  const changes = [];
+  let previous;
+  for (const snapshot of [...snapshots].sort((a, b) => new Date(a.at) - new Date(b.at))) {
+    const description = normalizeDescription(snapshot.description);
+    if (previous !== undefined && previous !== description) changes.push({ from: previous, to: description, description, at: snapshot.at });
+    previous = description;
+  }
+  return changes;
+}
+function descriptionVersionsFromSnapshots(snapshots, listing) {
+  return uniqueDescriptionVersions([
+    ...[...snapshots].sort((a, b) => new Date(a.at) - new Date(b.at)).map((snapshot) => ({ description: snapshot.description, at: snapshot.at })),
+    { description: listing.description, at: listing.lastSeenAt }
+  ]);
+}
+function uniqueDescriptionChanges(points) {
   const seen = new Set();
-  return points.filter((point) => {
-    point.description = normalizeDescription(point.description);
-    if (seen.has(point.description)) return false;
+  return points.map((point) => ({ ...point, from: normalizeDescription(point.from), to: normalizeDescription(point.to ?? point.description), description: normalizeDescription(point.to ?? point.description) })).filter((point) => {
+    if (point.from === point.to) return false;
+    const key = `${point.at}\u0000${point.from}\u0000${point.to}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+function uniqueDescriptionVersions(points) {
+  const seen = new Set();
+  return points.map((point) => ({ description: normalizeDescription(point.description), at: point.at })).filter((point) => {
+    if (!point.description || seen.has(point.description)) return false;
     seen.add(point.description);
     return true;
   });
+}
+function addDescriptionVersion(item, description, at) {
+  const normalized = normalizeDescription(description);
+  if (!normalized) return;
+  item.descriptionVersions ||= [];
+  if (!item.descriptionVersions.some((point) => normalizeDescription(point.description) === normalized)) item.descriptionVersions.push({ description: normalized, at });
 }

@@ -166,7 +166,7 @@ async function extractDetail(page) {
     const bodyText = document.body.innerText || "";
     const main = document.querySelector("main")?.innerText || bodyText;
     const title = document.querySelector("h1")?.textContent?.trim() || "";
-    const sellerLink = [...document.querySelectorAll('a[href^="/member/"]')].find((link) => /^\/member\/\d+/.test(link.getAttribute("href") || "") && link.textContent?.trim());
+    const sellerLink = [...document.querySelectorAll('a[href^="/member/"]')].find((link) => /^\/member\/\d+/.test(link.getAttribute("href") || "") && link.textContent?.trim() && !/registrieren|einloggen/i.test(link.textContent));
     const imageUrl = document.querySelector('main figure img')?.getAttribute("src") || "";
     const conditionValues = ["Neu, mit Etikett", "Neu", "Sehr gut", "Gut", "Zufriedenstellend"];
     const condition = conditionValues.find((value) => [...document.querySelectorAll("main *")].some((node) => node.children.length === 0 && node.textContent?.trim() === value)) || "Unbekannt";
@@ -231,7 +231,7 @@ function cardToItem(card) {
 
 export function eligibleFollowUps(trackedListings, currentIds = new Set()) {
   return trackedListings.filter((listing) =>
-    ["active", "checking"].includes(listing.status) && listing.url && !currentIds.has(listing.externalId)
+    ["active", "checking", "missing"].includes(listing.status) && listing.url && !currentIds.has(listing.externalId)
   );
 }
 

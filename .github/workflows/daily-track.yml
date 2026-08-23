@@ -58,10 +58,10 @@ jobs:
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             mode="${{ inputs.mode }}"
-          elif [[ "${{ github.event.schedule }}" == "17 5 * * *" ]]; then
-            mode="details"
-          else
+          elif [[ "${{ github.event.schedule }}" == "17 0-4,6-23 * * *" ]]; then
             mode="search"
+          else
+            mode="details"
           fi
           echo "mode=$mode" >> "$GITHUB_OUTPUT"
           echo "Laufmodus: $mode"
@@ -71,6 +71,7 @@ jobs:
         continue-on-error: true
         env:
           TRACKER_RUN_MODE: ${{ steps.mode.outputs.mode }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: npm run collect:once
 
       - name: Statisches Dashboard bauen

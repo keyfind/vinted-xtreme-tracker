@@ -37,7 +37,7 @@
         </header>
 
         <section class="sync-strip" aria-label="Synchronisationsstatus">
-          <div><span class="pulse-dot"></span><strong id="sync-label">Bereit</strong><span id="sync-time">–</span></div>
+          <div><span class="pulse-dot"></span><strong id="sync-label">Bereit</strong><span id="sync-time">–</span><span id="detail-sync-time">Details: –</span></div>
           <div class="source-badge" id="source-badge">BEISPIELDATEN</div>
         </section>
 
@@ -62,7 +62,7 @@
           <div class="filter-bar" aria-label="Angebote filtern und sortieren">
             <label class="search-field"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Titel, Verkäufer oder Beschreibung" aria-label="Angebote durchsuchen" /></label>
             <label><span>Status</span><select id="status-filter"><option value="all">Alle</option><option value="active">Online</option><option value="checking">Wird geprüft</option><option value="sold">Verkauft</option><option value="missing">Nicht mehr online</option><option value="removed">Entfernt</option></select></label>
-            <label><span>Zustand</span><select id="condition-filter"><option value="all">Alle</option><option value="Neu">Neu</option><option value="Sehr gut">Sehr gut</option><option value="Gut">Gut</option><option value="Zufriedenstellend">Zufriedenstellend</option><option value="Unbekannt">Unbekannt</option></select></label>
+            <label><span>Zustand</span><select id="condition-filter"><option value="all">Alle</option><option value="Neu, mit Etikett">Neu, mit Etikett</option><option value="Neu">Neu</option><option value="Sehr gut">Sehr gut</option><option value="Gut">Gut</option><option value="Zufriedenstellend">Zufriedenstellend</option><option value="Unbekannt">Unbekannt</option></select></label>
             <label class="price-filter"><span>Preis von</span><input id="min-price" type="number" min="0" step="1" inputmode="numeric" placeholder="0 €" /></label>
             <label class="price-filter"><span>Preis bis</span><input id="max-price" type="number" min="0" step="1" inputmode="numeric" placeholder="350 €" /></label>
             <label><span>Sortierung</span><select id="sort-order"><option value="newest">Neueste zuerst</option><option value="oldest">Älteste zuerst</option><option value="priceAsc">Preis aufsteigend</option><option value="priceDesc">Preis absteigend</option><option value="changed">Zuletzt geändert</option><option value="durationDesc">Längste Laufzeit</option></select></label>
@@ -99,7 +99,7 @@
           <label><span>Pause je Detail</span><select name="detailDelayMs"><option value="2000">2 Sekunden</option><option value="3000">3 Sekunden</option><option value="5000">5 Sekunden</option><option value="10000">10 Sekunden</option></select></label>
           <label class="wide"><span>Autorisierte JSON-Feed-URL <small>(optional)</small></span><input name="feedUrl" type="url" placeholder="https://…/feed?q={query}" /></label>
         </div>
-        <div class="condition-row"><span>Zustände</span><label><input type="checkbox" name="conditions" value="Neu" /> Neu</label><label><input type="checkbox" name="conditions" value="Sehr gut" /> Sehr gut</label><label><input type="checkbox" name="conditions" value="Gut" /> Gut</label><label><input type="checkbox" name="conditions" value="Zufriedenstellend" /> Zufriedenstellend</label></div>
+        <div class="condition-row"><span>Zustände</span><label><input type="checkbox" name="conditions" value="Neu, mit Etikett" /> Neu, mit Etikett</label><label><input type="checkbox" name="conditions" value="Neu" /> Neu</label><label><input type="checkbox" name="conditions" value="Sehr gut" /> Sehr gut</label><label><input type="checkbox" name="conditions" value="Gut" /> Gut</label><label><input type="checkbox" name="conditions" value="Zufriedenstellend" /> Zufriedenstellend</label></div>
         <div class="collector-box">
           <label><input type="checkbox" name="collectorEnabled" /> <strong>Öffentlichen Vinted-Browser-Collector aktivieren</strong></label>
           <label><input type="checkbox" name="scrapeDetails" /> Jedes Ergebnis einzeln öffnen und Details prüfen</label>

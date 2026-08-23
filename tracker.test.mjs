@@ -5,6 +5,7 @@ import { assertSecureBind, isAuthorizedMutation, requireAllowedFeedUrl } from ".
 import { deriveListingStatus, eligibleFollowUps, parseCard, parseResultCount, relativeUploadDate } from "./src/vinted-browser.mjs";
 import { applyListingView } from "./public/listing-view.js";
 import { resolveRunMode } from "./src/run-mode.mjs";
+import { buildDiscordPayload, notifyDiscord, validateDiscordWebhookUrl } from "./src/discord-webhook.mjs";
 
 function setup(threshold = 2) {
   const store = blankStore();
@@ -94,7 +95,11 @@ test("archiviert nur echte Änderungen und keine identischen Beschreibungen", ()
   assert.equal(item.snapshots.length, 3);
   assert.deepEqual(item.snapshots.map((snapshot) => snapshot.price), [220, 199, 220]);
   assert.deepEqual(item.conditionHistory.map((point) => point.condition), ["Gut", "Sehr gut"]);
-  assert.deepEqual(item.descriptionHistory.map((point) => point.description), ["Kleine Gebrauchsspuren"]);
+  assert.deepEqual(item.descriptionHistory.map(({ from, to }) => ({ from, to })), [
+    { from: "Kaum benutzt", to: "Kleine Gebrauchsspuren" },
+    { from: "Kleine Gebrauchsspuren", to: "Kaum benutzt" }
+  ]);
+  assert.deepEqual(item.descriptionVersions.map((point) => point.description), ["Kaum benutzt", "Kleine Gebrauchsspuren"]);
   assert.equal(store.events.filter((event) => event.type === "description").length, 2);
 });
 
@@ -110,7 +115,7 @@ test("bereinigt alte Erstbeobachtungen, Scheinstatus und Standortdaten einmalig"
     }]
   };
   migrateStore(store);
-  assert.equal(store.version, 2);
+  assert.equal(store.version, 3);
   assert.equal("location" in store.listings[0], false);
   assert.equal(store.listings[0].status, "missing");
   assert.equal(store.listings[0].description, "Text");
@@ -168,13 +173,45 @@ test("öffnet im Detailabgleich keine bereits abgeschlossenen Angebote erneut", 
     { externalId: "d", status: "removed", url: "https://www.vinted.de/items/d" },
     { externalId: "e", status: "sold", url: "https://www.vinted.de/items/e" }
   ];
-  assert.deepEqual(eligibleFollowUps(tracked, new Set(["a"])).map((item) => item.externalId), ["b"]);
+  assert.deepEqual(eligibleFollowUps(tracked, new Set(["a"])).map((item) => item.externalId), ["b", "c"]);
 });
 
 test("löst Such- und Detailmodus explizit auf", () => {
   assert.equal(resolveRunMode(["--mode", "search"], {}), "search");
   assert.equal(resolveRunMode([], { TRACKER_RUN_MODE: "details" }), "details");
   assert.throws(() => resolveRunMode(["--mode", "alles"], {}), /Ungültiger Laufmodus/);
+});
+
+test("unterscheidet Neu mit Etikett von Neu", () => {
+  const store = setup();
+  reconcileSnapshot(store, "speaker", [
+    { id: "1", title: "JBL Xtreme 4", price: 190, condition: "Neu, mit Etikett" },
+    { id: "2", title: "JBL Xtreme 4", price: 180, condition: "Neu" }
+  ], "2026-08-23T08:00:00.000Z");
+  assert.deepEqual(store.listings.map((item) => item.condition), ["Neu, mit Etikett", "Neu"]);
+});
+
+test("reaktiviert ein wieder in der Suche sichtbares Missing-Angebot", () => {
+  const store = setup(1);
+  reconcileSnapshot(store, "speaker", [{ id: "1", title: "JBL Xtreme 4", price: 190, condition: "Gut" }], "2026-08-20T10:00:00.000Z");
+  reconcileSnapshot(store, "speaker", [], "2026-08-21T05:17:00.000Z", { confirmMissing: true });
+  assert.equal(store.listings[0].status, "missing");
+  reconcileSnapshot(store, "speaker", [{ id: "1", title: "JBL Xtreme 4", price: 190, condition: "Gut", detailsComplete: false }], "2026-08-21T06:17:00.000Z", { confirmMissing: false });
+  assert.equal(store.listings[0].status, "active");
+  assert.deepEqual(store.listings[0].statusHistory.map(({ from, to }) => ({ from, to })), [{ from: "active", to: "missing" }, { from: "missing", to: "active" }]);
+});
+
+test("formatiert Discord-Benachrichtigungen und sendet höchstens zehn Embeds je Nachricht", async () => {
+  const profile = { name: "JBL Xtreme 4" };
+  const listings = Array.from({ length: 11 }, (_, index) => ({ title: `JBL ${index}`, price: 199, currency: "EUR", condition: "Neu, mit Etikett", seller: "anna", url: `https://www.vinted.de/items/${index}`, imageUrl: "https://images.example/item.jpg", firstSeenAt: "2026-08-23T08:00:00.000Z" }));
+  const payload = buildDiscordPayload(profile, listings.slice(0, 1));
+  assert.equal(payload.embeds[0].fields[0].value, "199,00 €");
+  assert.equal(payload.embeds[0].fields[1].value, "Neu, mit Etikett");
+  const bodies = [];
+  const result = await notifyDiscord("https://discord.com/api/webhooks/123/token_test", profile, listings, async (_url, options) => { bodies.push(JSON.parse(options.body)); return { ok: true, status: 204 }; });
+  assert.deepEqual(result, { sent: 11, messages: 2 });
+  assert.deepEqual(bodies.map((body) => body.embeds.length), [10, 1]);
+  assert.throws(() => validateDiscordWebhookUrl("https://example.com/api/webhooks/123/token"), /keine gültige/);
 });
 
 test("verweigert öffentliche Serverbindung ohne Admin-Token", () => {

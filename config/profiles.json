@@ -7,7 +7,7 @@
     "excludeTerms": ["Hülle", "Case", "Ersatzteil", "Akku für", "Ersatzakku"],
     "minPrice": 40,
     "maxPrice": 350,
-    "conditions": ["Neu", "Sehr gut", "Gut", "Zufriedenstellend"],
+    "conditions": ["Neu, mit Etikett", "Neu", "Sehr gut", "Gut", "Zufriedenstellend"],
     "missingThreshold": 3,
     "refreshMinutes": 60,
     "collectorEnabled": true,

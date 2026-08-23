@@ -6,7 +6,7 @@ const els = {
   profiles: $("#profile-list"), title: $("#page-title"), metrics: $("#metrics"), table: $("#listing-table"), empty: $("#empty-state"),
   count: $("#listing-count"), viewCount: $("#view-count"), search: $("#search"), status: $("#status-filter"), condition: $("#condition-filter"),
   minPrice: $("#min-price"), maxPrice: $("#max-price"), sort: $("#sort-order"), resetFilters: $("#reset-filters"), chart: $("#price-chart"), priceCount: $("#price-count"),
-  activity: $("#activity-list"), syncLabel: $("#sync-label"), syncTime: $("#sync-time"), sideSync: $("#side-sync"), source: $("#source-badge"),
+  activity: $("#activity-list"), syncLabel: $("#sync-label"), syncTime: $("#sync-time"), detailSyncTime: $("#detail-sync-time"), sideSync: $("#side-sync"), source: $("#source-badge"),
   profileDialog: $("#profile-dialog"), profileForm: $("#profile-form"), profileTitle: $("#profile-dialog-title"), deleteProfile: $("#delete-profile"),
   importDialog: $("#import-dialog"), importForm: $("#import-form"), drawer: $("#detail-drawer"), drawerContent: $("#drawer-content"), toast: $("#toast"), export: $("#export")
 };
@@ -34,6 +34,7 @@ function render() {
   els.title.textContent = profile.name;
   els.syncLabel.textContent = profile.lastSyncStatus || "Noch nicht synchronisiert";
   els.syncTime.textContent = profile.lastSyncAt ? `Letzter Abgleich ${relative(profile.lastSyncAt)}` : "";
+  els.detailSyncTime.textContent = profile.lastDetailSyncAt ? `Details ${relative(profile.lastDetailSyncAt)}` : "Details: noch nicht gelaufen";
   els.sideSync.textContent = profile.active ? (staticMode ? "Suche stündlich · Details täglich" : `alle ${minutes(profile.refreshMinutes)}`) : "pausiert";
   const job = state.collectorJobs?.[profile.id];
   els.source.textContent = profile.collectorEnabled ? (staticMode ? "STÜNDLICHE SUCHE · TÄGLICHE DETAILS" : "VINTED BROWSER-COLLECTOR") : profile.feedUrl ? "AUTOMATISCHER FEED" : "IMPORT / BEISPIELDATEN";
@@ -79,7 +80,7 @@ function renderChart() {
 function renderActivity() {
   const events = state.events.filter((event) => event.profileId === selectedProfileId && event.type !== "new").slice(0, 6);
   const icons = { price: "€", condition: "◇", description: "≡", status: "↔", missing: "×" };
-  els.activity.innerHTML = events.length ? events.map((event) => `<div class="activity-item"><span class="event-icon ${esc(event.type)}">${icons[event.type] || "·"}</span><div><strong>${esc(event.text)}</strong><small>${relative(event.at)} · ${date(event.at, true)}</small></div></div>`).join("") : `<div class="activity-empty"><strong>Noch keine Änderungen</strong><span>Der erste Abruf legt nur den Ausgangsstand an.</span></div>`;
+  els.activity.innerHTML = events.length ? events.map((event) => `<button class="activity-item" type="button" ${event.listingExternalId ? `data-activity-listing="${esc(event.listingExternalId)}"` : ""}><span class="event-icon ${esc(event.type)}">${icons[event.type] || "·"}</span><span><strong>${esc(event.text)}</strong><small>${relative(event.at)} · ${date(event.at, true)}</small></span><i aria-hidden="true">›</i></button>`).join("") : `<div class="activity-empty"><strong>Noch keine Änderungen</strong><span>Der erste Abruf legt nur den Ausgangsstand an.</span></div>`;
 }
 
 function renderTable() {
@@ -112,7 +113,7 @@ function openProfile(profile = null) {
   els.profileForm.reset();
   els.profileTitle.textContent = profile ? "Produkt anpassen" : "Neuen Tracker anlegen";
   els.deleteProfile.hidden = !profile;
-  const values = profile || { conditions: ["Neu", "Sehr gut", "Gut", "Zufriedenstellend"], refreshMinutes: 60, missingThreshold: 3, collectorEnabled: true, scrapeDetails: true, maxResults: 300, detailDelayMs: 3000 };
+  const values = profile || { conditions: ["Neu, mit Etikett", "Neu", "Sehr gut", "Gut", "Zufriedenstellend"], refreshMinutes: 60, missingThreshold: 3, collectorEnabled: true, scrapeDetails: true, maxResults: 300, detailDelayMs: 3000 };
   for (const [key, value] of Object.entries(values)) {
     const field = els.profileForm.elements[key];
     if (!field) continue;
@@ -183,11 +184,11 @@ function openDetails(id) {
   const changes = [
     ...(row.priceHistory || []).map((point) => ({ at: point.at, type: "Preis", value: `${money(point.from)} → ${money(point.to ?? point.price)}` })),
     ...(row.conditionHistory || []).map((point) => ({ at: point.at, type: "Zustand", value: `${point.from || "–"} → ${point.to ?? point.condition}` })),
-    ...(row.descriptionHistory || []).map((point) => ({ at: point.at, type: "Beschreibung", value: "Neue Version archiviert" })),
+    ...(row.descriptionHistory || []).map((point) => ({ at: point.at, type: "Beschreibung", value: "Vorher/Nachher anzeigen", before: point.from || "", after: point.to ?? point.description ?? "" })),
     ...(row.statusHistory || []).map((point) => ({ at: point.at, type: "Status", value: `${statusLabel(point.from)} → ${statusLabel(point.to ?? point.status)}` }))
   ].sort((a, b) => new Date(b.at) - new Date(a.at)).slice(0, 30);
-  const descriptions = uniqueDescriptions(row.descriptionHistory || []).reverse();
-  els.drawerContent.innerHTML = `<div class="drawer-head"><span>ANGEBOTSDETAILS</span><button class="icon-button" id="close-drawer" aria-label="Details schließen">×</button></div><div class="drawer-product">${listingThumb(row, true)}<div><span class="status ${row.status}"><i></i>${statusLabel(row.status)}</span><h2>${esc(row.title)}</h2><p>${esc(row.seller)}</p></div></div><div class="drawer-price"><span>Aktueller Preis</span><strong>${money(row.price)}</strong></div><div class="description-card"><span>AKTUELLE BESCHREIBUNG</span><p>${esc(row.description || "Keine Beschreibung erfasst.")}</p></div><dl><div><dt>Zustand</dt><dd>${esc(row.condition)}</dd></div><div><dt>Erstmals gesehen</dt><dd>${date(row.firstSeenAt, true)}</dd></div><div><dt>Zuletzt gesehen</dt><dd>${date(row.lastSeenAt, true)}</dd></div><div><dt>Online-Dauer</dt><dd>${duration(row)}</dd></div><div><dt>Gespeicherte Zustände</dt><dd>${row.snapshots?.length || 1}</dd></div></dl><div class="history"><span>ÄNDERUNGSVERLAUF</span>${changes.map((point) => `<div><i class="history-dot"></i><span>${date(point.at, true)}</span><strong>${esc(point.type)}</strong><small>${esc(point.value)}</small></div>`).join("") || "<p class=archive-empty>Noch keine Änderungen seit der ersten Erfassung.</p>"}</div><div class="description-archive"><span>BESCHREIBUNGSARCHIV</span>${descriptions.map((point) => `<details><summary><span>${date(point.at, true)}</span><strong>${point.description ? "Geänderte Version" : "Leere Beschreibung"}</strong></summary><p>${esc(point.description || "Keine Beschreibung")}</p></details>`).join("") || "<p class=archive-empty>Noch keine Beschreibung geändert.</p>"}</div>${row.url ? `<a class="button primary full" href="${esc(row.url)}" target="_blank" rel="noopener noreferrer">Auf Vinted öffnen ↗</a>` : `<button class="button secondary full" disabled>Demo ohne Listing-Link</button>`}`;
+  const descriptions = uniqueDescriptions(row.descriptionVersions || []).reverse();
+  els.drawerContent.innerHTML = `<div class="drawer-head"><span>ANGEBOTSDETAILS</span><button class="icon-button" id="close-drawer" aria-label="Details schließen">×</button></div><div class="drawer-product">${listingThumb(row, true)}<div><span class="status ${row.status}"><i></i>${statusLabel(row.status)}</span><h2>${esc(row.title)}</h2><p>${esc(row.seller)}</p></div></div><div class="drawer-price"><span>Aktueller Preis</span><strong>${money(row.price)}</strong></div><div class="description-card"><span>AKTUELLE BESCHREIBUNG</span><p>${esc(row.description || "Keine Beschreibung erfasst.")}</p></div><dl><div><dt>Zustand</dt><dd>${esc(row.condition)}</dd></div><div><dt>Erstmals gesehen</dt><dd>${date(row.firstSeenAt, true)}</dd></div><div><dt>Zuletzt gesehen</dt><dd>${date(row.lastSeenAt, true)}</dd></div><div><dt>Online-Dauer</dt><dd>${duration(row)}</dd></div><div><dt>Gespeicherte Zustände</dt><dd>${row.snapshots?.length || 1}</dd></div></dl><div class="history"><span>ÄNDERUNGSVERLAUF</span>${changes.map(historyEntry).join("") || "<p class=archive-empty>Noch keine Änderungen seit der ersten Erfassung.</p>"}</div><div class="description-archive"><span>EINMALIG GESPEICHERTE BESCHREIBUNGEN</span>${descriptions.map((point) => `<details><summary><span>${date(point.at, true)}</span><strong>Version ansehen</strong></summary><p>${esc(point.description)}</p></details>`).join("") || "<p class=archive-empty>Noch keine Beschreibung erfasst.</p>"}</div>${row.url ? `<a class="button primary full" href="${esc(row.url)}" target="_blank" rel="noopener noreferrer">Auf Vinted öffnen ↗</a>` : `<button class="button secondary full" disabled>Demo ohne Listing-Link</button>`}`;
   els.drawer.setAttribute("aria-hidden", "false");
 }
 
@@ -225,6 +226,10 @@ function listingThumb(row, large = false) { const className = large ? "listing-i
 function uniqueDescriptions(points) { const seen = new Set(); return points.filter((point) => { const value = String(point.description || "").replace(/\s+/g, " ").trim(); if (seen.has(value)) return false; seen.add(value); return true; }); }
 function hasActiveFilters() { return Boolean(els.search.value || els.status.value !== "all" || els.condition.value !== "all" || els.minPrice.value || els.maxPrice.value || els.sort.value !== "newest"); }
 function resetFilters() { els.search.value = ""; els.status.value = "all"; els.condition.value = "all"; els.minPrice.value = ""; els.maxPrice.value = ""; els.sort.value = "newest"; renderTable(); }
+function historyEntry(point) {
+  if (point.type === "Beschreibung") return `<details class="history-description"><summary><i class="history-dot"></i><span>${date(point.at, true)}</span><strong>Beschreibung</strong><small>${esc(point.value)}</small></summary><div class="description-diff"><section><span>VORHER</span><p>${esc(point.before || "Keine Beschreibung")}</p></section><section><span>NACHHER</span><p>${esc(point.after || "Keine Beschreibung")}</p></section></div></details>`;
+  return `<div><i class="history-dot"></i><span>${date(point.at, true)}</span><strong>${esc(point.type)}</strong><small>${esc(point.value)}</small></div>`;
+}
 function money(value, digits = 2) { return new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", minimumFractionDigits: digits, maximumFractionDigits: digits }).format(value); }
 function date(value, withTime = false) { if (!value) return "–"; return new Intl.DateTimeFormat("de-DE", withTime ? { dateStyle: "medium", timeStyle: "short" } : { day: "2-digit", month: "short", year: "numeric" }).format(new Date(value)); }
 function relative(value) { if (!value) return ""; const minutes = Math.max(0, Math.round((Date.now() - new Date(value)) / 60000)); if (minutes < 1) return "gerade eben"; if (minutes < 60) return `vor ${minutes} Min.`; const hours = Math.round(minutes / 60); if (hours < 24) return `vor ${hours} Std.`; return `vor ${Math.round(hours / 24)} T.`; }
@@ -247,6 +252,7 @@ els.resetFilters.addEventListener("click", resetFilters);
 els.profileForm.addEventListener("submit", saveProfile); els.importForm.addEventListener("submit", importSnapshot);
 els.deleteProfile.addEventListener("click", async () => { const id = els.profileForm.elements.id.value; if (!id || !confirm("Tracker inklusive Verlauf wirklich löschen?")) return; await apiFetch(`/api/profiles/${id}`, { method: "DELETE" }); els.profileDialog.close(); await refresh(); });
 els.table.addEventListener("click", (event) => { const row = event.target.closest("[data-listing]"); if (row) openDetails(row.dataset.listing); });
+els.activity.addEventListener("click", (event) => { const item = event.target.closest("[data-activity-listing]"); if (!item) return; const row = state.listings.find((listing) => listing.externalId === item.dataset.activityListing && listing.profileId === selectedProfileId); if (row) openDetails(row.id); });
 els.drawer.addEventListener("click", (event) => { if (event.target.closest("#close-drawer")) els.drawer.setAttribute("aria-hidden", "true"); });
 document.addEventListener("keydown", (event) => { if (event.key === "Escape") els.drawer.setAttribute("aria-hidden", "true"); });
 

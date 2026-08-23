@@ -68,8 +68,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .chart-summary { display: flex; justify-content: flex-end; gap: 24px; padding-top: 31px; color: #8591a3; font-size: 10px; } .chart-summary strong { margin-left: 4px; color: #334159; }
 .chart-empty { display: grid; place-items: center; color: #8793a6; font-size: 12px; }
 .activity-list { margin-top: 15px; }
-.activity-item { display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 11px; align-items: center; padding: 10px 0; border-bottom: 1px solid #edf1f5; }
+.activity-item { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 11px; align-items: center; width: 100%; padding: 10px 0; border: 0; border-bottom: 1px solid #edf1f5; color: inherit; background: transparent; text-align: left; cursor: pointer; }
 .activity-item:last-child { border: 0; }
+.activity-item:hover strong { color: var(--blue); }
+.activity-item > i { color: #99a4b5; font-style: normal; font-size: 18px; }
 .event-icon { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; color: #117f98; background: #e6f6f9; font-size: 12px; font-weight: 900; }
 .event-icon.price { color: var(--orange); background: #fff1e0; } .event-icon.missing, .event-icon.status { color: #8b6570; background: #f6ecef; }
 .activity-item strong { display: block; overflow: hidden; color: #334159; font-size: 11px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
@@ -141,6 +143,15 @@ dt { color: #7f8b9e; font-size: 10px; } dd { margin: 0; color: #334158; font-siz
 .history { margin: 24px 27px; } .history > span { display: block; margin-bottom: 9px; }
 .history > div { display: grid; grid-template-columns: 12px 102px 82px 1fr; gap: 8px; align-items: center; padding: 10px 0; border-bottom: 1px solid #edf1f5; font-size: 10px; }
 .history-dot { width: 8px; height: 8px; border: 2px solid var(--blue); border-radius: 50%; } .history small { color: #768399; text-align: right; }
+.history-description { margin: 0; padding: 0; border-bottom: 1px solid #edf1f5; }
+.history-description summary { display: grid; grid-template-columns: 12px 102px 82px 1fr; gap: 8px; align-items: center; padding: 10px 0; font-size: 10px; cursor: pointer; list-style: none; }
+.history-description summary::-webkit-details-marker { display: none; }
+.history-description summary small { color: var(--blue); }
+.description-diff { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; padding: 0 0 11px 20px; }
+.description-diff section { min-width: 0; padding: 10px; border-radius: 8px; background: #f5f7fa; }
+.description-diff section:last-child { background: #edf4ff; }
+.description-diff span { color: #8995a7; font-size: 8px; font-weight: 900; letter-spacing: 1px; }
+.description-diff p { margin: 5px 0 0; color: #4e5b70; font-size: 9px; line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
 .description-archive { margin: 0 27px 24px; } .description-archive details { margin: 0; padding: 10px 0; border-bottom: 1px solid #edf1f5; }
 .description-archive summary { display: flex; justify-content: space-between; gap: 12px; color: #768399; font-size: 10px; cursor: pointer; } .description-archive summary strong { color: #3c4960; }
 .description-archive details p { margin: 10px 0 2px; padding: 11px; border-radius: 8px; color: #526077; background: var(--soft); font-size: 10px; line-height: 1.55; white-space: pre-wrap; }
@@ -177,6 +188,8 @@ dt { color: #7f8b9e; font-size: 10px; } dd { margin: 0; color: #334158; font-siz
   .bars { gap: 6px; } .bar-col small { font-size: 8px; } tbody tr { grid-template-columns: 1fr; } td:first-child { grid-column: auto; }
   .drawer-product { grid-template-columns: 76px 1fr; } .listing-image.large { width: 76px; height: 76px; }
   .history > div { grid-template-columns: 12px 1fr auto; } .history small { grid-column: 2 / -1; text-align: left; }
+  .history-description summary { grid-template-columns: 12px 1fr auto; } .history-description summary small { grid-column: 2 / -1; text-align: left; }
+  .description-diff { grid-template-columns: 1fr; }
   .dialog-head, .form-grid, .dialog-actions { padding-inline: 17px; } .condition-row, .collector-box { margin-inline: 17px; }
   .dialog-copy { margin-inline: 17px; padding: 0; } textarea { width: calc(100% - 34px); margin-inline: 17px; }
 }
