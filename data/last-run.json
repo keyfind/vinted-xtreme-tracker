@@ -1,23 +1,23 @@
 {
-  "startedAt": "2026-08-25T04:54:30.396Z",
-  "finishedAt": "2026-08-25T04:54:44.990Z",
-  "mode": "search",
+  "startedAt": "2026-08-25T05:50:16.233Z",
+  "finishedAt": "2026-08-25T05:52:49.170Z",
+  "mode": "details",
   "status": "complete",
   "results": [
     {
       "profileId": "jbl-xtreme-4",
-      "mode": "search",
+      "mode": "details",
       "status": "complete",
-      "advertisedTotal": 200,
-      "visitedDetails": 0,
+      "advertisedTotal": 198,
+      "visitedDetails": 30,
       "notification": {
         "status": "nothing-to-send",
         "sent": 0
       },
-      "received": 24,
-      "matched": 24,
+      "received": 30,
+      "matched": 29,
       "added": 0,
-      "changed": 0,
+      "changed": 1,
       "gone": 0
     }
   ]
