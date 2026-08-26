@@ -1,6 +1,6 @@
 {
-  "startedAt": "2026-08-26T15:54:06.738Z",
-  "finishedAt": "2026-08-26T15:54:21.902Z",
+  "startedAt": "2026-08-26T17:00:17.823Z",
+  "finishedAt": "2026-08-26T17:00:31.667Z",
   "mode": "search",
   "status": "complete",
   "results": [
@@ -11,14 +11,13 @@
       "advertisedTotal": 201,
       "visitedDetails": 0,
       "notification": {
-        "status": "sent",
-        "sent": 1,
-        "messages": 1
+        "status": "nothing-to-send",
+        "sent": 0
       },
       "received": 25,
       "matched": 25,
-      "added": 1,
-      "changed": 0,
+      "added": 0,
+      "changed": 1,
       "gone": 0
     }
   ]
