@@ -1,6 +1,6 @@
 {
-  "startedAt": "2026-08-31T23:51:21.708Z",
-  "finishedAt": "2026-08-31T23:51:34.325Z",
+  "startedAt": "2026-09-01T05:08:49.200Z",
+  "finishedAt": "2026-09-01T05:09:03.338Z",
   "mode": "search",
   "status": "complete",
   "results": [
@@ -14,10 +14,10 @@
         "status": "nothing-to-send",
         "sent": 0
       },
-      "received": 24,
-      "matched": 24,
+      "received": 20,
+      "matched": 20,
       "added": 0,
-      "changed": 1,
+      "changed": 0,
       "gone": 0
     }
   ]
