@@ -32,10 +32,10 @@
       "detailDelayMs": 3000,
       "active": true,
       "createdAt": "2026-08-22T00:00:00.000Z",
-      "updatedAt": "2026-09-05T05:46:32.360Z",
+      "updatedAt": "2026-09-05T09:08:48.044Z",
       "lastSyncAt": "2026-09-05T05:46:32.360Z",
       "lastDetailSyncAt": "2026-09-04T09:52:37.759Z",
-      "lastSyncStatus": "Suche: 25 von 194 Treffern erfasst"
+      "lastSyncStatus": "Collector-Fehler: locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('a[href*=\"/items/\"]').first() to be visible\n"
     }
   ],
   "listings": [
@@ -3124,6 +3124,6 @@
       "text": "JBL Xtreme 4 | Top Zustand: Beschreibung geändert"
     }
   ],
-  "updatedAt": "2026-09-05T05:46:32.364Z",
+  "updatedAt": "2026-09-05T09:08:48.044Z",
   "pendingWebhookNotifications": []
 }
